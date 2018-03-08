@@ -1,0 +1,15 @@
+<ul class="nav nav-tabs">
+  <li *ngIf="isRecord" class="nav-item">
+    <a [routerLink]="['/app/fixed-assets/detail/fixed']" routerLinkActive="active" class="nav-link">记固定资产</a>
+  </li>
+  <li *ngIf="isRecord" class="nav-item">
+    <a [routerLink]="['/app/fixed-assets/detail/intangible']" routerLinkActive="active" class="nav-link">记无形资产</a>
+  </li>
+  <li *ngIf="isEditFixed" class="nav-item">
+    <a [routerLink]="['/app/fixed-assets/detail/EditFixed/edit-fixed',{id:id}]" routerLinkActive="active" class="nav-link">编辑固定资产</a>
+  </li>
+  <li *ngIf="isEditIntangible" class="nav-item">
+    <a [routerLink]="['/app/fixed-assets/detail/EditIntangible/edit-intangible',{id:id}]" routerLinkActive="active" class="nav-link">编辑无形资产</a>
+  </li>
+</ul>
+<router-outlet></router-outlet>

@@ -1,0 +1,142 @@
+@import "../../../../styles/variables";
+$sidebar-text-color: white;
+$nav-bg: #293846;
+.nav-header {
+    font-size: 20px;
+    padding: 20px;
+    background: url("../../../../assets/images/header-profile.png") no-repeat;
+    #CompanySettingMenu {
+        color: $sidebar-text-color;
+    }
+    a:hover,
+    a:focus {
+        text-decoration: none !important;
+    }
+}
+
+.logo-element {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    display: none;
+    padding: 18px 0;
+}
+
+.nav-link:focus,
+.nav-link:hover {
+    color: darken($sidebar-text-color, 10%) !important;
+    text-decoration: underline !important;
+}
+
+.nav>li>a {
+    color: darken($sidebar-text-color, 10%) !important;
+    display: block;
+    position: relative;
+    font-weight: 600;
+    padding: 14px 20px 14px 25px;
+}
+
+.nav>li>a:hover,
+.nav>li>a:focus {
+    background: darken($nav-bg, 3%);
+    color: $white;
+    text-decoration: none;
+}
+
+.nav-child>div>ul>ul>li>a:hover,
+.nav-child>div>ul>ul>li>a:focus,
+{
+    background-color: #4D5258;
+    color: $white;
+    text-decoration: none;
+}
+
+.nav-child>div>ul>ul>li>span {
+    font-size: 24px;
+    color: white;
+}
+
+.nav>li>a.active,
+.nav-child>div>ul>ul>li>a.active {
+    border-left: 4px solid darken($navy, 2%);
+    background: darken($nav-bg, 3%);
+    text-decoration: none;
+}
+
+.nav-child {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    padding-top: 42px;
+}
+
+.nav-child>div>ul>ul>li>a {
+    color: $sidebar-text-color;
+    display: block;
+    position: relative;
+    font-weight: 400;
+    padding: 14px 5px 14px 10px;
+    width: 250px !important;
+    margin-left: 25px;
+}
+
+.sider-first {
+    position: relative;
+    width: 220px !important;
+}
+
+.sider-second {
+    position: absolute;
+    z-index: 999;
+    left: 220px;
+    top: 0px;
+    width: 678px;
+    background-color: #393F44;
+}
+
+.img-profile {
+    width: 40px;
+    /* background-color: $text-color-dark;*/
+    margin: 0px;
+    margin-left: 40px;
+    transition: all 0.15s ease;
+    -moz-transition: all 0.15s ease;
+    /* Firefox 4 */
+    -webkit-transition: all 0.15s ease;
+    /* Safari 和 Chrome */
+}
+
+.change-state {
+    margin-left: 0px;
+    width: 30px;
+    transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    /* Firefox 4 */
+    -webkit-transition: all 0.25s ease;
+    /* Safari 和 Chrome */
+}
+
+.m-l-6 {
+    margin-left: 6px;
+}
+
+.side-width {
+    width: 30px;
+}
+
+.angle-right {
+    float: right;
+}
+
+ul {
+    li {
+        list-style-type: none;
+    }
+}
+// .children-width{
+//     width: 678px !important;
+// }
+// .children-narrow{
+//     width: 339px !important;
+// }

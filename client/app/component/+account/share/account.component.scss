@@ -1,0 +1,17 @@
+@import '../../../../styles/_variables.scss';
+
+.border-tab{
+  border-left: 1px solid transparent;border-color: #ddd #ddd transparent;
+}
+
+@media screen and (width:320px){
+  .nav-link{
+    padding:10px 10px;
+    font-size:14px;
+  }
+  .tab-panel{
+    padding:32px 20px;
+  }
+}
+
+

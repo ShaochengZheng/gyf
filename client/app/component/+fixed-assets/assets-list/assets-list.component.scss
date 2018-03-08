@@ -1,0 +1,22 @@
+@import "../../../../styles/variables";
+.title {
+    font-size: 25px;
+}
+
+.change-state {
+    height: 0px;
+    display: none;
+    transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    /* Firefox 4 */
+    -webkit-transition: all 1s ease;
+    /* Safari 和 Chrome */
+}
+
+.search-i {
+    margin-left: 15px;
+}
+
+.m-l-10 {
+    margin-left: 10px;
+}

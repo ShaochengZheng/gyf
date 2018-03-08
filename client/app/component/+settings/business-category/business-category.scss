@@ -1,0 +1,35 @@
+.subItem{
+        padding-left:50px;
+}
+table tr{
+    // width: 100%;
+   //border-top: 1px solid #eceeef;
+   border-bottom: 1px solid #eceeef
+}
+
+table td{
+     border: none;
+}
+.hover-style:hover{
+    cursor:pointer
+}
+ thead tr{
+        background: #e6f1f7;
+} 
+
+@media screen and (max-width:415px){
+    td{
+        font-size:10px;
+    }
+    th{
+        font-size:14px;
+    }
+    .add-children{
+        padding:4.8px 0px;
+        width:70px;
+    }
+    .save,.cancel{
+        font-size:14px;
+    }
+    
+}

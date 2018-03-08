@@ -1,0 +1,133 @@
+<div class="container widget-container">
+    <main id="content" role="main">
+        <div class="row widget-header header">
+            <div class="col-xs-8 padding-l-0">
+                <a href="http://www.guanplus.com/" target="_blank"><img class="img-fluid header-logo" src="assets/images/logo.png"></a>
+                <span class="header-title message">财务界的人工智能（报税版）</span>
+            </div>
+            <div class="col-xs-4 widget-header-right">
+                <span class="pull-right">注册｜<a [routerLink]="['/login',{name:myForm.value.phoneOrEmail}]">登录</a></span>
+            </div>
+        </div>
+
+        <div class="row widget-form form-body">
+            <div class="alert-container col-lg-12">
+                <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+            </div>
+            <!--<div class="alert-fixed">
+                <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+            </div>-->
+            <div class="col-sm-12">
+
+                <form role="form" [formGroup]="myForm" class="form-container">
+                    <!--companyName-->
+                    <fieldset class="form-group" [ngClass]="{'has-danger':(!companyName.valid && companyName.touched)}">
+
+                        <div class="input-group ">
+                            <span class="input-group-addon"><i class="fa fa-building-o" ></i></span>
+                            <input type="text" class="form-control input-border" placeholder="代账公司名称" #companyName="ngForm" [formControl]="myForm.controls['companyName']">
+                        </div>
+                        <div *ngIf="companyName.control.touched">
+                            <div *ngIf="companyName.control.hasError('required')" class="text-danger validation-message">
+                                请填写代账公司名称</div>
+                        </div>
+                        <div *ngIf="companyName.control.hasError('maxlength')" class="text-danger validation-message">
+                            代账公司名称不得超过50个字</div>
+                    </fieldset>
+                    <!--username-->
+                    <fieldset class="form-group" [ngClass]="{'has-danger':(!username.valid && username.touched)}">
+
+                        <div class="input-group ">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input type="text" class="form-control input-border" placeholder="姓名" #username="ngForm" [formControl]="myForm.controls['username']">
+                        </div>
+                        <div *ngIf="username.control.touched">
+                            <div *ngIf="username.control.hasError('required')" class="text-danger validation-message">
+                                请填写姓名</div>
+                            <div *ngIf="username.control.hasError('maxlength')" class="text-danger validation-message">
+                                用户名不能多于16个字符</div>
+                        </div>
+                    </fieldset>
+
+                    <!--phoneOrEmail-->
+                    <!--名字啊  不是phoneOrEmail-->
+                    <fieldset class="form-group" [ngClass]="{'has-danger':(!phoneOrEmail.valid && phoneOrEmail.touched)}">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                            <input [(ngModel)]="transmittedName" type="text" class="form-control" placeholder="手机号" #phoneOrEmail="ngForm" [formControl]="myForm.controls['phoneOrEmail']"
+                                (blur)="blur()" (click)="enter()">
+                        </div>
+                        <div *ngIf="phoneOrEmail.control.hasError('required') && inputBlur ;else phoneError;" class="text-danger validation-message">
+                            请填写手机</div>
+                        <ng-template #phoneError>
+                            <!--<div *ngIf="!name.valid" #phoneError class="text-danger validation-message">手机格式不正确</div>-->
+                            <div *ngIf="!phoneOrEmail.control.valid && inputBlur" class="text-danger validation-message">手机格式不正确</div>
+                        </ng-template>
+                        <!--<div *ngIf="phoneOrEmail.control.hasError('required') && phoneOrEmail.control.hasError('phoneValidator') && inputBlur" class="text-danger validation-message">
+                            手机格式不正确</div>-->
+                        <div *ngIf="hasRegisted" class="text-danger validation-message">
+                            该账号已被注册</div>
+                    </fieldset>
+
+                    <!--verification code-->
+                    <fieldset class="form-group" [ngClass]="{'has-danger':(!vericode.valid && vericode.touched)}">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                            <input type="text" class="form-control" placeholder="验证码" #vericode="ngForm" [formControl]="myForm.controls['vericode']">
+                            <span class="input-group-addon verifyCodeMsg" *ngIf="!codeGetted && !regetCode"><button class="get-verifycode" (click)="getVerifyCode()" [class.color-navy]="phoneOrEmail.valid && !hasRegisted">获取验证码</button></span>
+                            <span class="input-group-addon verifyCodeMsg" *ngIf="regetCode && !codeGetted"><button class="get-verifycode color-navy" (click)="getVerifyCode()" [disabled]="!phoneOrEmail.valid">重新获取验证码</button></span>
+                            <span class="input-group-addon verifyCodeMsg color-navy" *ngIf="codeGetted"> 验证码已发送（{{countdown}}）</span>
+                        </div>
+                        <div *ngIf="codeGetted" class="text-muted validation-message">请在手机短信查看6位验证码
+                        </div>
+                        <div *ngIf="vericode.control.touched">
+                            <div *ngIf="vericode.control.hasError('required')" class="text-danger validation-message">请填写验证码</div>
+                        </div>
+                    </fieldset>
+                    <!--password-->
+                    <fieldset class="form-group" [ngClass]="{'has-danger':(!password.valid && password.touched)}">
+                        <div class="input-group ">
+                             <!-- 禁用自动填充-->
+                            <input type="text" style="width:0;height:0;float:left;visibility:hidden;display:none" />
+                            <input type="password" style="width:0;height:0;float:left;visibility:hidden;display:none" />
+                            <!-- 禁用自动填充-->
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+                            <input (focus)="onpasswordfocus()" type="password" class="form-control" placeholder="密码" #password="ngForm" [formControl]="myForm.controls['password']">
+                        </div>
+                        <table border="0" width="80%" class="margin-l-40" *ngIf="password.control.dirty || passwordfocus">
+                            <tr>
+                                <td><span class="fa fa-check-square-o text-muted" [class.color-navy]="!password.control.hasError('noLetter')"> 含字母</span></td>
+                                <td><span class="fa fa-check-square-o text-muted" [class.color-navy]="!password.control.hasError('noNumber')"> 含数字</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="fa fa-check-square-o text-muted" [class.color-navy]="!password.control.hasError('illegalChar')"> 不包含非法字符</span></td>
+                                <td><span class="fa fa-check-square-o text-muted" [class.color-navy]="!password.control.hasError('short')"> 8位到64位</span></td>
+                            </tr>
+                        </table>
+                        <div *ngIf="password.control.touched">
+                            <div *ngIf="password.control.hasError('required')" class="text-danger validation-message"> 请设置密码</div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <div class="input-group ">
+                            <span class="input-group-addon"><i class="fa fa-sign-in fa-lg"></i></span>
+                            <input type="text" class="form-control" placeholder="邀请码" #appCode="ngForm" [formControl]="myForm.controls['appCode']">
+                        </div>
+                        <div *ngIf="appCode.control.touched">
+                            <div *ngIf="appCode.control.hasError('required')" class="text-danger validation-message"> 填写邀请码</div>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <fieldset class="form-group text-center">
+                    <button type="submit" class="input-group btn btn-primary btn-block btn-lg margin-t-13" [disabled]="!myForm.valid" (click)="onSubmit()">
+                            开始<管有方>之旅
+                        </button>
+                    <label class="font-s font-14">点击按钮表明您已阅读并同意<a href="../../../../../assets/template/privacy.pdf" target="_blank">隐私条款</a>和<a href="../../../../../assets/template/user-agreement.pdf" target="_blank">用户协议</a></label>
+                </fieldset>
+            </div>
+        </div>
+    </main>
+    <footer-external></footer-external>
+    <browser-alert></browser-alert>
+</div>

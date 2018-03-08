@@ -1,0 +1,83 @@
+@import '../modal';
+@import '../../../../styles/variables';
+.widget {
+    padding: 0;
+    overflow: hidden;
+    .title {
+        background: #e4e7ee;
+        padding: 1rem 2rem;
+    }
+    .get-verifycode {
+        border: none;
+        background: transparent;
+    }
+    .get-verifycode:visited,
+    .get-verifycode:focus,
+    .get-verifycode:active {
+        outline: none;
+    }
+    form {
+        padding: 1rem 2.5rem;
+        background: #fafbfb;
+        .edit-title {
+            color: black
+        }
+        .col-form-label {
+            color: #bbbcc0;
+            ;
+        }
+        .name,
+        .mail,
+        .password,
+        .position,
+        .code,
+        .department {
+            p {
+                display: inline-block;
+                margin-right: 10px;
+            }
+            i,
+            a {}
+            input,
+            ng-select {
+                width: 300px;
+                display: inline-block;
+            }
+            .dropdown {
+                width: 300px;
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.radio {
+    display: inline-block;
+    margin-right: 15px;
+    label {
+        input {
+            width: 20px !important;
+        }
+        margin-right: 15px;
+    }
+}
+
+.color-navy {
+    color: $navy !important;
+}
+
+.lighter {
+    color: #bbbcc0;
+    ;
+}
+
+.d-flex {
+    display: flex;
+    a {
+        margin-left: 20px;
+    }
+}
+
+.t-a{
+    text-align: left;
+}

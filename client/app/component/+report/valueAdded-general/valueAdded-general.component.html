@@ -1,0 +1,465 @@
+<div class="value-addes">
+    <!--<p>增值税！！！！！</p>-->
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-12 col-sm-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null ">
+                        <i class="fa  fa-area-chart fa-2x"></i>
+                    </li>
+                    <li class="breadcrumb-null page-title">
+                        <a>
+                            <span>报表</span>
+                        </a>
+                        <span>/</span>
+                        <span>增值税纳税模拟申报表</span>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+        </div>
+    </div>
+    <div class="content-body search">
+        <div class="row">
+            <div class="col-lg-12 monthSearchStyle">
+                <template ngFor let-item [ngForOf]="monthList" let-index="index">
+                    <button class="monthPic" [ngClass]="{'clickStyle': index === isChecked, 'noDataStyle': !item.isExist}"
+                            [disabled]="!item.isExist" (click)="monthSearch(item, index)">
+                        <span [ngClass]="{'fontCenter': index < 9, 'doubleFont': index >= 9}">{{item.month}}</span>
+                    </button>
+                    <div [ngClass]="{'monthLine': index < 11, 'noDataStyle': !item.isExist}"></div>
+                </template>
+            </div>
+        </div>
+    </div>
+    <div class="content-body list">
+        <div class="row m-t-20">
+            <div class="col-lg-12 titleMargin">
+                <h3 class="text-center">增值税纳税模拟申报表</h3>
+                <p class="text-center">（一般纳税人适用）</p>
+                <p class="text-center p-t-10 p-b-10">    根据国家税收法律法规及增值税相关规定制定本表。纳税人不论有无销售额，均应按税务机关核定的纳税期限填写本表，并向当地税务机关申报。</p>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row">
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4">税款所属时间:自{{dataList.startTime | date:'yyyy-MM-dd'}} 至{{dataList.endTime | date:'yyyy-MM-dd'}}</p>
+            </div>
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4 text-center">填表日期:</p>
+            </div>
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4 text-right">金额单位：元至角分</p>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row m-t-10">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-sm m-b--1">
+                    <thead class=" report-detail">
+                        <tr>
+                            <td colspan="4">纳税人识别号</td>
+                            <td colspan="12">{{dataList.taxpayerId}}</td>
+                            <td colspan="4">所属行业</td>
+                            <td colspan="4">{{dataList.industryName}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">纳税人名称</td>
+                            <td colspan="3">
+                                <div>{{dataList.taxpayerName}}</div>
+                            </td>
+                            <td colspan="3">法人代表人姓名</td>
+                            <td colspan="3">
+                                <div>{{dataList.legalPersonName}}</div>
+                            </td>
+                            <td colspan="3">注册地址</td>
+                            <td colspan="3">
+                                <div></div>
+                            </td>
+                            <td colspan="3">生产经营地址</td>
+                            <td colspan="3">
+                                <div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">开户银行及账号</td>
+                            <td colspan="4"></td>
+                            <td colspan="4">登记注册类型</td>
+                            <td colspan="4"></td>
+                            <td colspan="4">电话号码</td>
+                            <td colspan="4"></td>
+                        </tr>
+                    </thead>
+
+                </table>
+                <table class="table table-bordered table-sm m-a-0">
+                    <thead class="text-center">
+                        <tr>
+                            <td rowspan="2"></td>
+                            <td rowspan="2" class="vertical-middle">项目</td>
+                            <td rowspan="2" class="vertical-middle">栏次</td>
+                            <td colspan="2" class="">一般项目</td>
+                            <td colspan="2" class="">即征即退项目</td>
+                        </tr>
+                        <tr>
+                            <td>本月数</td>
+                            <td>本年累计</td>
+                            <td>本月数</td>
+                            <td>本年累计</td>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="dataList.details" class="box-shadow-none">
+                        <tr>
+                            <td rowspan="10">销售额</td>
+                            <th>（一）按适用税率计税销售额</th>
+                            <th>1</th>
+                            <td>{{dataList.details[0].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[0].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[0].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[0].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>其中：应税货物销售额</th>
+                            <th>2</th>
+                            <td>{{dataList.details[1].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-indent-42">应税劳务销售额</th>
+                            <th>3</th>
+                            <td>{{dataList.details[2].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-indent-42">纳税检查调整的销售额</th>
+                            <th>4</th>
+                            <td>{{dataList.details[3].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>（二）按简易办法计税销售额</th>
+                            <th>5</th>
+                            <td>{{dataList.details[4].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>其中：纳税检查调整的销售额</th>
+                            <th>6</th>
+                            <td>{{dataList.details[5].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>（三）免、抵、退办法出口销售额</th>
+                            <th>7</th>
+                            <td>{{dataList.details[6].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[6].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>（四）免税销售额</th>
+                            <th>8</th>
+                            <td>{{dataList.details[7].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[7].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>其中：免税货物销售额</th>
+                            <th>9</th>
+                            <td>{{dataList.details[8].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[8].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th class="text-indent-42">免税劳务销售额</th>
+                            <th>10</th>
+                            <td>{{dataList.details[9].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[9].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="14">税款计算</td>
+                            <th>销项税额</th>
+                            <th>11</th>
+                            <td>{{dataList.details[10].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>进项税额</th>
+                            <th>12</th>
+                            <td>{{dataList.details[11].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[11].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[11].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[11].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>上期留抵税额</th>
+                            <th>13</th>
+                            <td>
+                                <decimal-input [(ngModel)]="dataList.details[12].genaralCurrentMonthAmount"
+                                               onfocus="this.select()" [isEditable]="true" type="number"
+                                               decimalStyle="input-amount text-right" (blur)="updateChart(dataList.details[12])">
+                                </decimal-input>
+                            </td>
+                            <td>{{dataList.details[12].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[12].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>进项税额转出</th>
+                            <th>14</th>
+                            <td>{{dataList.details[13].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[13].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[13].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[13].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>免、抵、退应退税额</th>
+                            <th>15</th>
+                            <td>{{dataList.details[14].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[14].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>按适用税率计算的纳税检查应补缴税额</th>
+                            <th>16</th>
+                            <td>{{dataList.details[15].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[15].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>应抵扣税额合计</th>
+                            <th>17=12+13-14-15+16</th>
+                            <td>{{dataList.details[16].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>{{dataList.details[16].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>实际抵扣税额</th>
+                            <th>18（如17<11，则为17，否则为11）</th>
+                            <td>{{dataList.details[17].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[17].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[17].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[17].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>应纳税额</th>
+                            <th>19=11-18</th>
+                            <td>{{dataList.details[18].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[18].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[18].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[18].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>期末留抵税额</th>
+                            <th>20=17-18</th>
+                            <td>{{dataList.details[19].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[19].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[19].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>简易计税办法计算的应纳税额</th>
+                            <th>21</th>
+                            <td>{{dataList.details[20].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[20].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[20].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[20].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>按简易计税办法计算的纳税检查应补缴税额</th>
+                            <th>22</th>
+                            <td>{{dataList.details[21].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[21].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>应纳税额减征额</th>
+                            <th>23</th>
+                            <td>{{dataList.details[22].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[22].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[22].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[22].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>应纳税额合计</th>
+                            <th>24=19+21-23</th>
+                            <td>{{dataList.details[23].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[23].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[23].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[23].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="14">税款缴纳</td>
+                            <th>期初未缴税额（多缴为负数）</th>
+                            <th>25</th>
+                            <td>
+                                <decimal-input [(ngModel)]="dataList.details[24].genaralCurrentMonthAmount"
+                                               onfocus="this.select()" [isEditable]="true" type="number"
+                                               decimalStyle="input-amount text-right" (blur)="updateChart(dataList.details[24])">
+                                </decimal-input>
+                            </td>
+                            <td>{{dataList.details[24].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[24].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[24].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>实收出口开具专用缴款书退税额</th>
+                            <th>26</th>
+                            <td>{{dataList.details[25].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[25].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>本期已缴税额</th>
+                            <th>27=28+29+30+31</th>
+                            <td>{{dataList.details[26].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[26].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[26].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[26].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>①分次预缴税额</th>
+                            <th>28</th>
+                            <td>{{dataList.details[27].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>{{dataList.details[27].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>②出口开具专用缴款书预缴税额</th>
+                            <th>29</th>
+                            <td>{{dataList.details[28].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>③本期缴纳上期应纳税额</th>
+                            <th>30</th>
+                            <td>
+                                <decimal-input [(ngModel)]="dataList.details[29].genaralCurrentMonthAmount"
+                                               onfocus="this.select()" [isEditable]="true" type="number"
+                                               decimalStyle="input-amount text-right" (blur)="updateChart(dataList.details[29])">
+                                </decimal-input>
+                            </td>
+                            <td>{{dataList.details[29].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[29].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[29].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>④本期缴纳欠缴税额</th>
+                            <th>31</th>
+                            <td>{{dataList.details[30].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[30].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[30].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[30].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>期末未缴税额（多缴为负数）</th>
+                            <th>32=24+25+26-27</th>
+                            <td>{{dataList.details[31].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[31].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[31].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[31].backYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>其中：欠缴税额（≥0）</th>
+                            <th>33=25+26-27</th>
+                            <td>{{dataList.details[32].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>{{dataList.details[32].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>本期应补(退)税额</th>
+                            <th>34＝24-28-29</th>
+                            <td>{{dataList.details[33].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>{{dataList.details[33].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>即征即退实际退税额</th>
+                            <th>35</th>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>{{dataList.details[34].backMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>期初未缴查补税额</th>
+                            <th>36</th>
+                            <td>{{dataList.details[35].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[35].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>本期入库查补税额</th>
+                            <th>37</th>
+                            <td>{{dataList.details[36].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[36].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>期末未缴查补税额</th>
+                            <th>38=16+22+36-37</th>
+                            <td>{{dataList.details[37].genaralCurrentMonthAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[37].genaralCurrentYearAmount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-sm" *ngIf="dataList.details">
+                    <tbody>
+                        <tr>
+                            <td class="width-1">授权声明</td>
+                            <td class="text-left width-4">
+                                <p class="text-indent-24">如果你已委托代理人申报，请填写下列资料：</p>
+                                <p class="text-indent-24">为代理一切税务事宜，现授权 <span class="text-block"></span>（地址） <span class="text-block"></span>为本纳税人的代理申报人，任务与本申报表有关的往来文件，都可寄予此人</p>
+                                <p class="text-right">
+                                    <span class="sign">授权人签字：</span>
+                                </p>
+                            </td>
+                            <td class="width-1">申报人声明</td>
+                            <td class="text-left position-relative width-4">
+                                <p class="text-indent-24">本纳税申报表是根据国家税收法律法规及相关规定填报的，我确定它是真实的、可靠的、完整的。</p>
+                                <p class="text-right sign-wrapper">
+                                    <span class="sign">声明人签字：</span>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row reports-footer">
+            <div class="col-xs-4">主管税务机关：</div>
+            <div class="col-xs-4">接收人：</div>
+            <div class="col-xs-4">接收日期：</div>
+        </div>
+    </div>
+</div>

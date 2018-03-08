@@ -1,0 +1,22 @@
+@import "../../../../../styles/variables";
+.operation{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    margin-bottom: 15px;
+}
+.Accountdate{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row  nowrap;
+        flex-flow: row  nowrap;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+        div{
+            text-align: left;
+            flex: 1;
+        }
+}

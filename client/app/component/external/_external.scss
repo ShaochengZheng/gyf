@@ -1,0 +1,125 @@
+@import "../../../styles/variables";
+@import "../../../../node_modules/bootstrap/scss/bootstrap";
+.widget-container {
+  max-width: 600px;
+  padding-top: 20px;
+  .widget-header {
+    margin: 50px 10px 10px 10px;
+    position: relative;
+    div {
+      img {
+        position: absolute;
+        bottom: 6px;
+      }
+    }
+  }
+  .widget-header-right {
+    margin-top: 70px;
+    a {
+      font-weight: 600;
+      color: $dark-slate-gray;
+    }
+  }
+  .widget-form {
+    margin: 10px;
+    padding: 30px 20px 30px 20px;
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 5px 10px 10px 6px rgba(219, 219, 219, 0.5);
+  }
+  .header-logo {
+    width: 120px;
+    height: 35px;
+    display: inline-block;
+    flex: 1;
+  }
+  .header-title {
+    color: $header-color;
+    margin-top: 66px;
+    display: inline-block;
+    flex: 1;
+    margin-left: 140px;
+  }
+  .form-container {
+    margin-top: 30px;
+  }
+}
+
+.alert-container {
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+input.form-control {
+  border-left-style: none;
+  border-top-style: none;
+  border-right-style: none;
+  border-radius: 0px;
+}
+
+.input-group-addon {
+  border-left-style: none;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: none;
+  border-radius: 0px;
+  background-color: $white;
+  color: $navy;
+  &:hover {
+    border-color: $navy;
+  }
+  padding: 0 0.75rem !important;
+}
+
+.validation-message {
+  font-size: $font-size-xs;
+  margin-top: 5px;
+  margin-left: 40px;
+}
+
+.has-danger .input-group-addon {
+  color: $brand-danger;
+  border-color: $brand-danger;
+  background-color: $white;
+}
+
+.footer {
+  // position: absolute;
+  // bottom: 3px;
+  max-width: 600px;
+}
+
+input,
+input:focus,
+input:hover {
+  box-shadow: none;
+}
+
+.img-marketing {
+  width: 100%;
+}
+
+.color-navy {
+  color: $navy !important;
+}
+
+.color-gray {
+  color: $gray !important;
+}
+
+.padding-l-0 {
+  padding-left: 0;
+  display: flex;
+}
+
+.verifyCodeMsg {
+  border-bottom: 1px solid $input-border-color;
+}
+
+.form-body {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+}

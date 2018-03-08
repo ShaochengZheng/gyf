@@ -1,0 +1,78 @@
+<!--<div class="content-body col-sm-12 clear">
+
+    <div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item" *ngIf="showBank && isRecords">
+                <a class="nav-link" [class.active]="activeTab === 'records'" [routerLink]="['/app/reconcile/detail/records', {id: account.id}]">银行对账单导入记录</a>
+            </li>
+            <li class="nav-item" *ngIf="showBank && !isRecords">
+                <a class="nav-link" [class.active]="activeTab === 'history'" [routerLink]="['/app/reconcile/detail/history', {id: account.id}]">银行对账单导入记录</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'account-trans'" [routerLink]="['/app/reconcile/detail/account-trans', {id: account.id}]">账户收支记录</a>
+            </li>
+        </ul>
+    </div>
+
+    <div *ngIf="!isReconcile && showBank" class="float-right"><a href class="nav-link first" data-toggle="dropdown"><i class="fa fa-question-circle fa-lg " aria-hidden="true" placement="left" tooltip="帮助"></i></a>
+        <div class="dropdown-menu  dropdown-menu-right support-tooltip">
+            <div class="dropdown-item">1.对账顺序</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item">下载银行对账单——上传——匹配
+                <管有方>项目——对账</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item">2.
+                <管有方>对账过程设计</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item">新上传的银行对账单
+                <管有方>系统会先自动开始为<br>您对账，存储在“对账”里待您确认，确认之<br>后需要您手动对账系统无法对账的部分。</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item">3.手动对账</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item">您可以在
+                <管有方>记录里找到能够与流水账匹配的<br>记录，也可以为其加上备注完成对账</div>
+        </div>
+    </div>
+</div>-->
+<!--header-->
+<!--<div class="content-header">
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-cogs fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">账户</li>
+            </ol>
+        </div>
+    </div>
+</div>-->
+
+
+<ul id="settingItems" class="nav nav-tabs">
+
+
+    <!--<li class="nav-item" *ngIf="showBank && isRecords">
+        <a class="nav-link" routerLinkActive="active" [routerLink]="['/app/reconcile/detail/records', {id: account.id}]">银行对账单导入记录</a>
+    </li>-->
+    <li class="nav-item" *ngIf="showBank ">
+        <a class="nav-link" routerLinkActive="active" [routerLink]="['/app/reconcile/detail/history', {id: account.id}]">银行对账单导入记录</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" [routerLink]="['/app/reconcile/detail/account-trans', {id: account.id}]">账户收支记录</a>
+    </li>
+
+    <!--<li class="nav-item">
+        <a [routerLink]="['/app/account/detail/account-trans',{id:bankaccountid}]" routerLinkActive="active" class="nav-link">账户收支记录</a>
+    </li>
+    <li class="nav-item" *ngIf="!isCash">
+        <a [routerLink]="['/app/account/detail/bill-trans',{id:bankaccountid}]" routerLinkActive="active" class="nav-link">银行对账单导入记录</a>
+    </li>-->
+
+</ul>
+
+<div class="tab-content border-tab">
+    <div class="tab-panel">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+<div class="content-footer"></div>

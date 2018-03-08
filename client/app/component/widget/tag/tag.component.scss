@@ -1,0 +1,119 @@
+@import "../../../../styles/variables";
+// ----------tag style-------------------
+.addTagSize{
+    padding-left: 15px;
+    margin-right: 10px;
+    margin-bottom: 6px;
+}
+.addTagStyle{
+    height: 32px;
+    max-width: 14em;
+    line-height: 32px;
+    background-color: #E9ECF3;
+    border-radius: 0 5px 5px 0;
+    border-left: 5px solid #656980;
+}
+.fontColor{
+    color: #656980;
+    line-height: 30px;
+}
+.addTagInfo{
+    padding: 0 .6em;
+}
+.faClose{
+    margin-right: 6px;
+    cursor: pointer;
+}
+.addFlex{
+    flex: 0 0 45%;
+}
+.addTag{
+    line-height: 32px;
+    color: #1ccfc9;
+    .faTag{
+        padding-right: 3px;
+    }
+    .tag-reminder{
+        color: #9b9b9b;
+    }
+}
+.addTagFont{
+    // cursor: pointer;
+    padding: 1px 5px 5px 0;
+    border-radius: 0;
+    background-color: #fff;
+    color: #1ccfc9;
+}
+.disabled{
+    cursor: not-allowed;
+    opacity: .65;
+}
+
+.marginTopNum{
+    margin-top: 6px;
+}
+
+.addTagInputStyle{
+    position: relative;
+    border-left: 5px solid #656980;
+    .addTagInput{
+        border-radius: 0;
+        border: 1px solid #a6a6a6;
+        border-left: 0;
+        height: 32px;
+        width: 10em;
+    }
+    .tag-select-choices{
+        position: absolute;
+        width: 11.4em;
+        padding-left: 0;
+        background-color: #fff;
+        border: 1px solid #a6a6a6;
+        border-top-width: 0;
+        border-radius: 3px;
+        list-style: none;
+        z-index: 10;
+        .tag-select-choices-li{
+            width: auto;
+            height: 36px;
+            line-height: 28px;
+            padding: 5px 15px;
+        }
+        .tag-select-choices-li:hover{
+            background-color: #1ccfc9;
+        }
+    }
+}
+
+.widthSize{
+    min-width: 9.2% !important;
+    padding-left: 15px;
+    // line-height: 26px;
+}
+.paddingLeftNum{
+    padding-left: 0 !important;
+    margin-top: -5px;
+    .recommendTags{
+        display: inline-block;
+        margin: 4px;
+        // .recommendTag{
+        //     cursor: pointer;
+        //     color: #656980;
+        // }
+        .recommendTag1{
+            padding: 5px;
+            border-radius: 0;
+            background-color: #E9ECF3;
+            color: #656980;
+        }
+    }
+    .faAngleDouble{
+        color: #1ccfc9;
+        margin-left: 6px;
+        cursor: pointer;
+    }
+}
+.hlight{
+    background-color: #1ccfc9;
+}
+// ----------tag style end-------------------

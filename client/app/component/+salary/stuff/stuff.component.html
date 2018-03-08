@@ -1,0 +1,376 @@
+<div class="content-header">
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-users fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">员工管理／{{title}}</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div class="content-body content-pad">
+    <div class="header-stuff">
+        <span>员工基本信息</span>
+    </div>
+
+    <form [formGroup]="stuffForm">
+        <div class="row">
+            <div class=" col-12 col-sm-4">
+                <div class="form-group">
+                    <label>编号
+                         <input type="text" class="form-control input-hint" [formControl]="stuffNumber" [(ngModel)]="stuff.number" placeholder="编号">
+                    </label>
+                    <!--<span class="span-hint">选填</span>-->
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group" [ngClass]="{'has-danger':(!stuffName.valid&&submitForm)}">
+                    <label>姓名
+                        <input type="text" class="form-control" [formControl]="stuffName"   [(ngModel)]="stuff.name" placeholder="姓名">
+                    </label>
+                </div>
+            </div>
+            <div class=" col-12 col-sm-4">
+                <div class="form-group" [ngClass]="{'has-danger':(!stuffNational.valid&&submitForm)}">
+                    <label for="stuffNational" class="select-width">国籍
+                        <ng-select [allowClear]="true" [items]="nationalList"  [autocomplete]="true" textField="text" [formControl]="stuffNational" [(ngModel)]="selectNational" (selected)="selected($event,'national')" placeholder="请选择">
+                        </ng-select>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" col-12 col-sm-4" [ngClass]="{'has-danger':(!idNo.valid&&submitForm)}">
+                <div class="form-group">
+                    <label>身份证号/证件号
+                        <input type="text" class="form-control input-hint" [formControl]="idNo"   [(ngModel)]="stuff.idNo" placeholder="身份证号/证件号">
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label class="calendar-width">出生日期
+                        <p-calendar maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown"  [showDelIcon]="false"
+                        [formControl]="birthDate" [(ngModel)]="stuff.birthDate" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label for="sex" class="select-width">性别
+                        <ng-select [allowClear]="true" [items]="sexList" [(ngModel)]="selectSex" [autocomplete]="true" [formControl]="stuffSex" (selected)="selected($event,'sex')"  placeholder="请选择性别">
+                        </ng-select>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" col-12 col-sm-4">
+                <div class="form-group">
+                    <label class="calendar-width">入职日期
+                        <p-calendar maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showDelIcon]="false"
+                        [formControl]="joinedDate" [(ngModel)]="stuff.joinedDate" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label for="sex" class="select-width">部门性质
+                         <ng-select  [allowClear]="true" [items]="dpTypeList" textField="text" [autocomplete]="true"
+                                    [formControl]="departmentType" [(ngModel)]="selectDpType"  (selected)="selected($event,'department')" placeholder="请选择部门性质">
+                                </ng-select>
+                    </label>
+                </div>
+            </div>
+            <div class=" col-12 col-sm-4">
+                <div class="form-group">
+                    <label>职务/岗位
+                        <input type="text" class="form-control input-hint" [formControl]="position" [(ngModel)]="stuff.position"   placeholder="职务/岗位">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-4" [ngClass]="{'has-danger':(!isStuff.valid && submitForm)}">
+                <div class="form-group">
+                    <label for="stuff" class="select-width">是否是雇员
+                        <ng-select [allowClear]="true" [items]="stuffList"  [(ngModel)]="selectStastus" [formControl]="isStuff" (selected)="selected($event,'isStuff')" [autocomplete]="true" placeholder="请选择">
+                        </ng-select>
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label>个人股本(投资)额
+                        <input type="number" class="form-control input-hint" [formControl]="shareCapital"   [(ngModel)]="stuff.shareCapital"  placeholder="个人股本(投资)额">
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label for="special" class="select-width">是否残疾烈属孤老
+                        <ng-select [allowClear]="true" [items]="specialList" [formControl]="isSpecial"  [(ngModel)]="selectIsSpecial"  [autocomplete]="true" (selected)="selected($event,'isSpecial')" placeholder="请选择">
+                        </ng-select>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label class="select-width">人员状态
+                         <ng-select [allowClear]="true" [items]="stuStatusList" [formControl]="stuffStatus" [(ngModel)]="selectStuStatus" [autocomplete]="true" (selected)="selected($event,'status')" placeholder="请选择">
+                        </ng-select>
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group" [ngClass]="{'has-danger':(!phoneNumber.valid && submitForm)}">
+                    <label>电话
+                        <input type="text" class="form-control input-hint" [formControl]="phoneNumber" [(ngModel)]="stuff.phoneNumber"  placeholder="电话">
+                    </label>
+                    <div *ngIf="(!phoneNumber.valid && submitForm) || (!phoneNumber.valid && phoneNumber.touched)" class="text-danger validation-message">
+                        手机格式不正确</div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group" [ngClass]="{'has-danger':(!email.valid && submitForm)}">
+                    <label>电子邮箱
+                        <input type="email" class="form-control input-hint" [formControl]="email" [(ngModel)]="stuff.email"  placeholder="电子邮箱">
+                    </label>
+                    <div *ngIf="(!email.valid && submitForm) || (!email.valid && email.touched)" class="text-danger validation-message">
+                        邮箱格式不正确</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" col-12 col-sm-4">
+                <div class="form-group">
+                    <label>联系地址
+                        <input type="text" class="form-control input-hint" [formControl]="address" [(ngModel)]="stuff.address" placeholder="联系地址">
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label for="household" class="select-width">户口类型
+                        <ng-select [allowClear]="true" [items]="householdList" [(ngModel)]="selecthouseHold"  [formControl]="houseHold" [autocomplete]="true" (selected)="selected($event,'household')" placeholder="请选择户口">
+                        </ng-select>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label for="bankName">开户银行
+                        <input type="text" class="form-control" [(ngModel)]="stuff.bankType" [formControl]="bankName" placeholder="开户银行">
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label>银行账号
+                    <input type="number" class="form-control" [(ngModel)]="stuff.bankAccount" [formControl]="bankAccount" placeholder="银行账号">
+                </label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="header-stuff">
+            <span>工资基本信息</span>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-sm-12" [ngClass]="{'has-danger':(!baseSalary.valid && submitForm)}">
+                <div class="form-inline">
+                    <label>基本工资
+                        <ng2-numeric-input clsStyle="form-control  text-right" [(ngModel)]="stuff.baseSalary" [formControl]="baseSalary">
+                        </ng2-numeric-input>
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-inline" [ngClass]="{'has-danger':(!positionSalary.valid && submitForm)}">
+                    <label>岗位工资
+                    <!--<input type="number" class="form-control" [(ngModel)]="stuff.positionSalary" [formControl]="positionSalary"  placeholder="岗位工资">-->
+                    <!-- <decimal-input  [(ngModel)]="stuff.positionSalary" isEditable="true" [formControl]="positionSalary" type="number" decimalStyle="input-amount  social-width text-right"></decimal-input> -->
+                         <ng2-numeric-input clsStyle="form-control   text-right" [(ngModel)]="stuff.positionSalary" [formControl]="positionSalary" >
+                        </ng2-numeric-input>
+                </label>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-12 flex-checkbox">
+                <label class="check-label">
+                    <input id="socialCheck" type="checkbox" [checked]="stuff.hasSocialSecurity" (click)="showSocial()" disabled>缴纳社保
+                </label>
+                <label class="check-label">
+                    <input id="fundCheck" type="checkbox" [checked]="stuff.hasHousingFund" (click)="showFund()" [disabled]="!hasSocial">缴纳公积金
+                </label>
+            </div>
+        </div>
+
+        <div *ngIf="stuff?.hasSocialSecurity">
+            <div class="row">
+                <div class="col-lg-4 col-sm-12">
+                    <div class="form-inline">
+                        <label>医疗保险缴纳基数
+                        <!--<input type="number" class="form-control " [(ngModel)]="stuff.medicalInsuranceBase" [formControl]="medicalInsuranceBase"  placeholder="医疗保险缴纳基数">-->
+                        <!-- <decimal-input  [(ngModel)]="stuff.medicalInsuranceBase" isEditable="true" [formControl]="medicalInsuranceBase" type="number" decimalStyle="input-amount  social-width text-right"></decimal-input> -->
+                            <ng2-numeric-input [(ngModel)]="stuff.medicalInsuranceBase" [formControl]="medicalInsuranceBase" >
+                        </ng2-numeric-input>  
+                    </label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="form-inline">
+                        <label>养老保险缴纳基数
+                        <!--<input type="number" class="form-control " [(ngModel)]="stuff.oldAgeInsuranceBase" [formControl]="oldAgeInsuranceBase"  placeholder="养老保险缴纳基数">-->
+                        <!-- <decimal-input  [(ngModel)]="stuff.oldAgeInsuranceBase" isEditable="true" [formControl]="oldAgeInsuranceBase" type="number" decimalStyle="input-amount  social-width text-right"></decimal-input> -->
+                         <ng2-numeric-input [(ngModel)]="stuff.oldAgeInsuranceBase" [formControl]="oldAgeInsuranceBase" >
+                        </ng2-numeric-input>    
+                    </label>
+                    </div>
+                </div>
+            </div>
+
+            <p class="font-thead">个人社保缴纳</p>
+            <div class="row">
+                <div class="col-lg-4 col-sm-12" [ngClass]="{'has-danger':( submitForm && invalidEdicalCare )}">
+                    <div class="form-inline">
+                        <label class="col-lg-12 col-sm-12 clear-p-m">医疗</label>
+                        <!--<input type="number" class="form-control social-width" [(ngModel)]="stuff.pEdicalCare" [formControl]="pEdicalCare"  placeholder="医疗">-->
+                        <ng2-numeric-input [(ngModel)]="stuff.pEdicalCare" [formControl]="pEdicalCare">
+                        </ng2-numeric-input>
+
+                    </div>
+                </div>
+                <div class="col-lg-4  col-sm-12" [ngClass]="{'has-danger':( submitForm && invalidPension )}">
+                    <div class="form-inline">
+                        <label class="col-lg-12 col-sm-12 clear-p-m">养老</label>
+                        <!--<input type="number" class="form-control social-width" [(ngModel)]="stuff.pPension" [formControl]="pPension" placeholder="养老">-->
+                        <ng2-numeric-input [(ngModel)]="stuff.pPension" [formControl]="pPension">
+                        </ng2-numeric-input>
+                    </div>
+                </div>
+                <div class="col-lg-4  col-sm-12" [ngClass]="{'has-danger':( submitForm && invalidUnemployment)}">
+                    <div class="form-inline">
+                        <label class="col-lg-12 col-sm-12 clear-p-m">失业</label>
+                        <!--<input type="number" class="form-control social-width" [(ngModel)]="stuff.pUnemployment" [formControl]="pUnemployment"  placeholder="失业">-->
+                        <ng2-numeric-input [(ngModel)]="stuff.pUnemployment" [formControl]="pUnemployment">
+                        </ng2-numeric-input>
+                    </div>
+                </div>
+            </div>
+
+            <p class="font-thead">公司社保缴纳</p>
+
+            <div class="row">
+                <div class="col-lg-2 col-sm-12">
+                    <div class="form-inline">
+                        <label class="clear-p-m">医疗</label>
+                        <!-- <input type="number" class="form-control  text-right" [(ngModel)]="stuff.cEdicalCare" [formControl]="stuffForm.controls['cEdicalCare']" placeholder="医疗" gyp-decimal> -->
+                        <ng2-numeric-input [(ngModel)]="stuff.cEdicalCare" [isSmall]="true" [formControl]="stuffForm.controls['cEdicalCare']">
+                        </ng2-numeric-input>
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-12">
+                    <div class="form-inline">
+                        <label class="clear-p-m">养老
+                             <!-- <input type="number" class="form-control text-right" [(ngModel)]="stuff.cPension" [formControl]="cPension"   placeholder="养老" gyp-decimal>  -->
+                        </label>
+                        <ng2-numeric-input [(ngModel)]="stuff.cPension" [isSmall]="true" [formControl]="cPension">
+                        </ng2-numeric-input>
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-12">
+                    <div class="form-inline">
+                        <label class="clear-p-m">失业
+                             <!-- <input type="number" class="form-control text-right" [(ngModel)]="stuff.cUnemployment" [formControl]="cUnemployment" placeholder="失业" gyp-decimal>  -->
+                        </label>
+                        <ng2-numeric-input [(ngModel)]="stuff.cUnemployment" [isSmall]="true" [formControl]="cUnemployment">
+                        </ng2-numeric-input>
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-12">
+                    <div class="form-inline">
+                        <label class="clear-p-m">生育
+                             <!-- <input type="number" class="form-control  text-right" [(ngModel)]="stuff.cFertility" [formControl]="cFertility" placeholder="生育" gyp-decimal>  -->
+                        </label>
+                        <ng2-numeric-input [(ngModel)]="stuff.cFertility" [isSmall]="true" [formControl]="cFertility">
+                        </ng2-numeric-input>
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-12">
+                    <div class="form-inline">
+                        <label class="clear-p-m">工伤
+                             <!-- <input type="number" class="form-control text-right" [(ngModel)]="stuff.cWorkInjury" [formControl]="cWorkInjury" placeholder="工伤" gyp-decimal>  -->
+                        </label>
+                        <!-- <bp-input [(ngModel)]="stuff.cWorkInjury" [formControl]="cWorkInjury" placeholder="工伤" [isEditable]="true" type="text" class="text-right social-width "></bp-input> -->
+                        <ng2-numeric-input [(ngModel)]="stuff.cWorkInjury" [isSmall]="true" [formControl]="cWorkInjury">
+                        </ng2-numeric-input>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="font-thead"></p>
+        <div class="row" *ngIf="stuff?.hasHousingFund">
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-inline">
+                    <label class="clear-p-m">公积金缴纳基数
+                            <!--<input type="number" class="form-control input-hint" [(ngModel)]="stuff.providentFundBase" [formControl]="providentFundBase"  placeholder="公积金缴纳基数">-->
+                            <!-- <decimal-input  [(ngModel)]="stuff.providentFundBase" isEditable="true" [formControl]="providentFundBase" type="number" decimalStyle="input-amount  social-width text-right" ></decimal-input> -->
+                        </label>
+                    <ng2-numeric-input [(ngModel)]="stuff.providentFundBase" [formControl]="providentFundBase">
+                    </ng2-numeric-input>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-inline">
+                    <label class="clear-p-m">公积金公司缴纳金额
+                            <!--<input type="number" class="form-control" [(ngModel)]="stuff.cProvidentFund" [formControl]="cProvidentFund"  placeholder="公积金公司缴纳金额">-->
+                            <!-- <decimal-input  [(ngModel)]="stuff.cProvidentFund" isEditable="true" [formControl]="cProvidentFund" type="number" decimalStyle="input-amount  social-width text-right"></decimal-input> -->
+                            
+                        </label>
+                    <ng2-numeric-input [(ngModel)]="stuff.cProvidentFund" [formControl]="cProvidentFund">
+                    </ng2-numeric-input>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-inline">
+                    <label class="clear-p-m">公积金个人缴纳金额
+                            <!--<input type="number" class="form-control" [(ngModel)]="stuff.pProvidentFund" [formControl]="pProvidentFund"  placeholder="公积金个人缴纳金额">-->
+                            <!-- <decimal-input  [(ngModel)]="stuff.pProvidentFund" isEditable="true" [formControl]="pProvidentFund" type="number" decimalStyle="input-amount  social-width text-right"></decimal-input> -->
+                        </label>
+                    <ng2-numeric-input [(ngModel)]="stuff.pProvidentFund" [formControl]="pProvidentFund">
+                    </ng2-numeric-input>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <div class="row">
+        <div class="col-xs-12 m-t-1 m-b-2">
+            <span class="pull-right">
+                        <button class="btn btn-primary" (click)="save()">保存</button>
+                        <button class="btn" (click)="back()">取消</button>
+                    </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+
+.content-body{
+  float:none;
+  margin:0px !important;
+  padding-bottom:0px !important;
+  .ballance{
+  margin:10px auto;
+  clear:both;
+  float:none !important;
+  height:50px;
+  .bank-ballance{
+    border-right:1px solid #979797;
+    .bank-num{
+      font-size:1.5rem !important;
+      color:#656988 !important;
+    }
+    div{
+      text-align:center;
+      font-size:0.8rem;
+      color:#656980;
+     }
+   }
+  .guan-ballance{
+    .guan-num{
+      font-size:1.5rem !important;
+      color:#656988 !important;
+    }
+    div{
+      text-align:center;
+      font-size:0.8rem;
+      color:#656980;
+     }
+   }
+ }
+
+ .nav-tabs{
+   margin-top:5%;
+   .nav-item{
+     width: 23%;
+     text-align: center;
+   }
+ }
+}
+
+.first{
+    color: #656980;
+}
+.float-right{
+  float: right;
+  position: relative;
+  margin-top: -30px;
+}
+.clear:after { 
+  content: "."; height: 0; visibility: hidden; display: block; clear: both;
+}
+.dropdown-menu{
+    font-size: 14px;
+    background-color: #f6f7fa;
+    box-shadow: 2px 2px 3px 0 rgba(107, 107, 107, 0.5);
+    border: none;
+    .dropdown-divider{
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .dropdown-item{
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+

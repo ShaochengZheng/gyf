@@ -1,0 +1,96 @@
+<div class="cashFlows-statement">
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-12 col-sm-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null ">
+                        <i class="fa  fa-area-chart fa-2x"></i>
+                    </li>
+                    <li class="breadcrumb-null page-title">
+                        <a>
+                            <span>报表</span>
+                        </a>
+                        <span>/</span>
+                        <span>现金流量表</span>
+                    </li>
+                    <!--<li>
+                        <button style="margin-right: 15px" class="pull-right btn btn-primary">导出</button>
+                    </li>-->
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+        </div>
+    </div>
+    <div class="content-body search">
+        <!--<div class="row">
+            <div class="col-lg-12">
+               <div class="col-lg-4">
+                    <ng-select class="selectStyle" placeholder="请选择年份" [items]="typeList" (selected)="selected($event)"
+						[allowClear]="true" [(ngModel)]="choiceType"></ng-select>
+                </div>
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-lg-12 monthSearchStyle">
+                <template ngFor let-item [ngForOf]="monthList" let-index="index">
+                    <button class="monthPic" [ngClass]="{'clickStyle': index === isChecked, 'noDataStyle': !item.isExist}" [disabled]="!item.isExist"
+                        (click)="monthSearch(item, index)">
+                        <span [ngClass]="{'fontCenter': index < 9, 'doubleFont': index >= 9}">{{item.month}}</span>
+                    </button>
+                    <div [ngClass]="{'monthLine': index < 11, 'noDataStyle': !item.isExist}"></div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-body list">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="text-center titleMargin">现金流量表</h3>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row">
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4">纳税人识别号：{{dataList.taxpayerId}}</p>
+            </div>
+            <div class="col-lg-5 alignCenter">
+                <p class="p-l-4">纳税人名称（公章）：{{dataList.taxpayerName}}</p>
+            </div>
+            <div class="col-lg-3 alignCenter text-right">
+                <p class="p-l-4">制表日期：{{taxDate}}</p>
+            </div>
+        </div>
+        <div class="line"></div>
+
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                <p class="text-right">单位：元(列至角分)</p>
+            </div>
+        </div>
+
+        <div class="row m-t-10">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th class="noLine-feed">项目</th>
+                            <th class="noLine-feed">行次</th>
+                            <th class="noLine-feed">本年累计金额</th>
+                            <th class="noLine-feed">上年全年金额</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of dataList.details; let i=index;">
+                            <td class="text-left noLine-feed">{{item.name}}</td>
+                            <td class="text-center">{{ item.number }}</td>
+                            <td class="text-right">{{ item.yearTotalAmount | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.lastYearTotalAmount | currency:'CNY':true:'1.2-2' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

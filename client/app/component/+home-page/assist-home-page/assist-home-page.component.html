@@ -1,0 +1,139 @@
+<div class="alert-fixed"  *ngFor="let alert of alerts">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<!--<p>
+    <a href="" [routerLink]=" ['/app/home-page/accounting']" routerLinkActive="active">会计首页</a>
+</p>-->
+
+<div >
+    <div class="form">
+        <div class="row">
+            <div class="m-lf">{{dataList[1].name}}:
+                <!--<span class="header-total" name="银行账面期末余额">{{dataList[1].name}}:</span>-->
+            </div>
+            <div class="text-right col-sm-2 header-total f-20">{{dataList[1].totalAmount | number:'1.2-2'}}</div>
+        </div>
+        <!--<div class="row">
+            <div class="col-sm-2">
+                <span class="header-total" name="银行对账单期末余额">{{dataList[0].name}}:</span>
+            </div>
+            <div class="text-right col-sm-2 header-total f-20">{{dataList[0].totalAmount | number:'1.2-2'}}</div>
+        </div>-->
+
+        <div class="row flex-s">
+            <div class="title">推荐工作流程</div>
+            <div  class="col-md-8 t-a-l"> 当前会计期间:{{currentPeriod}}</div>
+            <div class="btn-group pull-right f-j">
+                <button id="" type="button" class="btn" [ngClass]="{'btn-primary': !finished}" (click)="journalEntryOrder()" [disabled]="isInProgress"> 提交审核</button>
+            </div>
+        </div>
+        <div class="row list">
+            <div style="flex:1" class="cub ">
+                <div class="row row1">
+                    <div>
+                        <i class="fa fa-file-text" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-sm-12 ti-l">开票明细</div>
+                </div>
+                <div class="col-md-12 inject m-t-15" (click)="leadingIn(1)">
+                    <!--<button id="" type="button" class="btn btn-primary" (click)="leadingIn(1)" > 导入</button>-->
+                    <span>
+                    <a roles expire [routerLink]="['/app/invoice/import-output-invoice']" placement="top">导入 </a>
+                </span>
+                </div>
+                <div class="col-md-12 ti-r" (click)="recordManualy(1)">
+                    <a roles expire [routerLink]="['/app/invoice/tab/new-output-invoice']" placement="top">手工录入 </a>
+                </div>
+                <div class="col-md-12 jump" *ngIf="!isAccount" (click)="jumpNext(1)">
+                    <a roles expire [routerLink]="" placement="top">没有发票信息 </a>
+                </div>
+            </div>
+            <div style="width:50px;" class="arrow" >
+                <span class="fa fa-arrow-circle-right" aria-hidden="true"></span>
+            </div>
+
+
+            <div style="flex:1" class="cub" [ngClass]="{'cub-dis': !isAccount}">
+                <div class="row row1">
+                    <div>
+                        <i class="fa fa-clipboard" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 ti-l">对账单</div>
+                </div>
+                <div class="col-md-12 m-t-15 p-lr-0">
+                    <div class="btn-group dropdown show" *ngIf="noCashList.length>0">
+                        <button class="btn btn-secondary btn-sm btn-color boder-0" [routerLink]="['/app/reconcile/import',{id: noCashList[0].id,where: 'assist'}]"
+                            [disabled]="!isAccount">选择账户导入</button>
+                        <button class="btn btn-secondary btn-sm dropdown-toggle btn-color boder-0" data-toggle="dropdown" [disabled]="!isAccount"></button>
+                        <div class="dropdown-menu row" aria-labelledby="dropdownMenuLink">
+                            <div class="col-xs-12 text-truncate dropdown-item link-style" *ngFor="let item of noCashList;" [routerLink]="['/app/reconcile/import',{id: item.id, where: 'assist'}]"
+                                disabled="!isAccount">
+                                {{item.text}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ti-l" *ngIf="noCashList.length<=0" (click)="newAccount()">
+                        <a roles expire [routerLink]="" placement="top">添加账户</a></div>
+                </div>
+                <div class="col-md-12 ti-r" (click)="recordManualy(2)">
+                    <a roles expire [routerLink]="" placement="top" disabled="!isAccount">手工录入 </a>
+                </div>
+                <div class="col-md-12 jump" *ngIf="!isWorkers" (click)="jumpNext(2)">
+                    <a roles expire [routerLink]="" placement="top">没有对账单 </a>
+                </div>
+                <div *ngIf="false" class="col-md-12 jump" (click)="jumpNext(2)">
+                    <a roles expire [routerLink]="" placement="top">继续将导入数据同步为收支记录 </a>
+                </div>
+            </div>
+            <div style="width:50px;" class="arrow">
+                <span class="fa fa-arrow-circle-right" aria-hidden="true"></span>
+            </div>
+
+
+            <div style="flex:1" class="cub" [ngClass]="{'cub-dis': !isWorkers}">
+                <div class="row row1">
+                    <div>
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 ti-l">员工信息</div>
+                </div>
+                <div class="col-md-12 inject" [ngClass]="{'dis': !isWorkers}" (click)="leadingIn(3)">
+                    <a roles expire [routerLink]="" placement="top">导入 </a>
+                </div>
+                <div class="col-md-12 ti-r" (click)="recordManualy(3)">
+                    <a roles expire [routerLink]="" placement="top">手工录入 </a>
+                </div>
+                <div class="col-md-12 jump" *ngIf="!isBill"  (click)="jumpNext(3)">
+                    <a roles expire [routerLink]="" placement="top">没有员工信息 </a>
+                </div>
+            </div>
+            <div style="width:50px;" class="arrow">
+                <span class="fa fa-arrow-circle-right" aria-hidden="true"></span>
+            </div>
+            <div style="flex:1" class="cub" [ngClass]="{'cub-dis': !isBill}">
+                <div class="row row1">
+                    <div>
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 ti-l">收票</div>
+                </div>
+                <div class="col-md-12 ti-r bill" (click)="recordManualy(4)">
+                    <a roles expire [routerLink]="" placement="top">手工录入 </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<gpw-account-details-modal #accountDetailsModal (result)="result($event)"></gpw-account-details-modal>

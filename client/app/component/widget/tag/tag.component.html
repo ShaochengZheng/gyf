@@ -1,0 +1,53 @@
+<div class="choose-file">
+	<!-- 标签UI -->
+	<div class="row">
+		<div *ngFor="let item of addTagList; let i=index">
+			<div class="addTagSize" *ngIf="item.value">
+				<div class="addTagStyle">
+					<span class="addTagInfo fontStyle fontColor">{{item.value}}</span>
+					<i *ngIf="isAdd"
+						class="fa fa-times faClose" aria-hidden="true" (click)="delTag(item, i)"></i>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-6 addFlex" *ngIf="isAdd">
+			<div class="addTag fontStyle" *ngIf="addTagToggle">
+				<button class="btn addTagFont fontStyle" [disabled]="(addTagList && addTagList.length > 4)" (click)="addTag()">
+					<i class="fa fa-tag faTag" aria-hidden="true"></i>添加标签
+				</button>
+				<span class="tag-reminder">单个标签不能超过10个字符，最多添加五个标签</span>
+			</div>
+			<div class="addTagInputStyle" *ngIf="!addTagToggle">
+				<input style="display:none">
+				<input class="form-control addTagInput inputTag" type="text" autocomplete="off" (blur)="tagBlur()" (keyup)="inputEvent($event, true)"
+					[(ngModel)]="tag" />
+				<ul id="ulMatch" *ngIf="matchTagList.length" class="tag-select-choices">
+					<li *ngFor="let matchTag of matchTagList" class="tag-select-choices-li" role="menuitem">
+						<div class="tag-select-choices-row">
+							<a class="" (click)="chooseTag(matchTag)">
+								<div>{{matchTag.value}}</div>
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row marginTopNum" *ngIf="(tagSearchCondition.lastRequest || recommendTagList) && isAdd">
+		<div class="widthSize">
+			<span class="fontStyle fontColor">推荐标签：</span>
+		</div>
+		<div class="col-sm-10 paddingLeftNum">
+			<div class="recommendTags" *ngFor="let item of recommendTagList; let i=index">
+				<button class="btn recommendTag1 fontStyle" [disabled]="item.disabled" (click)="recommendTag(item, i)">{{item.value}}</button>
+			</div>
+			<span *ngIf="recommendTagList.length>10" class="faAngleDouble" (click)="displayTag()">
+			<i class="fa fa-lg fa-angle-double-right" aria-hidden="true" *ngIf="!tagSearchCondition.lastRequest"></i>
+			<i class="fa fa-lg fa-angle-double-left" aria-hidden="true" *ngIf="tagSearchCondition.lastRequest"></i>
+		</span>
+		</div>
+	</div>
+	<!-- 标签UI完 -->
+
+</div>

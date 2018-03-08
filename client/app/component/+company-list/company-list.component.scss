@@ -1,0 +1,294 @@
+@import "../../../styles/variables";
+.m-b-30{
+    margin-bottom: 30px;
+}
+
+
+.p-l-0{
+    padding-left:0px;
+}
+
+.process{
+    padding:10px;
+    width:100%;
+    background: white;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -ms-flex-wrap:wrap;
+        flex-wrap:wrap;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+
+
+}
+.m-b-10{
+    margin-bottom: 10px;
+}
+
+.process-part{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height:60px;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding:10px;
+    background: #d7fabc;
+}
+
+.table-scroll tr {
+    width: 100%;
+    table-layout: fixed;
+    display: inline-table;
+}
+
+.table-scroll thead > tr > th {
+    border: none;
+}
+.widget-container1{
+    width: 100%;
+    height: 100%;
+    padding-top: 0px;
+    margin-left:15px;
+}
+.company-list-title{
+    padding-top: 10px;
+    background-color: white;
+    width:100%;
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align:center;
+        -ms-flex-align:center;
+            align-items:center;
+    height: 60px;
+    margin-top: 10px;
+
+}
+.company-list-header{
+    background-color: white;
+    width:100%;
+    padding-bottom: 10px;
+    padding-top:10px;
+
+}
+
+.filter-head{
+    background-color: white;
+    margin-bottom: 20px;
+    width:100%;
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+}
+
+.filter-border{
+    border-right:1px dotted gray;
+}
+.filter-b{
+    color:$navy;
+    }
+    .filter-b:link,.filter-b:visited{
+        background-color: $navy;
+    }
+    .filter-b:hover,.filter-b:focus,.filter-b:active{
+        cursor:pointer;
+        background-color: $navy;
+        color:white;
+        a{
+            color:white;
+        }
+    }
+    
+
+.company-list-assist{
+    background-color: white;
+    width:100%;
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align:center;
+        -ms-flex-align:center;
+            align-items:center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 清空*/
+.empty{
+  color: $navy;
+  float: right;
+  margin-top: 10px;
+}
+.company-list-search{
+    padding-bottom: 10px;
+    background: white;
+    width:100%;
+}
+
+.click-filter{
+    cursor:pointer;
+    background-color: $navy;
+    color:white;
+    a{
+            color:white;
+    }
+}
+.radio-inline{
+    display:inline;
+}
+
+
+
+.button-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+.hint-align{
+    padding-left: 0px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+.companyList-content{
+  background-color: white;
+  height: 100%;
+  width:100%;
+  thead{
+      background-color: #e6f1f7;
+  }
+} 
+
+.confirm-btn{
+    margin-top:10px;
+    width:60%;
+}
+.post-text{
+    color:rgb(0,162,221);
+}
+
+
+.stats-row {
+    list-style: none;
+    padding-left: 0;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin-bottom: 0;
+    li{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    
+}
+
+.underLine{
+    text-decoration: underline!important;
+    cursor: pointer;
+}
+
+.unassign{
+    color:$navy!important;
+    text-decoration: underline!important;
+}
+
+.account-color{
+    color:$navy!important;
+}
+
+
+.button-import{
+    padding-right:0;
+}
+.btn-200{
+    width:200px;
+}
+.m-l-20{
+    margin-left:20px;
+}
+.m-t-5{
+    margin-top:5px;
+}
+.m-b-5{
+    margin-bottom: 5px;
+}
+.p-b-10{
+    padding-bottom: 10px;
+}
+.p-r-30{
+    padding-right: 30px;
+}
+
+
+.posting{
+    margin-bottom:10px;
+}
+.table {
+    .thead-head {
+        background-color: $Auxiliarycolor;
+        th {
+            vertical-align: middle;
+            text-align: center;
+            border: 1px solid $Formheaderbordercolor;
+        }
+    }
+}
+
+.radios{
+    height: 38px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -ms-flex-pack: distribute;
+        -webkit-box-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+  }
+  .lid{
+      position: relative;
+  }
+
+  .unassign-input{
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+          -ms-flex-pack: start;
+              justify-content: flex-start;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      input{
+          width:20px;
+      }
+      label{
+          margin-bottom: 0;
+      }
+  }

@@ -1,0 +1,54 @@
+<div *ngIf="isShow" class="fixed">
+
+  <!--<p-splitButton label="Save" icon="fa-check" (onClick)="save()" [model]="items"></p-splitButton>-->
+
+  <div class="col-xl-4 col-sm-4">
+    <div class="col-xl-12 col-sm-12 t1">您的浏览器不支持！{{browser}}</div>
+    <div class="col-xl-12 col-sm-12 t2">{{contain}}
+      <!--<a target="_blank" href="www.baidu.com">LearnMore</a>-->
+    </div>
+  </div>
+  <div class="row col-xl-8 col-sm-8">
+    <div class="row col-xl-2 col-sm-2 cub">
+      <div class="col-xl-12 col-sm-12" (click)="browserDownload(1)">
+        <a target="_blank" [href]="browserUrl[0]"><img src="../../../../assets/images/chrome.png" class="img-circle img-profile img" alt=""></a>
+      </div>
+      <div class="col-xl-12 col-sm-12">
+        <a target="_blank" [href]="browserUrl[0]">
+            Chrome</a>
+      </div>
+    </div>
+
+    <div class="row col-xl-2 col-sm-2 cub">
+      <div class="col-xl-12 col-sm-12" (click)="browserDownload(2)">
+        <a target="_blank" [href]="browserUrl[1]"><img src="../../../../assets/images/safari.png" class="img-circle img-profile img" alt=""></a>
+      </div>
+      <div class="col-xl-12 col-sm-12">
+        <a target="_blank" [href]="browserUrl[1]">
+            Safari</a>
+      </div>
+    </div>
+
+     <div class="row col-xl-2 col-sm-2 cub">
+      <div class="col-xl-12 col-sm-12" (click)="browserDownload(3)">
+        <a target="_blank" [href]="browserUrl[2]"><img src="../../../../assets/images/sougou.png" class="img-circle img-profile img" alt=""></a>
+      </div>
+      <div class="col-xl-12 col-sm-12">
+        <a target="_blank" href="browserUrl[2]">
+            搜狗浏览器</a>
+      </div>
+    </div>
+
+
+     <div class="row col-xl-2 col-sm-2 cub">
+      <div class="col-xl-12 col-sm-12" (click)="browserDownload(4)">
+        <a target="_blank" [href]="browserUrl[3]"><img src="../../../../assets/images/360.png" class="img-circle img-profile img" alt=""></a>
+      </div>
+      <div class="col-xl-12 col-sm-12">
+        <a target="_blank" [href]="browserUrl[3]">
+            360极速浏览器</a>
+      </div>
+    </div>
+    
+  </div>
+</div>

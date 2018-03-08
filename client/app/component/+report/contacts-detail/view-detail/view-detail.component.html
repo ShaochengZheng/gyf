@@ -1,0 +1,134 @@
+<div class="view-detail">
+    <!--<p>查看详情=================================！！！</p>-->
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-12 col-sm-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null "><i class="fa  fa-area-chart fa-2x"></i></li>
+                    <li class="breadcrumb-null page-title">
+                        <a>
+                            <span>报表</span>
+                        </a>
+                        <span>/</span>
+                        <a [routerLink]=" ['/app/reports/contacts-detail']">
+                            <span>往来明细表</span>
+                        </a>
+                        <span>/</span>
+                        <span>往来详情</span>
+                    </li>
+                    <li>
+                        <!--<button style="margin-right: 15px" class="pull-right btn btn-filter" (click)="toggleSifting()">
+							筛选<i [class.rotate]="!isSifting" [class.norotate]="isSifting"  class="fa fa-angle-down fa-lg angle-right" aria-hidden="true"></i>
+						</button>-->
+                        <div class="btn-group pull-right">
+                            <button type="button" class="pull-right btn btn-filter" (click)="toggleSifting()"> 筛选
+							<i [class.rotate]="!isSifting" [class.norotate]="isSifting"  class="fa fa-angle-down fa-lg angle-right" aria-hidden="true"></i></button>
+                        </div>
+                    </li>
+                    <li>
+                        <download style="margin-right: 15px" class="pull-right" [url]="queryParameters">导出</download>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+        </div>
+    </div>
+    <div class="content-body search" *ngIf="isSifting">
+        <div class="row">
+            <div class="col-lg-12 searchArea">
+                <div class="col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+							<i class="fa fa-search"></i>
+						</span>
+                        <input id="searchInput" class="form-control" type="text" (blur)="search()" placeholder="关键字" [(ngModel)]="searchModel.keyword">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <ng-select class="selectStyle" placeholder="请选择类型" [items]="typeList" (selected)="selected($event)" [allowClear]="true" [(ngModel)]="choiceType"></ng-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-body list">
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="breadcrumb-null page-title"><span>{{companyName}}公司往来明细表</span></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="thead-head">
+                        <tr>
+                            <th class="text-center"></th>
+                            <th class="text-center">日期</th>
+                            <th class="text-center">应收</th>
+                            <th class="text-center">应付</th>
+                            <th class="text-center">其他应收</th>
+                            <th class="text-center">其他应付</th>
+                            <th class="text-center">总计</th>
+                        </tr>
+                    </thead>
+                    <tbody class="noShadow">
+                        <tr>
+                            <td>本期期初</td>
+                            <td class="text-center">{{showList.openingDate | date: 'yyyy-MM-dd'}}</td>
+                            <td class="text-xs-right">{{showList.receivable | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{showList.payable | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{showList.otherReceivable | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{showList.otherPayable | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{showList.totalAmount | currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>本期期末</td>
+                            <td class="text-center">{{showList.endingDate | date: 'yyyy-MM-dd'}}</td>
+                            <td class="text-xs-right">{{endingReceivable | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{endingPayable | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{endingOtherReceivable | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{endingOtherPayable | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{endingTotalAmount | currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="content-body list">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered  table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th rowspan="2">日期</th>
+                            <th rowspan="2">类型</th>
+                            <th colspan="2">金额</th>
+                            <th rowspan="2">备注</th>
+                        </tr>
+                        <tr>
+                            <th width="10%">借</th>
+                            <th width="10%">贷</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of dataList">
+                            <td class="text-center">{{item.accountedOn | date: 'yyyy-MM-dd'}}</td>
+                            <td class="text-center">{{item.transactionType}}</td>
+                            <td class="text-xs-right">{{(item.debitCreditType === 'Debit' ? item.amount : 0) | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-xs-right">{{(item.debitCreditType === 'Credit' ? item.amount : 0) | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-center">{{item.summary}}</td>
+                        </tr>
+                        <tr *ngIf="searchNodata">
+                            <td colspan="5">
+                                <div class="noData">
+                                    没有数据
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

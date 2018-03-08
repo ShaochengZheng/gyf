@@ -1,0 +1,40 @@
+@import "../../../../../styles/variables";
+.nav-link{
+  color: $dark-slate-gray;
+}
+
+// 表格列表样式 start
+.table {
+    .thead-head {
+        // background-color: $Auxiliarycolor;
+        th {
+            vertical-align: middle;
+            text-align: center;
+            border: 1px solid $Formheaderbordercolor;
+        }
+    }
+}
+.table-bordered td, .table-bordered th {
+    border: 1px solid #e0e0e0;
+}
+td {
+  vertical-align: middle;
+  text-align: center;
+}
+tbody{
+  box-shadow: $basic-shadow;
+}
+// 表格列表样式 end
+
+.view-detail{
+    .searchArea{
+        padding:15px !important;
+    }
+    .noShadow{
+        box-shadow: 0 0 0 0;
+    }
+    
+    .list{
+        padding-top: 30px;
+    }
+}

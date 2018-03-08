@@ -1,0 +1,79 @@
+<div class="content-body">
+        <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="import-head">
+        <div  *ngIf="currentAccount.accountName " class="col-sm-2">账户名：<span>{{currentAccount.accountName}}</span></div>
+        <div class="col-sm-3">开户行:<span class="text-ellipsis" title="{{currentAccount.bankName}}{{currentAccount.subbranch}}">{{currentAccount.bankName}}{{currentAccount.subbranch}}</span></div>
+        <div class="col-sm-3">账户号：<span>{{currentAccount.accountNumber}}</span></div>
+        <div class="col-sm-3 text-xs-right">初始余额日期：<span>{{currentAccount.beginDate |date:'y-MM-dd' }}</span></div>
+        <div class="col-sm-1 text-xs-right"><a href class="nav-link first" data-toggle="dropdown"><i class="fa fa-question-circle fa-lg " aria-hidden="true" placement="left" tooltip="帮助"></i></a>
+            <div class="dropdown-menu  dropdown-menu-right support-tooltip">
+                <div class="dropdown-item">1.对账顺序</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item">下载银行对账单——上传——匹配<管有方>项目——对账</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item">2.<管有方>对账过程设计</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item">新上传的银行对账单<管有方>系统会先自动开始为<br>您对账，存储在“对账”里待您确认，确认之<br>后需要您手动对账系统无法对账的部分。</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item">3.手动对账</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item">您可以在<管有方>记录里找到能够与流水账匹配的<br>记录，也可以为其加上备注完成对账</div>
+            </div>
+        </div>
+   </div>
+   <div>
+    <hr />
+   </div>
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true" >{{ alert?.msg }}</alert>
+    </div>
+
+    <div class="import-guide">
+        <p>1.请到银行网站下载银行对账单或流水</p>
+        <p>2.请删除表头以上的多余信息，确保第一行是对账单列表的表头&nbsp;&nbsp;<a (click)="example.show()">查看示例</a></p>
+        <p>3.请上传您下载的银行对账单（excel格式。如果是csv格式，另存为excel即可）</p>
+    </div>
+    <div class="choose-file">
+        <div class="fileUpload btn btn-secondary">
+            <span>选择文件</span>
+            <input id="uploadBtn" type="file"
+             accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+              class="upload" (change)="importedFiles($event)"/>
+        </div>{{fileName}}
+    </div>
+    <div class="remark">
+        <p>备注：一次可以导入的上限为1000条（不含表头）、导入对账单日期不能早于账户的初始余额日期</p>
+    </div>
+    <hr />
+    <div class="text-xs-center">
+        <upload class="btn-upload" [url]="uploadUrl" [file]="uploadFile" [fileTypes]="['.xls', '.xlsx']" (result)="result($event)" (success)="successData($event)" [isDisabled]="!uploadFile">&emsp;上传&emsp;</upload>
+        <button type="button" class="btn btn-secondary" (click)="clickCancel()">放弃导入</button>
+    </div>
+
+    <div bsModal #example="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="example.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">导入对账单之前请删除红色区域（对账单表头以上）部分</h5>
+                    
+                </div>
+                <div class="modal-body">
+                    <div >
+                        <img class="img-before" src="assets/images/delete.png" />
+                    </div>
+                   
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-footer"></div>

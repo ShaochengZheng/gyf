@@ -1,0 +1,132 @@
+<div bsModal #modal="bs-modal" class="modal fade modalOpen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" (onHide)="onHide($event)"
+    aria-hidden="true" [config]="{backdrop: 'static',keyboard:false}">
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal-title">
+                    <span>{{title}}</span>
+                </div>
+                <!--<div class="choose-file">
+                    <div class="fileUpload btn btn-secondary">
+                        <span class="fontStyle">导入</span>
+                        <input id="uploadBtn" type="file"
+                        accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                        class="upload upload-btn" (change)="importedFiles($event)"/>
+                    </div>
+                    <div class="download">
+                        <button class="btn newBtn fontStyle" (click)="downloadTemplate()">下载模版</button>
+                    </div>
+                </div>-->
+            </div>
+            <!--添加银行账户-->
+            <div class="modal-body clearfix">
+                <div class="row fontStyle">
+                    <div class="col-md-6 basicInfoStyle">
+                       <span>初始余额日期：{{initBalanceDate}}</span> 
+                    </div>
+                    <div class="col-md-6 basicInfoStyle">
+                        <span class="pull-right">期初余额：{{endingBalance | currency:'CNY':true:'1.2-2'}}</span> 
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">账户名称*
+                                        <i *ngIf="accountFlag === '银行'" class="fa fa-question-circle m-l-1 " aria-hidden="true" placement="top" tooltip="建议名称：银行名称+支行或分理处名称+账号后4位"></i>
+                                    </th>
+                                    <th *ngIf="accountFlag === '银行'" class="text-center">开户银行</th>
+                                    <th *ngIf="accountFlag === '银行'" class="text-center">支行</th>
+                                    <th *ngIf="accountFlag === '银行'" class="text-center">账户号</th>
+                                    <th *ngIf="accountFlag === '支付宝'" class="text-center">支付宝账号</th>
+                                    <th *ngIf="accountFlag === '微信'" class="text-center">微信账号</th>
+                                    <th class="text-center">初始余额*</th>
+                                    <th class="text-center" width="42" *ngIf="!isPosting">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="!isPosting">
+                                <tr *ngFor="let item of bankAcconutLists; let i=index;">
+                                    <td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needAccountName}">
+                                            <input class="form-control" type="text" [(ngModel)]="item.accountName"/>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="accountFlag === '银行'" class="text-center">
+                                        <input class="form-control" type="text" [(ngModel)]="item.bankName"/>
+                                    </td>
+                                    <td *ngIf="accountFlag === '银行'" class="text-center">
+                                        <input class="form-control" type="text" [(ngModel)]="item.subbranch"/>
+                                    </td>
+                                    <td *ngIf="accountFlag === '银行'" class="text-center">
+                                        <input class="form-control" type="text" [(ngModel)]="item.accountNumber"/>
+                                    </td>
+                                    <td *ngIf="accountFlag === '支付宝'" class="text-center">
+                                        <input class="form-control" type="text" [(ngModel)]="item.accountNumber"/>
+                                    </td>
+                                    <td *ngIf="accountFlag === '微信'" class="text-center">
+                                        <input class="form-control" type="text" [(ngModel)]="item.accountNumber"/>
+                                    </td>
+                                    <td class="text-xs-right">
+                                        <div [ngClass]="{'has-danger': item.needBeginBalance}">
+                                            <input class="form-control text-xs-right" type="text" [ngModel]="item.beginBalance | currency:'CNY':true:'1.2-2'" (focus)="oldVal($event)" (blur)="count($event, item)"/>
+                                            <!--<bp-input [(ngModel)]="item.beginBalance" [isEditable]="true" type="number" (blur)="count()"></bp-input>-->
+                                        </div>
+                                    </td>
+                                    <td class="text-center" *ngIf="!isPosting">
+                                        <button class="btn newBtn" (click)="delBankAccountItem(i);"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="isPosting">
+                                <tr *ngFor="let item of bankAcconutLists; let i=index;">
+                                    <td class="text-center">
+                                        <span>{{item.accountName}}</span>
+                                    </td>
+                                    <td *ngIf="accountFlag === '银行'" class="text-center">
+                                        <span>{{item.bankName}}</span>
+                                    </td>
+                                    <td *ngIf="accountFlag === '银行'" class="text-center">
+                                        <span>{{item.subbranch}}</span>
+                                    </td>
+                                    <td *ngIf="accountFlag === '银行'" class="text-center">
+                                        <span>{{item.accountNumber}}</span>
+                                    </td>
+                                    <td *ngIf="accountFlag === '支付宝'" class="text-center">
+                                        <span>{{item.accountNumber}}</span>
+                                    </td>
+                                    <td *ngIf="accountFlag === '微信'" class="text-center">
+                                        <span>{{item.accountNumber}}</span>
+                                    </td>
+                                    <td class="text-xs-right">
+                                        <span>{{item.beginBalance | currency:'CNY':true:'1.2-2'}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" *ngIf="!isPosting">
+                        <button class="btn newBtn pull-right" (click)="newBankAccountItem();">新增行</button>
+                    </div>
+                    <div class="col-md-12 p-t-40">
+                        <span class="pull-right">分配总额： <span class="color-green">{{totalBeginBalance | currency:'CNY':true:'1.2-2'}}</span></span>
+                    </div>
+                    <div class="col-md-12">
+                        <span class="pull-right">差额： <span class="color-green">{{endingBalance - totalBeginBalance | currency:'CNY':true:'1.2-2'}}</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" *ngIf="!isPosting">
+                <button type="button" class="btn btn-primary" (click)="saveAssignInfo()">保存</button>
+                <button type="button" class="btn btn-secondary" (click)="modal.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

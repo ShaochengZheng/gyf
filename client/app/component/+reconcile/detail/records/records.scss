@@ -1,0 +1,389 @@
+.content-body {
+    padding: 0;
+}
+
+.form-control {
+    z-index: 0;
+}
+
+.add-weight {
+    font-weight: bold
+}
+
+.form-inline {
+    .radio {
+        padding-right: 10px;
+        padding-top: 5px;
+        display: inline-flex;
+    }
+}
+
+.content-search {
+    // margin:0px !important;
+    box-shadow: none;
+    margin: 1.2em 0 0 0;
+    background-color: #f8f8f8;
+    border: 1px solid #1ccfc9;
+}
+
+.content-search::before {
+    position: absolute;
+    // display: inline-block;
+    // float: right;
+    content: '';
+    z-index: 20;
+    right: 2em;
+    top: -.57em;
+    width: 1em;
+    height: 1em;
+    background: #f8f8f8;
+    border-top: 1px solid #1ccfc9;
+    border-left: 1px solid #1ccfc9;
+    transform: rotate(45deg);
+}
+
+.content-body {
+    // margin:0px !important;
+    margin-top: 1em;
+    box-shadow: none;
+}
+
+table {
+    border: 1px solid #dadada;
+    thead {
+        background-color: #e6f1f7;
+    }
+    th,
+    tr {
+        border-bottom: 1px solid #dadada !important;
+    }
+    td {
+        border: 0px;
+    }
+}
+
+@media screen and (min-width:359px) and (max-width:361px) {
+    .pull-left {
+        font-size: 17px;
+        span {
+            float: right;
+            width: 155px !important;
+        }
+        span:last-child {
+            margin-right: 16px !important;
+        }
+    }
+}
+
+@media screen and (max-width:900px) {
+    p-calendar {
+        padding-left: 0px;
+        margin-bottom: 10px;
+        max-width: 250px;
+    }
+    .select-account {
+        margin-bottom: 5px;
+    }
+    .calendar {
+        padding-left: 0px;
+    }
+    .calendar-group {
+        padding-right: 0px;
+        padding-left: 15px;
+        margin-bottom: 6px;
+    }
+    .pull-left {
+        font-size: 17px;
+        span {
+            float: right;
+            width: 200px;
+        }
+        span:last-child {
+            margin-right: 16px !important;
+        }
+    }
+    .slash {
+        float: left;
+        margin: 0px 10px 0px 10px;
+        height: 20px;
+        line-height: 20px;
+    }
+    #responsive-table {
+        width: 100%;
+    }
+    /* Force table to not be like tables anymore */
+    #responsive-table table,
+    #responsive-table thead,
+    #responsive-table tbody,
+    #responsive-table th,
+    #responsive-table td,
+    #responsive-table tr {
+        display: block;
+    }
+    /* Hide table headers (but not display: none;, for accessibility) */
+    #responsive-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    #responsive-table tr {
+        border: 1px solid #ccc;
+    }
+    #responsive-table td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        padding-right: 20px;
+        white-space: normal;
+        text-align: right;
+    }
+    #responsive-table td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-left: 20px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #656988;
+    }
+    /*
+  Label the data
+  */
+    #responsive-table td:before,
+    #responsive-table tbody th:before {
+        content: attr(data-title);
+    }
+    #responsive-table tbody th {
+        text-align: center;
+        background-color: #e6f1f7;
+    }
+    #responsive-table {
+        padding: 0px !important;
+    }
+}
+
+@media screen and (width:320px) {
+    .pull-left {
+        font-size: 17px;
+        span {
+            float: right;
+            width: 120px;
+        }
+        span:last-child {
+            margin-right: 16px !important;
+        }
+    }
+}
+
+@media screen and (min-width:374px) and (max-width:376px) {
+    .pull-left {
+        font-size: 17px;
+        span {
+            float: right;
+            width: 165px !important;
+        }
+        span:last-child {
+            margin-right: 16px !important;
+        }
+    }
+}
+
+.totle {
+    padding-left: 0px !important;
+}
+
+@media screen and (min-width:770px) {
+    .calendar {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .calendar-group {
+        margin-bottom: 10px;
+    }
+    .select-account {
+        margin-bottom: 10px;
+    }
+    .abc-radio {
+        padding-left: 0px;
+    }
+    p-calendar {
+        padding: 0px 0px 10px 0px;
+        max-width: 250px;
+    }
+    .slash {
+        float: left;
+        margin: 0px 10px 0px 10px;
+        height: 38px;
+        line-height: 38px;
+    }
+    .date-title {
+        font-weight: normal;
+    }
+}
+
+.abc-radio label {
+    padding-right: 10px;
+    &::before {
+        top: 5px;
+    }
+    &::after {
+        top: 8px;
+    }
+}
+
+@media screen and (width:768px) {
+    .pull-left {
+        font-size: 17px;
+        span {
+            float: right;
+            width: 530px;
+        }
+        span:last-child {
+            margin-right: 16px !important;
+        }
+    }
+}
+
+@media screen and (width:1024px) {
+    p-calendar {
+        padding-left: 0px;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    .select-account {
+        margin-bottom: 5px;
+    }
+    .calendar {
+        padding-left: 0px;
+        width: 704px !important;
+    }
+    .calendar2 {
+        float: left !important;
+    }
+    .calendar-group {
+        padding-right: 0px;
+        padding-left: 15px;
+        margin-bottom: 6px;
+    }
+    .text-xs-right {
+        text-align: left !important;
+    }
+    ng-select {
+        width: 550px !important;
+    }
+    .slash {
+        float: left;
+        margin: 0px 10px 0px 10px;
+        height: 38px;
+        line-height: 38px;
+    }
+    #responsive-table {
+        width: 100%;
+    }
+    /* Force table to not be like tables anymore */
+    #responsive-table table,
+    #responsive-table thead,
+    #responsive-table tbody,
+    #responsive-table th,
+    #responsive-table td,
+    #responsive-table tr {
+        display: block;
+    }
+    /* Hide table headers (but not display: none;, for accessibility) */
+    #responsive-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    #responsive-table tr {
+        border: 1px solid #ccc;
+    }
+    #responsive-table td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+    }
+    #responsive-table td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+    }
+    /*
+  Label the data
+  */
+    #responsive-table td:before,
+    #responsive-table tbody th:before {
+        content: attr(data-title);
+    }
+    #responsive-table tbody th {
+        text-align: center;
+        background-color: #e6f1f7;
+    }
+    #responsive-table {
+        padding: 0px !important;
+    }
+}
+
+.btn-filter {
+    border: 1px solid #1ccfc9;
+    margin-left: 1em !important;
+    background-color: white;
+    color: #1ccfc9;
+}
+
+// .arrow-up {
+//     position: relative;
+//     // display: inline-block;
+//     float: right;
+//     right: 1.5em;
+//     top: -1.37em;
+//     width: 0;
+//     height: 0;
+//     // border-style: solid;
+//     border-width: 0 16px 7px 16px;
+//     border-color: transparent transparent #dbdbdb transparent;
+// }
+
+// .arrow-up::before {
+//     position: absolute;
+//     z-index: 10;
+//     content: '';
+//     top: 1px;
+//     left: -14px;
+//     width: 0;
+//     height: 0;
+//     border-style: solid;
+//     border-width: 0 14.5px 6.5px 14px;
+//     border-color: transparent transparent #f8f8f8 transparent;
+// }
+
+.calendarWidth {
+    width: 46%;
+}
+
+.clearnColor {
+    margin-top: 5px;
+    color: #1ccfc9;
+}
+.noData{
+    margin: 80px auto;
+    width: 50%;
+    text-align: center;
+}

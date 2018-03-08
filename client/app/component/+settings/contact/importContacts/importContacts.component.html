@@ -1,0 +1,47 @@
+<div class="content-body">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type"  dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+
+    <div class="import-guide">
+        <p>请下载模板，并按照模板填写相应的数据，同时&nbsp;<span>请不要修改模版的任何格式</span></p>
+        <p>表格红色的一行是模拟数据，可以删除</p>
+        <p> <a href="../../../../../../assets/template/Contacts.xlsx">点击下载模板</a></p>
+    </div>
+    <div class="choose-file">
+        <div class="fileUpload btn btn-secondary">
+            <span>选择文件</span>
+            <input id="uploadBtn" type="file" accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" class="upload" (change)="importedFiles($event)" />
+        </div>{{fileName}}
+    </div>
+    <div class="remark">
+        <p>备注：一次可以导入的上限为1000条（不含表头)</p>
+    </div>
+    <hr />
+    <div class="text-xs-center">
+        <upload class="btn-upload" [url]="uploadUrl" [file]="uploadFile" [fileTypes]="['.xls', '.xlsx']" (result)="result($event)" (success)="successData($event)" [isDisabled]="!uploadFile">&emsp;上传&emsp;</upload>
+        <button type="button" class="btn btn-secondary" [routerLink]="['/app/setting/']">放弃导入</button>
+    </div>
+
+    <div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                    <h4 class="modal-title">联系人导入失败</h4>
+                </div>
+                <div class="modal-body">
+                    <p>糟糕！数据存在问题，无法成功存储～</p>
+                    <div>
+                        <download url="/api/v1/contact/{{attachmenId}}/export">下载表格查看错误原因</download>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="reImport()">重新导入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

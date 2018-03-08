@@ -1,0 +1,164 @@
+<div class="tab-content border-tab">
+    <!--弹窗提示-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--选项-->
+    <!--选项-->
+    <div class="content-body m-t-0">
+        <div class="row m-t-20">
+            <div class="col-lg-3 col-xs-12">
+                <div class="form-group calendar" [ngClass]="{'has-danger':validator.dateValid}">
+                    <label>购买日期&#12288;</label>
+                    <p-calendar placeholder="购买日期" [showDelIcon]="false" inputStyleClass="form-control  vertical-bsline" [minDate]="minDate" [maxDate]="maxDate" showAnim="slideDown" autocomplete="off" [showIcon]="true" [(ngModel)]="dataModel.fixedAsset.purchasingDate">
+                    </p-calendar>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-12" lockTax>
+                <div class="form-group calendar">
+                    <label>发票类型</label>
+                    <ng-select [allowClear]="false" [items]="invoiceTypeList" textField="text" [autocomplete]="true" [(ngModel)]="dataModel.currentInvoiceType" (selected)="invoiceTypeChange($event)" placeholder="请选择发票类型">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-12">
+                <div class="form-group contactList">
+                    <label>部门性质</label>
+                    <ng-select [allowClear]="false" [items]="departmentList" textField="text" [autocomplete]="true" [(ngModel)]="dataModel.currentDepartment" (selected)="deartmentChange($event)" placeholder="请选择部门性质">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-12">
+                <div class="form-group contactList" [ngClass]="{'has-danger':validator.contactValid}">
+                    <label>对方信息</label>
+                    <ng-select (selected)="contactChange($event)" [allowClear]="false" [items]="contactList" placeholder="对方信息" [(ngModel)]="dataModel.currentContact">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+        <div class="row" [hidden]="hidden" lockTax>
+            <div class="col-lg-3 col-xs-12">
+                <div class="form-group contactList" [ngClass]="{'has-danger':validator.invoiceNumberValid}">
+                    <label>发票号</label>
+                    <input type="text" class="form-control text-left" [(ngModel)]="dataModel.fixedAsset.invoiceNumber" maxLength="8">
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-12">
+                <div class="form-group contactList" [ngClass]="{'has-danger':validator.taxValid  }">
+                    <label>税率</label>
+                    <ng-select [allowClear]="false" [items]="taxList" textField="text" [autocomplete]="true" [(ngModel)]="dataModel.currentTax" (selected)="taxChange($event)" placeholder="请选择税率">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-12">
+                <div class="form-group contactList" [ngClass]="{'has-danger':validator.taxCategoryValid}">
+                    <label>进项税类别</label>
+                    <ng-select [allowClear]="false" [items]="taxCategoryList" textField="text" [autocomplete]="true" [(ngModel)]="dataModel.currentTaxCategory" (selected)="taxCategoryChange($event)" placeholder="请选择进项税类别">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+        <!--表单-->
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table  table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>分类</th>
+                            <th>数量</th>
+                            <th>总额</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-title="名称">
+                                <input [ngClass]="{'has-danger':validator.nameValid}" type="text" class="form-control text-left" [(ngModel)]="dataModel.fixedAsset.name" maxlength="20">
+                            </td>
+                            <td class="select-input" data-title="分类">
+                                <ng-select [ngClass]="{'has-danger':validator.categoryValid}" (selected)="categoryChange($event)" [(ngModel)]="dataModel.currentCatory" [allowClear]="true" [items]="categoryList">
+                                </ng-select>
+                            </td>
+                            <td class="input-amount" data-title="数量">
+                                <input type="number" [ngClass]="{'has-danger':validator.qulityValid}" onfocus="this.select()" [(ngModel)]="dataModel.fixedAsset.qty" class="form-control text-left">
+                            </td>
+                            <td data-title="总额" class="max-input-amount">
+                                <bp-input type="text" [ngClass]="{'has-danger':validator.amountValid}" isEditable="true" onfocus="this.select()" [(ngModel)]="dataModel.fixedAsset.originalPrice" class=" text-right" (blur)="handleAmountBlur($event)"></bp-input>
+
+                            </td>
+                            <td data-title="备注" class="operation">
+                                <input type="text" [(ngModel)]="dataModel.fixedAsset.description" maxlength="50" class="form-control text-left">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" [hidden]="hidden" lockTax>
+            <div class="col-sm-12">
+                <div class="col-lg-3 col-xs-12">
+                    <div class="form-group">
+                        <label>税额</label>
+                        <input type="text" class="form-control text-right" [ngModel]="dataModel.fixedAsset.tax | currency:'CNY':true:'1.2-2'" maxlength="20" disabled>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-12">
+                    <div class="form-group">
+                        <label>不含税金额</label>
+                        <input type="text" class="form-control text-right" [ngModel]="dataModel.fixedAsset.exclusiveOfTax | currency:'CNY':true:'1.2-2'" maxlength="20" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-2">
+                    <div class="form-group ">
+                        <label>
+                        摊销期（年）
+                        <input type="number" class="form-control input-amount text-left " [(ngModel)]="depreciatePeriod" maxlength="3" (blur)="validtorYear()">
+                         </label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>
+                        月折旧额
+                        <input type="text" class="form-control text-right" [ngModel]="monthDepreciate | currency:'CNY':true:'1.2-2'" disabled>
+                    </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--总计-->
+        <div class="row">
+            <div class="col-sm-12">
+                <tag #tag [addTagList]="dataModel.addTagList" (result)="tagResult($event)"></tag>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <!--上传票据-->
+                <upload-attachments url="/api/v1/fixed_asset/upload/" (preview)="picturePreview($event)" (results)="attchmentResult($event)" (success)="attchmentSuccess($event)" [dataList]="dataModel.attachmentList" labelText="上传票据" type="image"></upload-attachments>
+                <!--预览票据-->
+                <gpw-picture-preview-modal type='account_transaction' #picturePreviewModal></gpw-picture-preview-modal>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 m-t-1 m-b-2">
+                <span class="pull-right">
+                      <button class="btn btn-primary btn-again " (click)="save(false)">保存并新增</button>
+                      <button class="btn btn-primary " (click)="save()">保存</button>
+                      <button class="btn btn-secondary" (click)="back()">取消</button>
+                 </span>
+            </div>
+        </div>
+    </div>
+    <!--上传票据-->
+    <!--<upload-attachments (picturePreview)="picturePreview($event)" (emittercaCheImage)="setAccountAttachmentModels($event)" (errorSuccess)="alertDanger($event)"
+        (success)="alertSuccess($event)"></upload-attachments>-->
+    <!--预览票据-->
+    <!--<gpw-picture-preview-modal type='account_transaction' #picturePreviewModal></gpw-picture-preview-modal>-->
+</div>
+<gpw-contact-details-modal #contactDetailsModal (result)="result($event)" (success)="newContactSuccess($event)"></gpw-contact-details-modal>

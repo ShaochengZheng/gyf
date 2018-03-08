@@ -1,0 +1,83 @@
+@import "../../../../styles/variables";
+@import '../external';
+@import '../media-external';
+.common-form {
+  padding: 50px 10px;
+  padding-right: 30px;
+}
+
+.get-verifycode {
+  border: none;
+  background: transparent;
+}
+
+.header {
+  margin-top: 0px !important;
+}
+
+.get-verifycode:visited,
+.get-verifycode:focus,
+.get-verifycode:active {
+  outline: none;
+}
+
+.margin-l-40 {
+  margin-left: 40px;
+}
+
+input,
+input:focus,
+input:hover {
+  box-shadow: none;
+}
+
+.m-t-40 {
+  margin-top: 20px;
+}
+
+.color-green {
+  color: $navy;
+}
+
+.font-s {
+  padding-top: 15px;
+  font-size: 14px;
+  color: $dark-slate-gray;
+  .introduce-title {
+    margin: 6px 0;
+  }
+  .expect {
+    margin-top: 50px!important;
+  }
+  font-size: 14px;
+  .introduce-content {
+    margin-top: 10px;
+  }
+  li {
+    list-style: none;
+    text-align: center;
+    img {
+      width: 105px;
+      height: 105px;
+    }
+  }
+}
+
+p {
+  margin-bottom: 0px !important;
+}
+
+td {
+  vertical-align: middle;
+  text-align: left;
+}
+
+tbody {
+  box-shadow: none;
+}
+
+@media screen and (max-width:767px) {
+  .message {
+    display: none !important;
+  }
+}

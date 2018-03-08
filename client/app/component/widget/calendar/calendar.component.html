@@ -1,0 +1,19 @@
+<span  [ngStyle]="style" [class]="styleClass" [ngClass]="'ui-calendar input-group'" *ngIf="!inline">
+            <input #in type="text" [attr.placeholder]="placeholder" [ngStyle]="inputStyle"
+            [class]="inputStyleClass" autocomplete="off"
+            [value]="value||''" (input)="onInput($event)" [readonly]="readonlyInput"
+            [disabled]="disabled" (mouseenter)="hovered=true"
+            (mouseleave)="hovered=false" (focus)="focused=true" (blur)="handleBlur($event)"
+            [ngClass]="{'ui-inputtext ui-widget form-control ui-state-default fontStyle': true,
+                        'ui-corner-all': !showIcon, 'ui-corner-left': showIcon,
+                        'ui-state-hover':hovered,'ui-state-focus':focused,'ui-state-disabled':disabled}">
+            <span  *ngIf="showDelIcon" (click)="onButtonClickDel($event,in)" [class]="iconStyleClass" 
+                [ngClass]="{'ui-datepicker-trigger ui-datepicker-button input-group-addon ui-datepicker-del fontStyle': true, 
+                'ui-datepicker-singleDel': !showIcon}">
+                <i [class]="iconDel"></i>
+            </span>
+<span *ngIf="showIcon" (click)="onButtonClick($event,in)" [class]="iconStyleClass" [ngClass]="'ui-datepicker-trigger ui-datepicker-button input-group-addon fontStyle'">
+                <i [class]="icon"></i>
+            </span>
+</span>
+<div *ngIf="inline"></div>

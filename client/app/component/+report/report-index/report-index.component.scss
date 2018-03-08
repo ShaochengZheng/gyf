@@ -1,0 +1,50 @@
+@import "../../../../styles/variables";
+// Luke Gao 2017年5月9日 创建修改
+*{outline:none;}
+div{border:none}
+.report{
+    .first-title{
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .title{
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+    .content-body{
+        padding-bottom: 60px;
+    }
+    .pad:hover{
+        width: 100%;
+        .reportItem{
+            cursor: pointer;            
+            height:150px;
+            background-color: white;
+            text-align: center;
+            box-shadow: 1px 6px 20px 1px rgba(0, 0, 0, 0.1);
+            border-style: none !important;
+            div{
+                margin: 15px 0px 15px 0px;
+            }
+            img{
+                padding-top:20px;
+            }
+        }
+    }
+    .pad{
+        width: 100%;
+        .reportItem{
+            cursor: pointer;            
+            height:150px;
+            background-color: white;
+            text-align: center;
+            border: 1px solid #dddddd;
+            div{
+                margin: 15px 0px 15px 0px;
+            }
+            img{
+                padding-top:20px;
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+@import "../../../../styles/variables";
+.input-hint {
+    // display:inline-block;
+    // width:80%;
+}
+
+.span-hint {
+    // width:20%;
+}
+
+.header-stuff {
+    font-size: 18px;
+    color: black;
+    margin-bottom: 30px;
+    padding: 10px 0px;
+    border-bottom: 1px solid $light-gray;
+}
+
+.select-width {
+    min-width: 210px;
+}
+
+.calendar-width {
+    min-width: 210px;
+    width: 64%;
+}
+
+.content-pad {
+    padding-bottom: 100px;
+}
+
+.flex-checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.social-width {
+    width: 120px;
+}
+
+.check-label {
+    margin: 0 20px 0 10px;
+}
+
+.check-s {
+    width: 20px;
+}
+
+.clear-p-m {
+    margin: 0px;
+    padding: 0px;
+}
+
+.font-thead {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+// .content-body {
+//   position: relative;
+//   margin: $grid-gutter-width 0px;
+//   padding: $widget-padding-vertical ($widget-padding-horizontal+10);
+//   background: $widget-bg-color;
+//   border-radius: $border-radius-sm;
+//   box-shadow: $basic-shadow;
+// }

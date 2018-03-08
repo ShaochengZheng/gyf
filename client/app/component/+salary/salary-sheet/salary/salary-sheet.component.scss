@@ -1,0 +1,17 @@
+.salary-sheet {
+    .thead-head {
+        background-color: #e6f1f7;
+    }
+    .t-vertical-align {
+        vertical-align: middle;
+    }
+    .table-bordered th {
+        border: 1px solid #e0e0e0;
+    }
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    tbody tr>td {
+        min-width: 120px;
+    }
+}

@@ -1,0 +1,171 @@
+<div class="alert-fixed" *ngFor="let alert of alerts">
+  <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div class="content-header1 form">
+  <div class="row row-xs-center">
+    <div class="col-xs-12 col-sm-12">
+      <div class="btn-group pull-right">
+        <div class="btn-group pull-right">
+          <button id="" type="button" class="btn btn-filter b-w" (click)="showScreenBoard()"> 筛选
+        <i [class.rotate]="!isScreenShow" [class.norotate]="isScreenShow"  class="fa fa-angle-down fa-lg angle-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header search  t-m" [ngClass]="{'change-state': !isScreenShow}">
+    <form [formGroup]="searchForm">
+      <div class="row thin ">
+
+        <div class="row col-xl-5 col-sm-5">
+          <div class="col-xl-5 col-sm-5">
+            <p-calendar [(ngModel)]="searchModel.startDate" (onSelect)="searchBlur(value)" (onBlur)="searchBlur(value)" placeholder="开始日期"
+              inputStyleClass="dp-width-255 vertical-bsline" showAnim="slideDown" maxDate={{searchModel.endDate}} [showIcon]="true"
+              #startDate="ngForm" [formControl]="searchForm.controls['startDate']"></p-calendar>
+          </div>
+          <span> __ </span>
+          <div class="col-xl-5 col-sm-5">
+            <p-calendar [(ngModel)]="searchModel.endDate" (onSelect)="searchBlur(value)" (onBlur)="searchBlur(value)" placeholder="截止时间"
+              minDate={{searchModel.startDate}} inputStyleClass="dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true"
+              #endDate="ngForm" [formControl]="searchForm.controls['endDate']">
+            </p-calendar>
+          </div>
+
+          <div *ngIf="(!startDate.control.hasError('required') && startDate.control.hasError('invalidDateFormat')) || (!endDate.control.hasError('required') && endDate.control.hasError('invalidDateFormat'))"
+            class="col-sm-12 text-danger validation-message ">
+            日期格式有误,应类似于2016-06-16
+          </div>
+        </div>
+
+        <div class="row col-xl-7 col-sm-4">
+          <div class="col-xl-4 col-sm-4 search-i">
+            <div class="form-group row">
+              <div class="input-group input-group-no-border">
+                <span class="input-group-addon">  <i class="fa fa-search"></i> </span>
+                <input class="form-control" type="text" (blur)="blurkeyWord($event)" (keypress)="keyPressHandler($event)" placeholder="搜索 关键字"
+                  [(ngModel)]="searchModel.keyword" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-2"></div>
+
+          <div class="col-lg-offset-1 col-xl-6 col-xs-6 row">
+            <div id="cashType" class="form-inline">
+              <div class="radio abc-radio">
+                <input id="All" type="radio" name="transactionType" value="" #all (click)="setAccountTransactionType('0')" [checked]="searchModel.accountTransactionType === '0'">
+                <label for="All">全部收支</label>
+              </div>
+              <div class="radio abc-radio">
+                <input id="Income" type="radio" name="transactionType" value="1" #small (click)="setAccountTransactionType('1')" [checked]="searchModel.accountTransactionType === '1'">
+                <label for="Income">收入</label>
+              </div>
+              <div class="radio abc-radio">
+                <input id="Outcome" type="radio" name="transactionType" value="2" #normal (click)="setAccountTransactionType('2')" [checked]="searchModel.accountTransactionType === '2'">
+                <label for="Outcome">支出</label>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+
+      </div>
+      <div class="btn-group pull-right ">
+        <!--<button id="" type="button" class="btn btn-n " (click)="clearSearchModel()"> 清空</button>-->
+        <a expire [routerLink]="" (click)="clearSearchModel()" href="">清空筛选条件</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="row m-t-1 col-ms-12">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-sm table-bordered">
+        <thead class="thead-head">
+          <tr>
+            <th>日期</th>
+            <th>对方信息</th>
+            <th>收入</th>
+            <th>支出</th>
+            <th>余额</th>
+            <!--<th>状态</th>-->
+            <th>单号</th>
+            <th roles class="operation">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor='let item of dataList'>
+            <!--<td class="text-xs-center" *ngIf="item.isDefault"><i class="fa fa-bookmark" aria-hidden="true" placement="top" tooltip="默认"></i></td>
+                    <td class="text-xs-center" *ngIf="!item.isDefault "><i></i></td>-->
+            <td data-title="日期">
+              <span id="date" class="text-ellipsis" title="{{item.accountTransDate}}">{{item.accountTransDate |date: 'yyyy-MM-dd'}}</span>
+            </td>
+            <td data-title="对方信息">
+              <span id="name" class="text-ellipsis" title="{{item.contact.name}}">{{item.contact?.name}}</span>
+            </td>
+            <td data-title="收入" class="t-a-r">
+              <span id="income" class="text-ellipsis" title="{{item.income}}">{{item.income | number: '1.2-2'}}</span>
+            </td>
+            <td data-title="支出" class="t-a-r">
+              <span id="contactName" class="text-ellipsis" title="{{item.outcome}}">{{item.outcome | number: '1.2-2'}}</span>
+            </td>
+            <td data-title="余额" class="t-a-r">
+              <span id="cashSurplus" class="text-ellipsis" title="{{item.cashSurplus}}">{{item.cashSurplus | number:'1.2-2'}}</span>
+            </td>
+            <td data-title="所属单号">
+              <span id="number" class="text-ellipsis" title="{{item.number}}" (click)="editContact(item)"><a roles expire [routerLink]="" placement="top">{{item.number}}</a></span>
+            </td>
+            
+            <td roles data-title="操作" class="operation">
+              <button expire *ngIf="item.accountAttachmentModels.length>0" class="btn btn-secondary btn-circle-sm" (click)="editContact(item)"
+                placement="top" tooltip="附件"><i  class="fa fa-paperclip"></i> </button>
+              <button id="editContact" expire class="btn btn-secondary btn-circle-sm" (click)="editContact(item)" placement="top" tooltip="编辑">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+              <button id="deleteContact" expire [disabled]='item.lock' class="btn btn-secondary btn-circle-sm" (click)="openConfirmModal(item)"
+                placement="top" tooltip="删除">
+                            <i class="fa fa-trash"></i>
+                            </button>
+            </td>
+          </tr>
+          <tr *ngIf="sumList && sumList.length>0">
+            <th colspan="2" class="text-right">合计</th>
+            <th class="text-right">{{sumList[0].name | currency:'CNY':true:'1.2-2'}} </th>
+            <th class="text-right">{{sumList[1].name | currency:'CNY':true:'1.2-2'}}</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr *ngIf="noDataList">
+            <td colspan="9">
+              <div class="noData" *ngIf="!searchNodata">您还没有任何收支记录！快去记一笔吧！</div>
+              <div class="noData" *ngIf="searchNodata">抱歉！没有找到任何匹配的记录！您可以调整筛选条件！</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- <div class="row" *ngIf="sumList && sumList.length>0">
+    <div class="col-xs-12">
+      <span class="pull-left m-boldface">
+							收入合计：{{sumList[0].name | currency:'CNY':true:'1.2-2'}} 
+						</span>
+    </div>
+    <div class="col-xs-12">
+      <span class="pull-left m-boldface">
+							支出合计：{{sumList[1].name | currency:'CNY':true:'1.2-2'}}
+						</span>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-xs-12">
+      <pagination class="pagination-sm pull-right" (pageChanged)="pageChanged($event)" [totalItems]="recordCount" [itemsPerPage]="pageSize"
+        [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+        lastText="&raquo;"></pagination>
+    </div>
+  </div>
+
+  <gpw-contact-details-modal #contactDetailsModal (result)="result($event)"></gpw-contact-details-modal>
+  <confirm-widget #confirmWidget (confirmEvent)="delete($event)" message="确认删除此条往来单位/个人记录吗？"></confirm-widget>

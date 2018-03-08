@@ -1,0 +1,37 @@
+@import "../../../../styles/variables";
+
+p{
+    margin: 0 !important;
+}
+.p-l-4{
+    padding-left: 4px;
+}
+.m-t-20{
+    margin-top: 20px;
+}
+.m-t-10{
+    margin-top: 10px;
+}
+// 换行
+.line-feed{
+    word-break: break-all;
+}
+// 不换行
+.noLine-feed{
+    word-break: keep-all;
+}
+
+.cashFlows-statement{
+    .list {
+        .titleMargin{
+            margin: 20px 0 30px 0;
+        }
+        .line{
+            border: 1px solid;
+        }
+        .alignCenter{
+            height: 36px;
+            line-height: 34px;
+        }
+    }
+}

@@ -1,0 +1,198 @@
+<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div class="salary-sheet tab-content border-tab">
+    <div class="inAndOutTab border-tab">
+        <div class="content-body m-t-0">
+            <div class="row m-t-20 m-b-10">
+                <div class="col-lg-12">
+                    <form class="form-inline">
+                        <div class="form-group col-sm-6 col-lg-4">
+                            <label>月份选择</label>
+                            <datepicker name="msDate" [(ngModel)]="currentYearMonth" datepickerMode="month" minMode="month" (selectionDone)="selected($event)" class="dp-width-monthpicker">
+                            </datepicker>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox-content">
+                        <div class="table-responsive table-wrapper">
+                            <table class="table table-bordered table-striped table-sm table-hover fontStyle">
+                                <thead class="thead-head">
+                                    <tr>
+                                        <!--<th class="text-xs-center"></th>-->
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">员工编号</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">员工姓名</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">基本工资</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">岗位工资</th>
+                                        <th colSpan="3" class="text-center t-vertical-align " nowrap="nowrap">补贴</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">奖金</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">绩效工资</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">调整工资</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">合计工资</th>
+                                        <th colSpan="3" class="text-center t-vertical-align " nowrap="nowrap">个人社保</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">个人公积金</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">个税</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">实发工资</th>
+                                        <th colSpan="5" class="text-center t-vertical-align " nowrap="nowrap">公司社保</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">公司公积金</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">人力成本</th>
+                                        <th rowSpan="2" class="text-center t-vertical-align " nowrap="nowrap">操作</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center " nowrap="nowrap">餐补</th>
+                                        <th class="text-center " nowrap="nowrap">交通补</th>
+                                        <th class="text-center " nowrap="nowrap">其他补助</th>
+                                        <th class="text-center " nowrap="nowrap">医疗</th>
+                                        <th class="text-center " nowrap="nowrap">养老</th>
+                                        <th class="text-center " nowrap="nowrap">失业</th>
+                                        <th class="text-center " nowrap="nowrap">医疗</th>
+                                        <th class="text-center " nowrap="nowrap">养老</th>
+                                        <th class="text-center " nowrap="nowrap">失业</th>
+                                        <th class="text-center " nowrap="nowrap">生育</th>
+                                        <th class="text-center " nowrap="nowrap">工伤</th>
+                                    </tr>
+                                    <!--<tr>
+                                        <th class="text-center " nowrap="nowrap">医疗</th>
+                                        <th class="text-center " nowrap="nowrap">养老</th>
+                                        <th class="text-center " nowrap="nowrap">事业</th>
+                                    </tr>-->
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of salaryModel.employeePayrolls; let i=index;trackBy:trackBySalaryStuffs;">
+                                        <td class="text-center ">{{item.number}}</td>
+                                        <td class="text-center " nowrap="nowrap">{{item.name}}</td>
+                                        <td class="text-xs-right ">
+                                            <!--{{item.baseSalary | currency:'CNY':true:'1.2-2'}}-->
+                                            <ng2-numeric-input name="baseSalary" [(ngModel)]="item.baseSalary"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-xs-right ">
+                                            <!--{{item.positionSalary | currency:'CNY':true:'1.2-2'}}-->
+                                            <ng2-numeric-input name="positionSalary" [(ngModel)]="item.positionSalary"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td>
+                                            <ng2-numeric-input name="mealAllowance" [(ngModel)]="item.mealAllowance"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td>
+                                            <ng2-numeric-input name="travelAllowance" [(ngModel)]="item.travelAllowance"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td>
+                                            <ng2-numeric-input name="otherAllowance" [(ngModel)]="item.otherAllowance"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td>
+                                            <ng2-numeric-input name="bonus" [(ngModel)]="item.bonus"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-center">
+                                            <ng2-numeric-input name="meritPay" [(ngModel)]="item.meritPay"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-center">
+                                            <ng2-numeric-input name="adjustWages" [(ngModel)]="item.adjustWages"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-xs-right ">{{ item.totalSalary | currency:'CNY':true:'1.2-2'}}</td>
+                                        <!-- 个人社保部分-->
+                                        <td>
+                                            <ng2-numeric-input name="pEdicalCare" [(ngModel)]="item.pEdicalCare"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-center">
+                                            <ng2-numeric-input name="pPension" [(ngModel)]="item.pPension"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-center">
+                                            <ng2-numeric-input name="pUnemployment" [(ngModel)]="item.pUnemployment"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <!-- 个人社保部分-->
+                                        <td class="text-xs-right ">
+                                            <!--{{ item.pProvidentFund | currency:'CNY':true:'1.2-2'}}-->
+                                            <ng2-numeric-input name="pProvidentFund" [(ngModel)]="item.pProvidentFund"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-xs-right ">
+                                            {{ item.incomeTax | currency:'CNY':true:'1.2-2'}}
+                                        </td>
+                                        <td class="text-xs-right ">{{ item.nettSalary | currency:'CNY':true:'1.2-2'}}</td>
+                                        <!-- 公司社保部分-->
+                                        <td>
+                                            <ng2-numeric-input name="cEdicalCare" [(ngModel)]="item.cEdicalCare"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-center">
+                                            <ng2-numeric-input name="cPension" [(ngModel)]="item.cPension"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-center">
+                                            <ng2-numeric-input name="cUnemployment" [(ngModel)]="item.cUnemployment"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-center">
+                                            <ng2-numeric-input name="cFertility" [(ngModel)]="item.cFertility"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-center">
+                                            <ng2-numeric-input name="cWorkInjury" [(ngModel)]="item.cWorkInjury"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <!-- 公司社保部分-->
+                                        <td class="text-xs-right ">
+                                            <!--{{ item.cProvidentFund | currency:'CNY':true:'1.2-2'}}-->
+                                            <ng2-numeric-input name="cProvidentFund" [(ngModel)]="item.cProvidentFund"   class="text-right input-amount" (blur)="caculateSum()"></ng2-numeric-input>
+                                        </td>
+                                        <td class="text-xs-right ">{{ item.laborCost | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td>
+                                            <button id="deleteContact" class="btn btn-secondary btn-circle-sm" (click)="openConfirmModal(item,i)" placement="top" tooltip="删除" lockIn>
+                                             <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="noData">
+                                        <td colspan="25">
+                                            <div class="noData">
+                                                没有数据
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="!noData">
+                                        <td></td>
+                                        <td>合&nbsp;计</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumBasicSalary | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumPosiSalary | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumFoodSubsidy | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumTransSubsidy | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumOtherSubsidy | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumBonus | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumPerformance | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumChangeSalary | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumTotalSalary | currency:'CNY':true:'1.2-2'}}</td>
+                                        <!--<td class="text-xs-right ">{{ salaryModel.sumPSocialSecurity | currency:'CNY':true:'1.2-2'}}</td>-->
+                                        <td class="text-xs-right ">{{ salaryModel.sumPMedical | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumPOldage | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumPUnemployment | currency:'CNY':true:'1.2-2'}}</td>
+
+                                        <td class="text-xs-right ">{{ salaryModel.sumPProvidenetFund | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumPTax | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumPSalary | currency:'CNY':true:'1.2-2'}}</td>
+                                        <!--<td class="text-xs-right ">{{ salaryModel.sumCSocialSecurity | currency:'CNY':true:'1.2-2'}}</td>-->
+                                        <td class="text-xs-right ">{{ salaryModel.sumCMedical | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumCOldage | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumCUnemployment | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumCMaternity | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumCWorkInjury | currency:'CNY':true:'1.2-2'}}</td>
+
+                                        <td class="text-xs-right ">{{ salaryModel.sumCProvidentFund | currency:'CNY':true:'1.2-2'}}</td>
+                                        <td class="text-xs-right ">{{ salaryModel.sumHumanCost | currency:'CNY':true:'1.2-2'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 m-t-1 m-b-2">
+                    <span class="pull-right">
+                        <button class="btn btn-primary" (click)="openAsyncStuff()" [disabled]="isLock" lockIn>导入员工</button>
+                        <button class="btn btn-primary" (click)="warnGenerate()" [disabled]="isLock" lockIn>生成本月工资表</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<confirm-widget #confirmWidget (confirmEvent)="confirmEvn($event)" title="操作提示" [confirmText]="confirmBtn" cancelText="取消" [message]="confirmMsg"></confirm-widget>
+<async-stuff #asyncStuff (done)="importDone($event)"></async-stuff>

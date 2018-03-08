@@ -1,0 +1,83 @@
+<div class="alert-fixed" *ngFor="let alert of alerts">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div roles class="row">
+    <div class="col-xl-4 col-sm-4 select" *ngIf="false">
+        <div class="form-group">
+            <div class="input-group input-group-no-border">
+                <span class="input-group-addon">
+                            <i class="fa fa-search"></i>
+                        </span>
+                <input class="form-control" type="text" (blur)="search()" placeholder="搜索 名称/联系人/联系方式" [(ngModel)]="searchModel.keyword" [ngModelOptions]="{standalone: true}">
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12">
+        <div class="btn-group pull-right">
+            <button lockIn id="addContactButton" roles expire type="button" class="btn btn-primary" (click)="newContact()"><i class="fa fa-plus"></i> 添加</button>
+        </div>
+    </div>
+</div>
+<div id="contactPage" class="row m-t-1">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm table-bordered">
+            <thead class="thead-head">
+                <tr>
+                    <th width="5%" class="text-xs-center"></th>
+                    <th>名称</th>
+                    <th>性质</th>
+                    <th>联系人</th>
+                    <th>手机号</th>
+                    <!--<th>期初时间</th>
+                    <th>应收账款</th>
+                    <th>应付账款</th>
+                    <th>其它应收</th>
+                    <th>地址</th> -->
+                    <th width="15%" roles class="operation">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of dataList'>
+                    <td class="text-xs-center" *ngIf="item.isDefault"><i class="fa fa-bookmark" aria-hidden="true" placement="top" tooltip="默认"></i></td>
+                    <td class="text-xs-center" *ngIf="!item.isDefault "><i></i></td>
+                    <td data-title="名称" class="text-left">
+                        <span id="name" class="text-ellipsis" title="{{item.name}}">{{item.name}}</span>
+                    </td>
+                    <td data-title="性质">
+                        <span id="property" class="text-ellipsis" title="{{item.property}}">{{item.contactType.name}}</span>
+                    </td>
+                    <td data-title="联系人">
+                        <span id="contactName" class="text-ellipsis" title="{{item.contactName}}">{{item.contactName}}</span>
+                    </td>
+                    <td id="phoneNumber" data-title="手机号">&nbsp;{{item.phoneNumber}}</td>
+                    <!--<td id="beginDate" data-title="期初时间">&nbsp;{{item.beginDate | date: 'yyyy-MM-dd'}}</td>
+                    <td id="accountReceivable" data-title="应收账款">&nbsp;{{item.transactionOpeningBalanceModels[1].amount}}</td>
+                    <td id="accountPayable" data-title="应付账款">&nbsp;{{item.transactionOpeningBalanceModels[0].amount}}</td>
+                    <td id="otherAccount" data-title="其它应付">&nbsp;{{item.transactionOpeningBalanceModels[2].amount}}</td>
+                    <td>{{item.address}} implement address pipe here</td> -->
+                    <td roles data-title="操作" class="operation">
+                        <button id="editContact" expire class="btn btn-secondary btn-circle-sm" (click)="editContact(item)" placement="top" tooltip="编辑">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button id="deleteContact" expire [disabled]='item.isDefault' class="btn btn-secondary btn-circle-sm" (click)="openConfirmModal(item)" placement="top" tooltip="删除">
+                            <i class="fa fa-trash"></i>
+                            </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <pagination class="pagination-sm pull-right" (pageChanged)="pageChanged($event)" [totalItems]="recordCount" [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+            lastText="&raquo;"></pagination>
+    </div>
+</div>
+
+<gpw-contact-details-modal #contactDetailsModal (result)="result($event)"></gpw-contact-details-modal>
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)" message="确认删除此条往来单位/个人记录吗？"></confirm-widget>
+
+<!--<div class="row">
+    Contact
+</div>-->

@@ -1,0 +1,43 @@
+<div *ngIf="type === 'license'" class="choose-file">
+	<div>
+		<span>  
+			<label class="accountbook-style" for="uploadBtn"><i class="fa fa-file"></i>上传营业执照批量导入公司</label>
+		</span>
+		<input  [disabled]="isUpload" id="uploadBtn" type="file" class="upload" (change)="importedFiles($event)" multiple="multiple" />
+	</div>
+</div>
+<div *ngIf="type=== 'company'" class="choose-file">
+	<div>
+		<span>  
+			<label class="accountbook-style large-padd" for="uploadBtn1"><i class="fa fa-file"></i>上传excel批量导入公司</label>
+		</span>
+		<input  [disabled]="isUpload" id="uploadBtn1" type="file" class="upload" (change)="importedExcel($event)" />
+	</div>
+</div>
+
+<div *ngIf="type === 'image'" class="choose-file">
+	<div class="fileUpload">
+		<span>  
+			<label class="ipicture-preview-nocolor" for="uploadBtn2"><i class="fa fa-file"></i>上传票据</label>
+			<span class="annex-reminder">仅支持jpg、jpeg、bmp、gif、png格式的图片，单张图片大小不超过10M</span>
+		</span>
+		<input  [disabled]="isUpload"  id="uploadBtn2" type="file" class="upload" [disabled]="disabled" (change)="importedFiles($event)" multiple="multiple" />
+	</div>
+
+	<div class="row annex">
+		<div *ngFor="let item of dataList ; let i=index" class="preview">
+			<i *ngIf="!carryForwarddDisable" (click)="Deleteattachment(item.id)" class="fa fa-times-circle annex-preview"></i>
+			<img (click)="displayAttachment(item.id)" class="ipicture-preview" [src]="item.surl" alt="image">
+		</div>
+	</div>
+</div>
+
+<div *ngIf="type=== 'file'" class="choose-file">
+	<div>
+		<span>  
+			<label class="btn-select-file" for="fileUploadBtn">{{labelText}}</label>
+		</span>
+		<input [disabled]="isUpload" id="fileUploadBtn" type="file" class="upload" (change)="importedExcel($event)" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+		/>
+	</div>
+</div>

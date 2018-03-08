@@ -1,0 +1,109 @@
+<!--<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>-->
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+    (onShown)="onShown()">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">往来信息</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <!--<alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type">{{ alert?.msg }}</alert>-->
+                <div class="alert-fixed" *ngFor="let alert of alerts">
+                    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type"  dismissible="true" class="z-100">{{ alert?.msg }}</alert>
+                </div>
+                <div class="myform">
+                    <form [formGroup]="contactForm" (keypress)="keyPressHandler($event)">
+                        <div class="form-group row">
+                            <label for="input-name" class="col-xs-6 col-sm-2 form-control-label">名称</label>
+                            <div class="col-sm-10" [ngClass]="{'has-danger':(!name.valid &&clearHint)}">
+                                <input #input id="input-name" type="text" class="form-control" placeholder="必填" [formControl]="name" [(ngModel)]="contact.name"
+                                    maxlength="20" [readonly]="isDefault">
+                            </div>
+                            <div *ngIf="clearHint && name.hasError('required')&&(name.touched||clearHint)" class="text-danger validation-message col-sm-10 offset-sm-2">请填写往来单位/个人名称</div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="input-porperty" class="col-xs-6 col-sm-2 form-control-label">性质</label>
+                            <div class="col-sm-10">
+                                <ng-select [ngClass]="{'has-danger':(!prop.valid && prop.touched)}" #prop="ngForm" [formControl]="contactForm.controls['prop']"
+                                [items]="propertyList" name="district" [(ngModel)]="property" placeholder="性质" 
+                                (selected)="selected($event)" [disabled]="isDefault" >
+                                </ng-select>
+                            </div>
+                            <!--<div *ngIf="property.name" class="text-danger validation-message col-sm-10 offset-sm-2">请选择性质</div>-->
+                        </div>
+                        <div class="form-group row" *ngIf="!onlyPerson">
+                            <label for="input-contactName" class="col-xs-6 col-sm-2 form-control-label">联系人</label>
+                            <div class="col-sm-10">
+                                <input id="input-contactName" type="text" class="form-control" [(ngModel)]="contact.contactName" [ngModelOptions]="{standalone: true}"
+                                    placeholder="联系人姓名">
+                            </div>
+                        </div>
+
+                        <!--<div id="showMore" class="showMore" *ngIf="!showMore" (click)="showMoreDetails(true)">显示更多</div>-->
+                        <div>
+                            <!--*ngIf="showMore"-->
+                            <div class="form-group row">
+                                <label for="input-accountName" class="col-xs-6 col-sm-2 form-control-label">账户名称</label>
+                                <div class="col-sm-10">
+                                    <input id="input-accountName" type="text" class="form-control" [(ngModel)]="contact.accountName" [ngModelOptions]="{standalone: true}"
+                                        placeholder="账户名称">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="input-accountNumber" class="col-xs-6 col-sm-2 form-control-label">账号</label>
+                                <div class="col-sm-10">
+                                    <input id="input-accountNumber" type="text" class="form-control" [(ngModel)]="contact.accountNumber" [ngModelOptions]="{standalone: true}"
+                                        placeholder="账号">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="input-phoneNumber" class="col-xs-6 col-sm-2 form-control-label">手机号</label>
+                                <div class="col-sm-10" [ngClass]="{'has-danger':(!phoneNumber.valid && phoneNumber.touched)&&clearHint&&contact.phoneNumber}">
+                                    <input id="input-phoneNumber" type="text" class="form-control" placeholder="手机号" [formControl]="phoneNumber" [(ngModel)]="contact.phoneNumber">
+                                </div>
+                                <div *ngIf="clearHint&& contact.phoneNumber&& phoneNumber.touched && phoneNumber.hasError('invalidPhoneOrEamil') " class="text-danger validation-message col-sm-10 offset-sm-2">
+                                    手机格式不正确
+                                </div>
+                            </div>
+                            <!--<div class="form-group row">
+                                <label for="beginningYearTime" class="col-xs-6 col-sm-2 form-control-label">年初时间</label>
+                                <div class="col-sm-10">
+                                    <p-calendar placeholder="年初时间" [formControl]="contactForm.controls['beginDate']" [(ngModel)]="contact.beginDate" inputStyleClass="form-control vertical-bsline" showAnim="slideDown" [showIcon]="true" maxlength="10"></p-calendar>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="input-receivable" class="col-xs-6 col-sm-2 form-control-label">应收账款</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" [(ngModel)]="transactionOpeningBalanceModelList[1].amount" [ngModelOptions]="{standalone: true}" placeholder="应收帐款金额">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="input-payable" class="col-xs-6 col-sm-2 form-control-label">应付账款</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" [(ngModel)]="transactionOpeningBalanceModelList[0].amount" [ngModelOptions]="{standalone: true}" placeholder="应付账款余额">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="input-otherReceivable" class="col-xs-6 col-sm-2 form-control-label">其它应收</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" [(ngModel)]="transactionOpeningBalanceModelList[2].amount" [ngModelOptions]="{standalone: true}" placeholder="其它应收金额（正号为收入，负号为支出）">
+                                </div>
+                            </div>-->
+                        </div>
+                        <!--<div id="unShowMore" class="showMore" *ngIf="showMore" (click)="showMoreDetails()">取消显示更多</div>-->
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button lockIn type="button" class="btn btn-primary" (click)="save()">保存</button>
+                <button type="button" class="btn btn-secondary" (click)="close()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,283 @@
+<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div class="conpanyList-back" (click)="back()">
+    <a expire [routerLink]=""> <i class="fa fa-arrow-left"></i> 返回</a>
+</div>
+<!--
+    <div class="title">基本信息 &nbsp;
+        <a id="basicInfoEdit" expire roles class="form-control-static mb-0" (click)="showEditBaseInfo()" href="javascript:void(0)">
+            <i class="fa fa-pencil"></i>
+        </a>
+        <span class="lighter"></span></div>
+    <form class="form-container">
+        <div class="form-group row code">
+            <label class="col-sm-2 col-form-label code">角色</label>
+            <div class="col-sm-10">
+                <template [ngIf]="!adminEditUser">
+                    <p class="form-control-static mb-0">{{authorizationService.Session.user?.role.name}}</p>
+                </template>
+                <template [ngIf]="adminEditUser">
+                    <div class="radio row" *ngFor="let role of roleList let i=index">
+                        <label> <input [checked]="role.isisDefault" type="radio" name="role"   (click)="setrole(role.id,role.name)">
+                               {{role.name}}</label>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <div class="form-group row code">
+            <label class="col-sm-2 col-form-label code">编号</label>
+            <div class="col-sm-10">
+                <template [ngIf]="!adminEditUser">
+                    <p class="form-control-static mb-0">{{userModel.code}}</p>
+                </template>
+                <template [ngIf]="adminEditUser">
+                    <input type="text" class="form-control" name="code" [(ngModel)]="userModel.code">
+                </template>
+            </div>
+        </div>
+        <div class="form-group row name">
+            <label class="col-sm-2 col-form-label name">姓名</label>
+            <div class="col-sm-10">
+                <template [ngIf]="(!editName && !adminEditUser)">
+                    <p name="personName" class="form-control-static mb-0">{{authorizationService.Session.user.name}}</p>
+                </template>
+                <template [ngIf]="(editName || adminEditUser)">
+                    <input type="text" class="form-control" name="name" [(ngModel)]="userModel.name">
+                </template>
+            </div>
+        </div>
+        <div class="form-group row position">
+            <label class="col-sm-2 col-form-label position">职位</label>
+            <div class="col-sm-10">
+                <template [ngIf]="!adminEditUser">
+                    <p class="form-control-static mb-0" name="positionName">{{userModel.position}}</p>
+                </template>
+                <template [ngIf]="adminEditUser">
+                    <input type="text" class="form-control" name="position" [(ngModel)]="userModel.position">
+                </template>
+            </div>
+        </div>
+        <div class="form-group row department">
+            <label class="col-sm-2 col-form-label department">部门</label>
+            <div class="col-sm-10">
+                <template [ngIf]="!adminEditUser">
+                    <p class="form-control-static mb-0" name="departName">{{userModel.department.name}}</p>
+                </template>
+                <template [ngIf]="adminEditUser">
+                    <ng-select name="department" [allowClear]="true" [items]="departmentItems" [(ngModel)]="userModel.department" placeholder="选择部门">
+                    </ng-select>
+                </template>
+            </div>
+        </div>
+        <template [ngIf]="adminEditUser">
+            <div class="form-group row mail offset-sm-2">
+                <button id="infoSave" class="btn btn-primary" (click)="save()">保存</button>
+                <button id="infoCancel" class="btn btn-secondary offset-sm-1" (click)="cancelEditBaseInfo()">取消</button>
+            </div>
+        </template>
+    </form>-->
+<div class="widget clearfix">
+    <div class="title">帐号信息</div>
+    <form role="form" [formGroup]="accountForm" class="form-container">
+        <template [ngIf]="!isPhoneEdit">
+            <div class="form-group row mail">
+                <label class="col-sm-2 col-form-label">手机号</label>
+                <div class="col-sm-10">
+                    <template [ngIf]="!existPhone">
+                        <p class="form-control-static mb-0">未添加</p>
+                        <a class="form-control-static mb-0" (click)="showEditPhone()" href="javascript:void(0)">添加</a>
+                    </template>
+                    <template [ngIf]="existPhone">
+                        <p class="form-control-static mb-0" name="isPhone">{{currentUser.phoneNumber}}</p>
+                    </template>
+                </div>
+            </div>
+        </template>
+        <template [ngIf]="isPhoneEdit">
+            <div class="form-group row mail">
+                <label class="col-sm-2">添加手机号</label>
+            </div>
+            <div class="form-group row mail" [ngClass]="{'has-danger':(!phoneNumber.valid && phoneNumber.touched) || hasRegisted }">
+                <label class="col-sm-2 col-form-label">手机号</label>
+                <div class="col-sm-10">
+                    <input id="myPhone" type="text" class="form-control" [(ngModel)]="changePhoneNumber.phoneNumber" #phoneNumber="ngForm" [formControl]="accountForm.controls['phoneNumber']">
+                    <div *ngIf="phoneNumber.control.touched">
+                        <div *ngIf="phoneNumber.control.hasError('required')" class="text-danger validation-message">请填写手机号</div>
+                    </div>
+                    <div *ngIf="phoneNumber.control.touched">
+                        <div *ngIf="phoneNumber.control.hasError('invalidPhone')" class="text-danger validation-message">请输入正确的手机号</div>
+                    </div>
+                    <div *ngIf="hasRegisted">
+                        <div class="text-danger validation-message">手机号已注册</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mail" [ngClass]="{'has-danger':(!verifyCode.valid && verifyCode.touched)}">
+                <label class="col-sm-2 col-form-label">验证码</label>
+                <div class="col-sm-10">
+                    <input id="phoneVerifyCode" type="text" class="form-control" [(ngModel)]="changePhoneNumber.verifyCode" #verifyCode="ngForm"
+                        [formControl]="accountForm.controls['verifyCode']">
+                    <span class="verifyCodeMsg" *ngIf="!codeGetted && !regetCode"><button id="phoneGetCode" class="get-verifycode color-navy" (click)="getVerifyCode(changePhoneNumber.phoneNumber,'CHANGEPHONENUMBER')"[disabled]="!phoneNumber.valid"  [class.color-gray]="!phoneNumber.valid || hasRegisted" >获取验证码</button></span>
+                    <span class="verifyCodeMsg" *ngIf="regetCode && !codeGetted"><button class="get-verifycode color-navy" (click)="getVerifyCode(changePhoneNumber.phoneNumber,'CHANGEPHONENUMBER')" [disabled]="!phoneNumber.valid" >重新获取验证码</button></span>
+                    <span class="verifyCodeMsg color-navy" *ngIf="codeGetted"> 验证码已发送（{{countdown}}）</span>
+                    <div *ngIf="verifyCode.control.touched">
+                        <div *ngIf="verifyCode.control.hasError('required')" class="text-danger validation-message">请填写验证码</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mail" [ngClass]="{'has-danger':(!password.valid && password.touched)}">
+                <label class="col-sm-2 col-form-label">登陆密码</label>
+                <div class="col-sm-10">
+                    <input id="phonePassword" type="password" class="form-control" [(ngModel)]="changePhoneNumber.password" #password="ngForm"
+                        [formControl]="accountForm.controls['password']">
+                    <div *ngIf="password.control.touched">
+                        <div *ngIf="password.control.hasError('required')" class="text-danger validation-message">请填写密码</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mail offset-sm-2">
+                <button id="phoneSave" class="btn btn-primary " [disabled]="(!phoneNumber.valid ||!verifyCode.valid ||!password.valid || hasRegisted)"
+                    (click)="editPhoneNumber()">保存</button>
+                <button id="phoneCancel" class="btn btn-secondary offset-sm-1" (click)="cancelEditPhone()">取消</button>
+            </div>
+        </template>
+        <!--<template [ngIf]="!isEmailEdit">
+            <div class="form-group row mail"   
+                <label class="col-sm-2 col-form-label">邮箱</label>
+
+                <div class="col-sm-10">
+                    <template [ngIf]="!existEmail">
+                        <p class="form-control-static mb-0">未添加</p>
+                        <a id="emailAdd" expire class="form-control-static mb-0" (click)="showEditEmail()" href="javascript:void(0)">添加</a>
+                    </template>
+                    <template [ngIf]="existEmail">
+                        <p class="form-control-static mb-0" name="isEmail">{{currentUser.email}}</p>
+                        <a id="emailModify" class="form-control-static mb-0" (click)="showEditEmail()" href="javascript:void(0)">修改</a>
+                    </template>
+                </div>
+            </div>
+        </template>
+        <template [ngIf]="isEmailEdit">
+            <div class="form-group row mail"  >
+                <template [ngIf]="!existEmail">
+                    <label class="col-sm-2">添加邮箱</label>
+                </template>
+                <template [ngIf]="existEmail">
+                    <label class="col-sm-2">修改邮箱</label>
+                </template>
+            </div>
+            <div class="form-group row mail" [ngClass]="{'has-danger':(!email.valid && email.touched) || hasRegisted }">
+                <label class="col-sm-2 col-form-label">邮箱</label>
+                <div class="col-sm-10">
+                    <input id="myEmail" type="text" class="form-control" [(ngModel)]="changeEmailModel.email" #email="ngForm" [formControl]="accountForm.controls['email']">
+                    <div *ngIf="email.control.touched">
+                        <div *ngIf="email.control.hasError('required')" class="text-danger validation-message">请填写邮箱</div>
+                    </div>
+                    <div *ngIf="email.control.touched">
+                        <div *ngIf="email.control.hasError('invalidEmail')" class="text-danger validation-message">邮箱格式错误</div>
+                    </div>
+                    <div *ngIf="hasRegisted">
+                        <div class="text-danger validation-message">邮箱已注册</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mail" [ngClass]="{'has-danger':(!verifyCode.valid && verifyCode.touched)}">
+                <label class="col-sm-2 col-form-label">验证码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" [(ngModel)]="changeEmailModel.verifyCode" #verifyCode="ngForm" [formControl]="accountForm.controls['verifyCode']">
+                    <span class="verifyCodeMsg" *ngIf="!codeGetted && !regetCode"><button id="emailGetCode" class="get-verifycode color-navy" (click)="getVerifyCode(changeEmailModel.email,'CHANGEEMAIL')" [class.color-gray]="!email.valid || hasRegisted" >获取验证码</button></span>
+                    <span class="verifyCodeMsg" *ngIf="regetCode && !codeGetted"><button class="get-verifycode color-navy" (click)="getVerifyCode(changeEmailModel.email,'CHANGEEMAIL')" [disabled]="!email.valid" >重新获取验证码</button></span>
+                    <span class="verifyCodeMsg color-navy" *ngIf="codeGetted"> 验证码已发送（{{countdown}}）</span>
+                    <div *ngIf="verifyCode.control.touched">
+                        <div *ngIf="verifyCode.control.hasError('required')" class="text-danger validation-message">请填写验证码</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mail" [ngClass]="{'has-danger':(!password.valid && password.touched)}">
+                <label class="col-sm-2 col-form-label">登陆密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" [(ngModel)]="changeEmailModel.password" #password="ngForm" [formControl]="accountForm.controls['password']">
+                    <div *ngIf="password.control.touched">
+                        <div *ngIf="password.control.hasError('required')" class="text-danger validation-message">请填写密码</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mail offset-sm-2">
+                <button id="emailSave" class="btn btn-primary " [disabled]="(!email.valid ||!verifyCode.valid ||!password.valid || hasRegisted)"
+                    (click)="editEmail()">保存</button>
+                <button id="emailCancel" class="btn btn-secondary offset-sm-1" (click)="cancelEditEmail()">取消</button>
+            </div>
+        </template>-->
+        <template [ngIf]="!isPasswordEdit">
+            <div class="form-group row password">
+                <label class="col-sm-2 col-form-label">密码</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static mb-0">＊＊＊＊＊＊</p>
+                    <a id="passwordModify" class="form-control-static mb-0" (click)="showEditPassword()" href="javascript:void(0)">修改</a>
+                </div>
+            </div>
+        </template>
+        <template [ngIf]="isPasswordEdit">
+            <div class="form-group row password">
+                <label class="col-sm-2">修改密码</label>
+            </div>
+            <div class="form-group row password" [ngClass]="{'has-danger':(!oldPassword.valid && oldPassword.touched)}">
+                <label class="col-sm-2 col-form-label">原密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="oldPassword" [(ngModel)]="changePasswordModel.oldPassword" #oldPassword="ngForm"
+                        [formControl]="accountForm.controls['oldPassword']">
+                    <div *ngIf="oldPassword.control.touched">
+                        <div *ngIf="oldPassword.control.hasError('required')" class="text-danger validation-message">请填写验密码</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row password" [ngClass]="{'has-danger':(!newPassword.valid && newPassword.touched)}">
+                <label class="col-sm-2 col-form-label">新密码</label>
+                <div class="col-sm-10">
+                    <input (focus)="onpasswordfocus()" type="password" class="form-control" name="newPassword" [(ngModel)]="changePasswordModel.newPassword"
+                        #newPassword="ngForm" [formControl]="accountForm.controls['newPassword']">
+                    <div *ngIf="newPassword.control.touched">
+                        <div *ngIf="newPassword.control.hasError('required')" class="text-danger validation-message">请填写验密码</div>
+                    </div>
+                    <table border="0" width="30%" class="margin-l-54 margin-t-12 margin-b-10" *ngIf="newPassword.control.touched || passwordfocus">
+                        <tr>
+                            <td><span class="fa fa-check-square-o text-muted" [class.color-navy]="!newPassword.control.hasError('noLetter')"> 含字母</span></td>
+                            <td><span class="fa fa-check-square-o text-muted" [class.color-navy]="!newPassword.control.hasError('noNumber')"> 含数字</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="fa fa-check-square-o text-muted" [class.color-navy]="!newPassword.control.hasError('illegalChar')"> 不包含非法字符</span></td>
+                            <td><span class="fa fa-check-square-o text-muted" [class.color-navy]="!newPassword.control.hasError('short')">8位到64位</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group row password" [ngClass]="{'has-danger':(!confirmPassword.valid && confirmPassword.dirty&&confirmPassword.touched)}">
+                <label class="col-sm-2 col-form-label">确认新密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="changePasswordModel.confirmPassword" #confirmPassword="ngForm"
+                        [formControl]="accountForm.controls['confirmPassword']">
+                    <div *ngIf="confirmPassword.control.dirty">
+                        <div *ngIf="accountForm.hasError('unsamePassword')" class="text-danger validation-message">两次输入密码不一致，请重新输入。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mail offset-sm-2">
+                <button id="passwordSave" class="btn btn-primary" [disabled]="(!oldPassword.valid || !confirmPassword.valid ||!newPassword.valid)"
+                    (click)="editPassword()">保存</button>
+                <button id="passwordCancel" class="btn btn-secondary offset-sm-1" (click)="cancelEditPassword()">取消</button>
+            </div>
+        </template>
+    </form>
+</div>
+<span id="e2eVerifyCode">{{e2eVerifyCode}}</span>
+<div class="content-footer"></div>

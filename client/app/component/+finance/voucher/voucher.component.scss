@@ -1,0 +1,122 @@
+@import "../../../../styles/variables";
+
+.search {
+  div {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    ng-select {
+      width: 100%;
+    }
+    span {
+      white-space: nowrap;
+      height: 38px;
+      line-height: 38px;
+      margin-right: 15px;
+    }
+  }
+}
+.count{
+  div{
+    height: 44px !important;
+  }
+  .row{
+    margin: 0px !important;
+  }
+}
+.content-bodys-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.bottomBorder{
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+.leftBorder{
+  border-right: 1px solid #e0e0e0 !important;
+}
+.content-header{
+  padding-bottom: 30px;
+  .content-body{
+    margin-bottom: 0px;
+  }
+}
+/*  垂直居中*/
+.verticalCenter{
+  // border-bottom: 1px solid #e0e0e0 !important;
+  // border-right: 1px solid #e0e0e0 !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; 
+  -webkit-box-align: center; 
+  -ms-flex-align: center; 
+  align-items: center; 
+  -webkit-box-pack: center; 
+  -ms-flex-pack: center; 
+  justify-content: center;
+}
+.table {
+    .thead-head {
+        background-color: $Auxiliarycolor;
+        th {
+            vertical-align: middle;
+            text-align: center;
+            border: 1px solid $Formheaderbordercolor;
+        }
+    }
+}
+.table-striped {
+  tbody{
+    tr{
+      background-color: $white;
+    }
+  }
+  .total{
+    background-color: #f6f6f6 !important;
+  }
+}
+.template{
+   box-shadow: $basic-shadow;
+}
+td {
+  vertical-align: middle;
+  padding: 0px;
+}
+tbody{
+  box-shadow: $basic-shadow;
+}
+.fontStyle{
+  margin-top: 15px !important;
+  margin-bottom: 15px !important;
+.textH {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 15px;
+        }
+}
+.list{
+  padding-top: 30px;
+}
+.add-weight {
+    font-weight: bold
+}
+.clear{
+  color: $navy;
+  margin-top: 7px;
+  label{
+    cursor: pointer;
+  }
+}
+.number{
+  color: $navy;
+  text-decoration:underline;
+  cursor: pointer;
+}
+.amount{
+  padding-right:5px;
+}
+

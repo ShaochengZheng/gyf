@@ -1,0 +1,19 @@
+<div *ngIf="isshow" class="idle-Popover">
+    <div class="idle-content">
+        <div>
+            <h5 class="modal-title text-center">好久不见，请输入密码重新登录</h5>
+        </div>
+        <div *ngIf="!isname">
+            <label for="recipient-name" class="control-label"></label>
+            <input [(ngModel)]="password" type="password" class="form-control" id="recipient-name" (keyup.enter)="onSubmit()">
+        </div>
+        <p *ngIf="expiredtitle" class="text-center error">{{errormsg}}</p>
+        <p *ngIf="emptyPassword && !isname" class="text-center error">密码不能为空</p>
+        <p *ngIf="isname" class="text-center error">信息获取错误，请点击取消重新登录</p>
+        <div class="expired-button">
+            <button class="onSubmit btn btn-primary" (click)="onSubmit()">确定</button>
+            <button class="onSubmit btn btn-secondary" (click)="cancel()">取消</button>
+        </div>
+    </div>
+
+</div>

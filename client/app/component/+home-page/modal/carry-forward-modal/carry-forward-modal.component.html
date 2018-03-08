@@ -1,0 +1,19 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body ">
+                <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p class="text-center">
+                    结转成功！已生成损益凭证，报表数据完整。
+                </p>
+            </div>
+            <div class="operation">
+                <button class="btn btn-default btn-primary" (click)="save()">查看科目余额表</button>
+                <button class="btn btn-default btn-primary" (click)="modal.hide()">知道了</button>
+            </div>
+        </div>
+
+    </div>
+</div>

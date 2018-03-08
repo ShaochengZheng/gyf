@@ -1,0 +1,71 @@
+<div class="alert-fixed">
+  <alert dismissOnTimeout="5000" *ngIf="alert?.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div>
+  <div class="content-body clearfix">
+    <h4 class="title">账户互转</h4>
+    <div class="col-lg-12 clearPadding">
+      <template ngFor let-item [ngForOf]="dataList" let-index="index">
+        <table class="table table-sm">
+          <thead class="thead-head">
+            <tr>
+              <th width="150px">发生账户</th>
+              <th width="150px">日期</th>
+              <th width="150px">金额</th>
+              <th width="260px">类别</th>
+              <th width="260px">对方账户</th>
+              <!--<th width="115px" >部门</th>-->
+              <th width="">摘要</th>
+              <th width="100px">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td width="">{{item.currentAccount.bankAccount.name}}</td>
+              <td>{{item.currentAccount.transationDateTime | date: 'yyyy-MM-dd'}}</td>
+              <td width="" class="text-xs-right">
+                <span>{{item.currentAccount.amount | currency:'CNY':true:'1.2-2'}}</span>
+              </td>
+              <td width="">{{item.currentAccount.businessCategory.name}}</td>
+              <td class="text">{{item.currentAccount.toBankAccount.name}}</td>
+              <td  class="t-boder"><div class=" p_e">{{item.currentAccount.summary}}</div></td>
+              <td rowspan='2' class='vert-align'>
+                <button *ngIf="item.toAccount === null" lockIn class="btn btn-secondary btn-circle-sm btn-green"
+                  (click)="edit(item)" data-toggle="tooltip" data-placement="top" title="编辑">
+                                    <i  class="fa fa-pencil"></i>
+                </button>
+                <button *ngIf="true" lockIn class="btn btn-secondary btn-circle-sm btn-green"
+                  (click)="delete(item)" data-toggle="tooltip" data-placement="top" title="删除">
+                                    <i  class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="item.toAccount === null">
+              <td colspan="6" class="blank-style">{{blank}}</td>
+            </tr>
+            <tr class="" *ngIf="item.toAccount !== null">
+              <td width="">{{item.toAccount.bankAccount.name}}</td>
+              <td>{{item.toAccount.transationDateTime  | date: 'yyyy-MM-dd'}}</td>
+              <td class="text-xs-right">
+                <span>{{item.toAccount.amount | currency:'CNY':true:'1.2-2'}}</span>
+              </td>
+              <td width="">{{item.toAccount.businessCategory.name}}</td>
+              <td class="text">{{item.toAccount.toBankAccount.name}}</td>
+              <td class="t-boder "><div class=" p_e">{{item.toAccount.summary}}</div></td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
+      <div class="noData" *ngIf="noData">您还没有银行对账单互转记录，您可以去账户导入对账单！</div>
+      <div class="row pull-xs-right save" *ngIf="!noData">
+        <button class="btn btn-primary r-margin" [disabled]="!canSave" (click)="save()">生成收支</button>
+        <button class="btn r-margin" (click)="back()">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<gpw-business-category-modal #businessCategoryModal (result)="result($event, 'businessCategory')" (success)="newItemAdded($event, 'businessCategory')"></gpw-business-category-modal>-->
+<!-- <gpw-contact-details-modal #contactDetailsModal (result)="result($event, 'contact')" (success)="newItemAdded($event, 'contact')"></gpw-contact-details-modal> -->
+<!--<gpw-department-details-modal #departmentDetailsModal (result)="result($event, 'department')" (success)="newItemAdded($event, 'department')"></gpw-department-details-modal>-->
+<gwp-interchange-modal #interchangeModal (result)="result($event)"  (success)="editSucess($event)"></gwp-interchange-modal>
+<!--<div>multi-sync!!!!!</div>-->

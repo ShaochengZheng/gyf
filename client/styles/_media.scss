@@ -1,0 +1,84 @@
+@media screen and (min-width: 768px) {
+  #page-wrapper {
+    position: inherit;
+    margin: 0 0 0 60px;
+    min-height: 1200px;
+  }
+  .navbar-top-links .dropdown-messages,
+  .navbar-top-links .dropdown-tasks,
+  .navbar-top-links .dropdown-alerts {
+    margin-left: auto;
+  }
+}
+
+@media not screen and (max-width: 768px) {
+    .navbar-static-side {
+      // z-index: 2001;
+      position: absolute;
+      width: $sidebar-width;
+    }
+}
+
+@media screen and (max-width: 768px) {
+  #page-wrapper {
+    margin: 0;
+    padding: 0;
+    min-height: 1000px;
+  }
+  .content {
+    padding: 0;
+  }
+  .body-small .navbar-static-side {
+    display: none;
+    z-index: 2001;
+    position: absolute;
+    width: 70px;
+  }
+  .body-small.mini-navbar .navbar-static-side {
+    display: block;
+  }
+  .lock-word {
+    display: none;
+  }
+  .navbar-form-custom {
+    display: none;
+  }
+  .navbar-header {
+    display: inline;
+    float: left;
+  }
+  .sidebard-panel {
+    z-index: 2;
+    position: relative;
+    width: auto;
+    min-height: 100% !important;
+  }
+  .sidebar-content .wrapper {
+    padding-right: 0;
+    z-index: 1;
+  }
+  .fixed-sidebar.body-small .navbar-static-side {
+    display: none;
+    z-index: 2001;
+    position: fixed;
+    width: $sidebar-width;
+  }
+  .fixed-sidebar.body-small.mini-navbar .navbar-static-side {
+    display: block;
+  }
+  .ibox-tools {
+    float: none;
+    text-align: right;
+    display: block;
+  }
+  .sidebar-nav-header{
+    display: none;
+  }
+  #sidebar{
+    z-index: 2000;
+    position: absolute;
+    top: 52px;
+    width: 100%;
+    background-color: $dark-background;
+  }
+}

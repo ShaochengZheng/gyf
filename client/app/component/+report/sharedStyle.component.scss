@@ -1,0 +1,42 @@
+@import "../../../styles/variables";
+
+// 月份样式表 start
+.monthSearchStyle{
+    margin: 10px 0;
+    display: inline-block;
+    text-align: center;
+    .monthPic{
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        border: 2px solid #1ccfc9;
+        display: inline-block;
+        background-color: #fff;
+        outline:none;
+        font-size: .9rem;
+    }
+    .monthPic:disabled {
+        cursor: not-allowed;
+    }
+    .monthLine{
+        display: inline-block;
+        border: 1px dashed #1ccfc9;
+        width: calc( (90% - 12*50px) / 11 );
+        transform: translate(0%,-150%);
+    }
+    .fontCenter{
+        display: inline-block;
+        // transform: translate(60%, 60%);
+    }
+    .doubleFont{
+        display: inline-block;
+        // transform: translate(30%, 60%);
+    }
+    .clickStyle{
+        background-color: #1ccfc9;
+        color: white;
+    }
+    .noDataStyle{
+        opacity:.65;
+    }
+}

@@ -1,0 +1,142 @@
+@import "../../../../styles/variables";
+.beginning-period {
+    .m-b-0 {
+        margin-bottom: 0;
+    }
+    .p-r-0 {
+        padding-right: 0;
+    }
+    .m-t-20 {
+        margin-top: 20px;
+    }
+    .p-l-6 {
+        padding-left: 6px;
+    }
+    .bg-c-white {
+        background-color: #fff;
+    }
+    .inputStyle {
+        border-radius: 0px;
+        text-align: right !important;
+    }
+    .noBorder1 {
+        border: 0;
+        tr,
+        tr td {
+            border: 0;
+        }
+        .borderTop {
+            border-top: 1px solid #e0e0e0;
+        }
+        .redFont {
+            color: #d9534f;
+        }
+    }
+    .radius {
+        border-radius: 0.25rem;
+    }
+    .content-btn {
+        .selectStyle {
+            display: inline-block;
+            width: 100%;
+        }
+        .table-bordered td {
+            border: 1px solid #e0e0e0;
+        }
+        .time-l-h {
+            line-height: 38px;
+        }
+        .margin-l {
+            margin-left: 6px;
+        }
+    }
+    .content-body {
+        padding: 0 !important;
+        background-color: #fff;
+        .defaultBgStyle {
+            background-color: #e9ecf3;
+        }
+        table tbody {
+            display: block;
+            height: 500px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        table thead,
+        tbody tr {
+            display: table;
+            width: calc( 100% + 1em);
+            table-layout: fixed;
+        }
+        table thead {
+            width: 100%; // width: calc( 100% - 1em )
+        }
+        .fixHeight {
+            height: 500px;
+            overflow-y: auto;
+        }
+        .newBtn {
+            padding: 5px 5px 5px 0;
+            border-radius: 0;
+            background-color: inherit;
+            color: #1ccfc9;
+            text-decoration: underline;
+        }
+        .table-bordered th {
+            border: 1px solid #e0e0e0;
+        }
+        .verticalAlign {
+            vertical-align: middle;
+        }
+        .noBorder {
+            border-bottom: 0px;
+        }
+        table tbody {
+            tr td {
+                max-width: 80px;
+            }
+            .noAssgin {
+                border: 3px solid #F44336;
+                margin-top: -4px;
+            }
+            .first {
+                background-color: #feffff;
+                color: #434343;
+            }
+            .second {
+                background-color: #f9f9f9;
+                color: #797979;
+            }
+            .third {
+                background-color: #f6f6f6;
+                color: #797979;
+            }
+            .caretPointer {
+                cursor: pointer;
+            }
+            .inline-block {
+                display: inline-block;
+            }
+            .bp-spanStyle {
+                text-decoration: none;
+                display: block;
+                width: 100%;
+                padding: 0.5rem 0.75rem;
+                font-size: 1rem;
+                line-height: 1.25;
+                background-clip: padding-box;
+                opacity: 1;
+                text-align: right !important;
+                color: #434343;
+                cursor: text;
+            }
+            .bp-edit-spanStyle {
+                border: 1px solid rgba(0, 0, 0, .15);
+                background-color: #fff;
+            }
+        }
+    }
+    .bp-padding {
+        padding: 0 20px 20px 0;
+    }
+}

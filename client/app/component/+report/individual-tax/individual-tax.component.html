@@ -1,0 +1,134 @@
+<div class="value-addes">
+    <!--<p>增值税！！！！！</p>-->
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-12 col-sm-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null ">
+                        <i class="fa  fa-area-chart fa-2x"></i>
+                    </li>
+                    <li class="breadcrumb-null page-title">
+                        <a>
+                            <span>报表</span>
+                        </a>
+                        <span>/</span>
+                        <span>个税申报</span>
+                    </li>
+                    <li>
+                        <span>
+                            <div class="col-md-2" style="min-width:100px;padding-right:0px">
+                                <ng-select placeholder="请选择年份" [allowClear]="true" [items]="yearList" [(ngModel)]="defaultYear" (selected)="selected($event,'year')"></ng-select>
+                            </div>
+                        </span>
+                        <download style="margin-right: 15px" class="pull-right" [url]="url">导出
+                        </download>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+        </div>
+    </div>
+    <div class="content-body search">
+        <div class="row">
+            <div class="col-lg-12 monthSearchStyle">
+                <template ngFor let-item [ngForOf]="monthList" let-index="index">
+                    <button class="monthPic" [ngClass]="{'clickStyle': index === isChecked, 'noDataStyle': !item.isExist}" [disabled]="!item.isExist"
+                        (click)="monthSearch(item, index)">
+                        <span [ngClass]="{'fontCenter': index < 9, 'doubleFont': index >= 9}">{{item.month}}</span>
+                    </button>
+                    <div [ngClass]="{'monthLine': index < 11, 'noDataStyle': !item.isExist}"></div>
+                </template>
+            </div>
+        </div>
+    </div>
+    <div class="content-body list">
+        <div class="row">
+            <div class="col-lg-12 titleMargin">
+                <h3 class="text-center">个税申报模拟表</h3>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row">
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4">纳税人识别号：{{individualList.taxNumber}}</p>
+            </div>
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4">纳税人名称（公章）：{{individualList.taxPlayer}}</p>
+            </div>
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4">税款所属期：{{individualList.startTime| date:'yyyy-MM-dd'}}至{{individualList.endTime| date:'yyyy-MM-dd'}}</p>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-sm fontStyle">
+                            <thead class="thead-head">
+                                <tr>
+                                    <th class="text-center" nowrap="nowrap">员工编号</th>
+                                    <th class="text-center" nowrap="nowrap">员工姓名</th>
+                                    <!--<th class="text-center" nowrap="nowrap">证照类型</th>-->
+                                    <th class="text-center" nowrap="nowrap">证照号码</th>
+                                    <th class="text-center" nowrap="nowrap">所得期间起</th>
+                                    <th class="text-center" nowrap="nowrap">所得期间止</th>
+                                    <th class="text-center" nowrap="nowrap">收入额</th>
+                                    <th class="text-center" nowrap="nowrap">免税所得</th>
+                                    <th class="text-center" nowrap="nowrap">基本养老保险费</th>
+                                    <th class="text-center" nowrap="nowrap">基本医疗保险费</th>
+                                    <th class="text-center" nowrap="nowrap">失业保险费</th>
+                                    <th class="text-center" nowrap="nowrap">住房公积金</th>
+                                    <th class="text-center" nowrap="nowrap">允许扣除的税费</th>
+                                    <th class="text-center" nowrap="nowrap">其它</th>
+                                    <th class="text-center" nowrap="nowrap">税前扣除项目合计</th>
+                                    <th class="text-center" nowrap="nowrap">减除费用</th>
+                                    <th class="text-center" nowrap="nowrap">实际捐赠额</th>
+                                    <th class="text-center" nowrap="nowrap">允许列支的捐赠比例</th>
+                                    <th class="text-center" nowrap="nowrap">准予扣除的捐赠额</th>
+                                    <th class="text-center" nowrap="nowrap">扣除及减除项目合计</th>
+                                    <th class="text-center" nowrap="nowrap">应纳税所得额</th>
+                                    <th class="text-center" nowrap="nowrap">税率</th>
+                                    <th class="text-center" nowrap="nowrap">速算扣除数</th>
+                                    <th class="text-center" nowrap="nowrap">应纳税额</th>
+                                    <th class="text-center" nowrap="nowrap">减免税额</th>
+                                    <th class="text-center" nowrap="nowrap">应扣缴税额</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of individualList.details;">
+                                    <td class="text-center" nowrap="nowrap">{{item.number}}</td>
+                                    <td class="text-center" nowrap="nowrap">{{item.name}}</td>
+                                    <!--<td class="text-center" nowrap="nowrap">{{item.certificateType}}</td>-->
+                                    <td class="text-center" nowrap="nowrap">{{item.idCardNum}}</td>
+                                    <td class="text-center" nowrap="nowrap">{{item.startDate | date:'yyyy-MM-dd'}}</td>
+                                    <td class="text-center" nowrap="nowrap">{{item.endDate | date:'yyyy-MM-dd'}}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.incomeSum| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.dutyFree| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.pRetirementInsurance| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.pMedicalInsurance| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.pUnemploymentInsurance| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.pHousingFund| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.allowedDeductionsTaxes| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.others| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.allowDeductedTotal | currency:'CNY':true:'1.2-2'}}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.subtractCost| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.practicalDonate| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-center" nowrap="nowrap">{{item.proportionOfDonationsAllowed}}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.amountOfDonationsToDeducted| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.projectSumWithDeductionSubtract| currency:'CNY':true:'1.2-2'}}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.taxPayable| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-center" nowrap="nowrap">{{item.taxRate}}</td>
+                                    <td class="text-center" nowrap="nowrap">{{item.quickDeduction| currency:'CNY':true:'1.2-2'}}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.personalIncomeTax| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.taxRelief| currency:'CNY':true:'1.2-2' }}</td>
+                                    <td class="text-right" nowrap="nowrap">{{item.taxShouldBeDeducted| currency:'CNY':true:'1.2-2' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

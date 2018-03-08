@@ -1,0 +1,362 @@
+<div *ngIf="sidebarshow" class="collapse navbar-toggleable-sm" id="sidebar">
+    <nav role="navigation" class="navbar-default navbar-static-side">
+        <div class="sidebar-collapse">
+            <ul id="side-menu" class="nav sidebar-nav sider-first">
+                <li class="nav-header sidebar-nav-header">
+                    <div class="profile-element">
+                        <div id="ProfileMenu">
+                            <img src="../../../../assets/images/company_photo.png" class="img-circle img-profile" [ngClass]="{'change-state': !change}" />
+                        </div>
+                    </div>
+                </li>
+                <!--********************一级菜单*******************-->
+                <!--首頁-->
+                <li [hidden]="!goAssist">
+                    <a id="homePage" [routerLink]=" ['/app/home-page/assist']" routerLinkActive="active">
+                        <i class="fa fa-home fa-lg side-width"></i>
+                        <span class="m-l-6">首页</span>
+                    </a>
+                </li>
+                <li [hidden]="goAssist">
+                    <a id="homePage" [routerLink]=" ['/app/home-page/accounting']" routerLinkActive="active">
+                        <i class="fa fa-home fa-lg side-width"></i>
+                        <span class="m-l-6">首页</span>
+                    </a>
+                </li>
+                <!--交易-->
+                <li [hidden]="isTransaction">
+                    <a id="transactionSideMenu" routerLinkActive="active" (click)="transactionChildToggle()">
+                        <i class="fa fa-exchange fa-lg side-width"></i>
+                        <span class="m-l-6">交易</span><i class="fa fa-angle-right fa-lg angle-right" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <!--薪酬-->
+                <li [hidden]="isSalary">
+                    <a id="stuffAndSalarySideMenu" routerLinkActive="active" (click)="salaryChildToggle()">
+                        <i class="fa fa-jpy fa-lg side-width"></i>
+                        <span class="m-l-6">工资</span><i class="fa fa-angle-right fa-lg angle-right" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <!--固定资产-->
+                <li [hidden]="isFixedAssets">
+                    <a id="stuffAndSalarySideMenu" routerLinkActive="active" (click)="fixedAssetChildToggle()">
+                        <i class="fa fa-car fa-lg side-width"></i>
+                        <span class="m-l-6">固定资产</span><i class="fa fa-angle-right fa-lg angle-right" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <!--财务-->
+                <li [hidden]="isFinance">
+                    <a id="stuffAndSalarySideMenu" routerLinkActive="active" (click)="financeChildToggle()">
+                        <i class="fa fa-balance-scale fa-lg side-width"></i>
+                        <span class="m-l-6">财务</span><i class="fa fa-angle-right fa-lg angle-right" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <!--报表-->
+                <li>
+                    <a id="reportsSideMenu" routerLinkActive="active" (click)="reportChildToggle()">
+                        <i class="fa fa-bar-chart fa-lg side-width"></i>
+                        <span class="m-l-6">报表</span><i class="fa fa-angle-right fa-lg angle-right" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <!--设置-->
+                <li>
+                    <a id="settingSideMenu" [routerLink]=" ['/app/setting']" routerLinkActive="active">
+                        <i class="fa fa-cogs fa-lg side-width"></i>
+                        <span class="m-l-6">设置</span>
+                    </a>
+                </li>
+            </ul>
+            <!--********************二级菜单*******************-->
+            <div id="children" class="nav sidebar-nav sider-second">
+                <ul id="side-menu-child" class="nav-child" [hidden]="navChildShow">
+                    <!--交易-->
+                    <div [hidden]="transactionChildShow">
+                        <ul class="row">
+                            <ul class="col-md-6">
+                                <li>
+                                    <span>收支</span>
+                                </li>
+                                <li>
+                                    <a style="border-bottom:  1px solid" [routerLink]=" ['/app/transaction/list']">
+                                        <span>查看收支列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]="['/app/transaction/detail/Outcome']">
+                                        <span>记支出</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]="['/app/transaction/detail/Income']">
+                                        <span>记收入</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a style="border-bottom:  1px solid" [routerLink]="['/app/transaction/detail/accountTransfers']">
+                                        <span>记账户互转</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]="['/app/account']">
+                                        <span>选择账户导入</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <span>账户</span>
+                                </li>
+                                <li>
+                                    <a style="border-bottom:  1px solid" [routerLink]=" ['/app/account']">
+                                        <span>查看账户列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]="['/app/transaction/detail/accountTransfers']">
+                                        <span>记账户互转</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="col-md-6">
+
+                                <li>
+                                    <span>发票</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/invoice/input-invoice']">
+                                        <span>查看收票列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a style="border-bottom:  1px solid" [routerLink]="['/app/invoice/tab/new-input-invoice']">
+                                        <span>记收票</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/invoice/output-invoice']">
+                                        <span>查看开票列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]="['/app/invoice/tab/new-output-invoice']">
+                                        <span>记开票</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a style="border-bottom:  1px solid" [routerLink]="['/app/invoice/import-output-invoice']">
+                                        <span>导入开票</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="token.currentAccount?.companyProperty === 'GeneralTaxpayer'">
+                                    <a [routerLink]=" ['/app/invoice/deduction']">
+                                        <span>查看抵扣列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="token.currentAccount?.companyProperty === 'GeneralTaxpayer' && display">
+                                    <a [routerLink]="['/app/invoice/import-dedu']">
+                                        <span>导入认证清单</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </div>
+                    <!--薪酬-->
+                    <div [hidden]="salaryChildShow">
+                        <ul class="row">
+                            <ul class="col-md-6">
+                                <li>
+                                    <span>工资</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]="['/app/salary/salary-sheet/salary']">
+                                        <span>工资表</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/salary/salary-record/salary']">
+                                        <span>工资发放记录</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <span>员工</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/salary/stuff-list']">
+                                        <span>员工管理</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]=" ['/app/salary/stuff']">
+                                        <span>添加员工</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]=" ['/app/salary/stuff-import']">
+                                        <span>导入员工</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </div>
+                    <!--固定资产-->
+                    <div [hidden]="fixedAssetChildShow">
+                        <ul class="row">
+                            <ul class="col-md-6">
+                                <li>
+                                    <span>固定资产</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/fixed-assets/list']">
+                                        <span>固定资产列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]=" ['/app/fixed-assets/detail/fixed']">
+                                        <span>记固定资产</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <span>无形资产</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/fixed-assets/intangible-list']">
+                                        <span>无形资产列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]=" ['/app/fixed-assets/detail/intangible']">
+                                        <span>记无形资产</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </div>
+                    <!--财务-->
+                    <div [hidden]="financeChildShow">
+                        <ul class="row">
+                            <ul class="col-md-6">
+                                <li>
+                                    <span>期初账</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/finance/beginningPeriod']">
+                                        <span>期初账列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="hideBeginP">
+                                    <a [routerLink]=" ['/app/finance/import']">
+                                        <span>导入期初账</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <span>凭证</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/finance/voucher']">
+                                        <span>凭证列表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="display">
+                                    <a [routerLink]=" ['/app/finance/newvoucher']">
+                                        <span>新增凭证</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <span>表</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/finance/account-balance']">
+                                        <span>科目余额表</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/finance/account-detail']">
+                                        <span>明细账</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/finance/general-ledger']">
+                                        <span>总账</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </div>
+                    <!--报表-->
+                    <div [hidden]="reportChildShow">
+                        <ul class="row">
+                            <ul class="col-md-6">
+                                <li [hidden]="isFinance">
+                                    <span>财务报表</span>
+                                </li>
+                                <li [hidden]="isFinance">
+                                    <a [routerLink]=" ['/app/reports/balance-sheet']">
+                                        <span>资产负债表</span>
+                                    </a>
+                                </li>
+                                <li [hidden]="isFinance">
+                                    <a [routerLink]=" ['/app/reports/income-statement']">
+                                        <span>利润表</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <span>往来明细</span>
+                                </li>
+                                <li>
+                                    <a [routerLink]=" ['/app/reports/contacts-detail']">
+                                        <span>往来明细报表</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="col-md-6">
+                                <li [hidden]="isFinance">
+                                    <span>税费报表</span>
+                                </li>
+                                <li [hidden]="isFinance" *ngIf="token.currentAccount?.companyProperty !== 'GeneralTaxpayer'">
+                                    <a [routerLink]=" ['/app/reports/value-added']">
+                                        <span>增值税模拟申报表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="token.currentAccount?.companyProperty === 'GeneralTaxpayer'" [hidden]="isFinance">
+                                    <a [routerLink]=" ['/app/reports/value-general']">
+                                        <span>增值税纳税模拟税申报表</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="token.currentAccount?.companyProperty === 'GeneralTaxpayer'" [hidden]="isFinance">
+                                    <a [routerLink]=" ['/app/reports/sale-detail']">
+                                        <span>增值税纳税模拟申报表附列资料(一)</span>
+                                    </a>
+                                </li>
+                                <li *ngIf="token.currentAccount?.companyProperty === 'GeneralTaxpayer'" [hidden]="isFinance">
+                                    <a [routerLink]=" ['/app/reports/vat-payment']">
+                                        <span>增值税纳税模拟申报表附列资料(二)</span>
+                                    </a>
+                                </li>
+
+                                <li [hidden]="isFinance" *ngIf="token.currentAccount?.companyProperty === 'GeneralTaxpayer'">
+                                    <a [routerLink]=" ['/app/reports/tax-deduction']">
+                                        <span>本期抵扣进项税额结构明细表(模拟)</span>
+                                    </a>
+                                </li>
+                                <li [hidden]="isFinance" *ngIf="token.currentAccount?.companyProperty === 'GeneralTaxpayer'">
+                                    <a [routerLink]=" ['/app/reports/fixed-asset']">
+                                        <span>固定资产（不含不动产）进项税额抵扣情况表（模拟）</span>
+                                    </a>
+                                </li>
+                                <li [hidden]="isFinance">
+                                    <a [routerLink]=" ['/app/reports/city-building']">
+                                        <span>城建税模拟申报表</span>
+                                    </a>
+                                </li>
+                                <li [hidden]="isFinance">
+                                    <a [routerLink]=" ['/app/reports/individual-tax']">
+                                        <span>个税模拟申报表</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<!--<gpw-company-info-modal #c="child"></gpw-company-info-modal>-->

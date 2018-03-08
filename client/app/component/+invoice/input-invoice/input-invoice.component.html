@@ -1,0 +1,169 @@
+<div class="content-header">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-file-text fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">发票／收票</li>
+                <li>
+                    <button class="pull-right btn btn-filter" (click)="toggleSifting()">筛选
+                            <i [class.rotate]="!isSifting" [class.norotate]="isSifting"  class="fa fa-angle-down fa-lg angle-right" aria-hidden="true"></i>
+                    </button>
+                    <button lockIn style="margin-right: 15px" class="pull-right btn btn-primary" (click)="exportInvoice()" [disabled]="inputInvoiceItemList.length === 0">导出</button>
+                    <button lockIn style="margin-right: 15px" class="pull-right btn btn-primary" [routerLink]="['/app/invoice/tab/new-input-invoice']">记收票</button>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="content-body" *ngIf="isSifting">
+        <div class="row">
+            <div class="col-lg-12 searchArea">
+                <div class="col-lg-5 calendar" [class.col-lg-6]="!isGeneralTaxpayer">
+                    <p-calendar class="col-lg-5 calendarWidth" [(ngModel)]="searchModel.startDate" (onSelect)="searchConditions()" (onBlur)="searchConditions()"
+                        placeholder="开始日期" inputStyleClass="dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true"></p-calendar>
+                    <span class="slash"> - </span>
+                    <p-calendar class="col-lg-5 calendarWidth" [(ngModel)]="searchModel.endDate" (onSelect)="searchConditions()" (onBlur)="searchConditions()"
+                        placeholder="结束日期" minDate={{searchModel.startDate}} inputStyleClass="dp-width-255 vertical-bsline" showAnim="slideDown"
+                        [showIcon]="true"></p-calendar>
+                </div>
+                <div class="col-lg-2" lockTax>
+                    <ng-select [isSubject]='false' [allowClear]="true" [(ngModel)]="invoiceType" [items]="invoiceTypeList" (selected)="selected($event,'invoiceType')"
+                        placeholder="发票类型"></ng-select>
+                </div>
+                <div class="col-lg-3" [class.col-lg-4]="!isGeneralTaxpayer">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                        <input class="form-control" type="text" (blur)="searchConditions()" placeholder="对方信息" [(ngModel)]="searchModel.keyword"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                </div>
+                <div class="col-lg-2" lockTax>
+                    <ng-select [(ngModel)]="defaultTaxRate" [items]="taxRateList" (selected)="selected($event,'taxRate')" [isSubject]='false'
+                        [allowClear]="true" placeholder="税率" [ngModelOptions]="{standalone: true}"></ng-select>
+                </div>
+                <div class="col-lg-2" lockTax>
+
+                </div>
+            </div>
+        </div>
+        <div class="row" lockTax>
+            <div class="col-lg-12 searchArea">
+                <div class="col-lg-2">
+                    <input class="form-control" type="text" (blur)="searchConditions()" placeholder="发票号" [(ngModel)]="searchModel.invoiceNumber"
+                        [ngModelOptions]="{standalone: true}">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-1">标签搜索</div>
+                <div class="col-sm-10">
+                    <div *ngIf="tagLists">
+                        <div *ngFor="let item of tagList; let i=index">
+                            <div class="search-addTagSize" [ngClass]="{'search-clickStyle': !item.checked}" *ngIf="tagList">
+                                <div class="search-addTagStyle" (click)="search_tagSearch(item, i)">
+                                    <span class="search-addTagInfo fontStyle fontColor">{{item.value}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-sm-1 search-displayTag" *ngIf="displayTags && tagLists.length > 10" (click)="search_tagToggle(true)">
+                            更多<i class="fa fa-angle-down faPadding" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-lg-1 col-sm-1 search-displayTag" *ngIf="!displayTags" (click)="search_tagToggle(false)">
+                            收起<i class="fa fa-angle-up faPadding" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <span class="clear">
+                    <div class="pull-left" (click)="clear()">
+                        <label>清空搜索条件</label>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="list">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered  table-striped table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th>记账日期</th>
+                            <th lockTax>发票类型</th>
+                            <th>类别</th>
+                            <th>对方信息</th>
+                            <th *ngIf="!isGeneralTaxpayer">部门性质</th>
+                            <th lockTax>税率</th>
+                            <th lockTax>进项税类别</th>
+                            <th lockTax>发票号</th>
+                            <th>价税合计金额</th>
+                            <th>单号</th>
+                            <th roles class="text-rigth">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="inputInvoiceItemList.length === 0">
+                        <tr>
+                            <td colspan="10">
+                                <div class="noData">没有数据</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="inputInvoiceItemList.length !== 0">
+                        <tr *ngFor="let item of inputInvoiceItemList; let i=index">
+                            <td>{{item.invoiceModel.recordDate | date:'yyyy-MM-dd'}}</td>
+                            <td lockTax>{{item.invoiceModel.invoiceType.name}}</td>
+                            <td>{{item.businessCategory.name}}</td>
+                            <td>{{item.invoiceModel.contact.name}}</td>
+                            <td *ngIf="!isGeneralTaxpayer">{{item.departmentType.name}}</td>
+                            <td lockTax>{{item.taxRate}}</td>
+                            <td lockTax>{{item.inputTaxCategory?.name}}</td>
+                            <td lockTax>{{item.invoiceModel.invoiceNumber}}</td>
+                            <td class="text-right amount">{{item.amount | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="number"><a [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.invoiceModel.id }]">{{item.invoiceModel.number}}</a></td>
+                            <td>
+                                <button *ngIf="item.invoiceModel.attachmentModels.length>0" expire class="btn btn-secondary btn-circle-sm btn-green" data-toggle="tooltip"
+                                    data-placement="top" title="附件" [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.invoiceModel.id }]">
+                                    <i  class="fa fa-paperclip"></i>
+                                </button>
+                                <button expire class="btn btn-secondary btn-circle-sm" [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.invoiceModel.id }]"
+                                    placement="top" tooltip="编辑"><i class="fa fa-pencil"></i>
+                                </button>
+                                <button [disabled]="item.invoiceModel.lock || item.invoiceModel.sourceId !== null" expire class="btn btn-secondary btn-circle-sm"
+                                    (click)="openDeleteModal(item)" placement="top" tooltip="删除">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="balanceOfTotalAmount&&balanceOfTotalAmount[0].name!=='0'">
+                            <th *ngIf="!isGeneralTaxpayer" class="text-right" colspan="3"></th>
+                            <th *ngIf="isGeneralTaxpayer" class="text-right" colspan="6"></th>
+                            <th class="text-right">合计</th>
+                            <th class="text-right">{{balanceOfTotalAmount[0].name | currency:'CNY':true:'1.2-2'}}</th>
+                            <th class="text-right" colspan="2"></th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- <div class="row" *ngIf="balanceOfTotalAmount">
+            <div class="col-xs-12">
+                <span class="pull-left m-boldface">
+							合计：{{balanceOfTotalAmount[0].name | currency:'CNY':true:'1.2-2'}} 
+						</span>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-xs-12">
+                <pagination class="pagination-sm pull-right inline-block" (pageChanged)="pageChanged($event)" [totalItems]="recordCount"
+                    [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;"
+                    nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                </pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)"></confirm-widget>

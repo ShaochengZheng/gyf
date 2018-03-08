@@ -1,0 +1,317 @@
+@import "../../../../../styles/variables";
+
+/* 移除input框的上下箭头*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/*边框*/
+.frame {
+  background-color: $white;
+  padding: 15px 30px;
+  box-shadow: 3px 3px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/*时间选择器*/
+.calendar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+
+          -webkit-box-orient: vertical;
+
+          -webkit-box-direction: normal;
+
+              -ms-flex-direction: column;
+
+                  flex-direction: column;
+  label {
+    display: inline-block;
+    width: 70px;
+    line-height: 36px;
+    margin-bottom: 0;
+    color: $gray;
+  }
+  p-calendar {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    max-width: 300px;
+    position: relative;
+  }
+  .warn{
+    position: absolute;
+    bottom: -27px;
+    left: 90px;
+  }
+
+}
+
+/*账户列表*/
+
+.accountList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+
+          -webkit-box-orient: vertical;
+
+          -webkit-box-direction: normal;
+
+              -ms-flex-direction: column;
+
+                  flex-direction: column;
+  label {
+    display: block;
+    width: 70px;
+    line-height: 36px;
+    margin-bottom: 0;
+    color: $gray;
+  }
+  ng-select {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    max-width: 300px;
+  }
+
+}
+
+/*对方信息*/
+.contactList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+
+          -webkit-box-orient: vertical;
+
+          -webkit-box-direction: normal;
+
+              -ms-flex-direction: column;
+
+                  flex-direction: column;
+  label {
+    display: inline-block;
+    width: 70px;
+    line-height: 36px;
+    margin-bottom: 0;
+    color: $gray;
+  }
+  ng-select {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    max-width: 300px;
+  }
+
+}
+
+/*表格*/
+
+.detail-table {
+  thead {
+    tr {
+      th {
+        // text-align: center;
+        width: 200px;
+      }
+    }
+  }
+  tbody {
+    tr {
+      th {
+        width: 200px;
+      }
+      .operation {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        button {
+          margin: -2px 2px;
+        }
+
+      }
+    }
+  }
+
+}
+
+/*标签*/
+.label-tag {
+  margin-bottom: 15px;
+  .Tagbox {
+    display: inline-block;
+    .addTagSize {
+      display: inline-block;
+      margin-right: 10px;
+      margin-bottom: 6px;
+      div {
+        height: 32px;
+        max-width: 12em;
+        line-height: 32px;
+        background-color: #E9ECF3;
+        border-radius: 0 5px 5px 0;
+        border-left: 5px solid $dark-slate-gray;
+        span {
+          padding: 10px;
+          color: $dark-slate-gray;
+          line-height: 30px;
+          font-size: 14px;
+        }
+        i {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  .addTag{
+    display: inline-block;
+    line-height: 32px;
+    color: #1ccfc9;
+    font-size: 14px;
+
+    button{
+      border: none;
+      border-radius: 0;
+      background-color: #fff;
+      color: #1ccfc9;
+    }
+    span{
+      color: #9b9b9b;
+    }
+  }
+}
+.recommendTags{
+  margin-bottom: 15px;
+  span{
+    color: $dark-slate-gray;
+    line-height: 30px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  div{
+    display: inline-block;
+    button{
+      font-size: 14px;
+      padding: 5px;
+      border-radius: 0;
+      background-color: #E9ECF3;
+      color: $gray;
+      border: none;
+    }
+  }
+}
+
+/*上传票据*/
+.upload{
+  font-size: 14px;
+  margin-bottom: 15px;
+  label{
+    color: $navy;
+    cursor: pointer;
+    margin: 0 auto;
+  }
+  span{
+    color: $dark-slate-gray;
+  }
+  input{
+    display: none;
+  }
+}
+.preview{
+  position: relative;
+  display: inline-block;
+  i{
+    cursor: pointer;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 24px;
+  }
+  img{
+    cursor: pointer;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* 表格最后一行新增样式*/
+.newCoating{
+    position: relative;
+    opacity: .15;
+}
+.newCoating::before{
+    content: '';
+    position: absolute;
+    z-index: 99;
+    width: 97%;
+    height: 3.27em;
+    opacity: .2;
+}
+.newCoating:hover{
+    opacity: .5;
+    background: #fff;
+}
+.coating{
+    display: block;
+}
+
+/* 新增明细*/
+.newBtn{
+    font-size: 14px;
+    color: #1ccfc9;
+    text-decoration: underline;
+    padding-top: .9em;
+}
+.newBtn:hover{
+    cursor: pointer;
+}
+
+
+/* 账户互转*/
+    .form-inline {
+        .form-group {
+            display: block;
+            margin-bottom: 1.8rem;
+            .form-control {
+                width: 230px;
+            }
+            ng-select,
+            p-calendar {
+                width: 230px;
+                display: inline-block;
+            }
+        }
+    }
+
+/* 点击新建*/
+.newCoating {
+    position: relative;
+    opacity: .15;
+}
+
+/* 测试edge*/
+.newCoating::before {
+    content: '';
+    position: absolute;
+    z-index: 9;
+    width: 97%;
+    height: 3.27em;
+    opacity: .2;
+}
+
+.newCoating:hover {
+    opacity: .5;
+    background: #fff;
+    cursor: pointer;
+}

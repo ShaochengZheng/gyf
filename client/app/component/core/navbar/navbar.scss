@@ -1,0 +1,289 @@
+@import "../../../../styles/variables";
+
+$sidebar-text-color: $text-color-light;
+$nav-bg: #293846;
+$border-color: #979797;
+$border-radius: #a5a5a5;
+
+/* @nav-profil-pattern:    url("../images/header-profile.png") no-repeat;*/
+$nav-text-color: $text-color;
+
+.navbar {
+  display: block;
+  box-shadow: $basic-shadow;
+  border-radius: 0;
+}
+
+.nav > li > a {
+  color: $nav-text-color;
+  padding: 14px 20px 14px 25px;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  color: lighten($nav-text-color, 10%) !important;
+  text-decoration: none;
+}
+
+.support-menu {
+  margin: 10px;
+  font-size: 0.9em;
+}
+
+.btn-color {
+  background-color: #FFC700;
+  color: #656988
+
+}
+
+.btn-position {
+  margin-top: 5px;
+  margin-left: 20px;
+}
+
+.nav > li.update-notice {
+  a {
+    color: #656980;
+    .quick-entry {
+      width: 35px;
+      height: 35px;
+      color: #15cec8 !important;
+      margin: -10px 0px 0px -15px;
+      font-size: 35px;
+      line-height: 40px;
+      position: absolute;
+      .quick-entry-conter {
+        cursor: auto;
+        position: relative;
+        z-index: 11;
+        width: 386px;
+        line-height: 30px;
+        font-size: 14px;
+        background-color: #FFFFFF;
+        box-shadow: 0 3px 5px 0 rgba(102, 102, 102, 0.5);
+        border: solid 1px #f6f6f6;
+        left: -156px;
+        top: 10px;
+        padding: 40px 50px 5px 50px;
+        div {
+          text-align: left;
+          bottom: 15px;
+          p {
+            width: 58px;
+            height: 14px;
+            font-size: 14px;
+            font-weight: bold;
+            color: $text-color-dark;
+          }
+          span {
+            display: block;
+            button {
+              text-decoration: none;
+              width: 60px;
+              height: 14px;
+              font-size: 14px;
+
+              border: none;
+              background-color: white;
+              padding: 0;
+              color: $dark-slate-gray;
+              text-align: inherit;
+            }
+            button:hover {
+              color: $navy;
+            }
+          }
+        }
+      }
+    }
+  }
+  a:hover {
+    color: lighten(#FFC700, 10%) !important;
+    /* color: #1CCFC9 !important;*/
+  }
+  .text-color {
+    color: $navy !important;
+
+  }
+
+}
+
+@media screen and (max-width: 544px) {
+  .btn-position {
+    margin-top: 8px;
+    margin-left: 5px;
+  }
+  .support-tooltip {
+    right: -100px;
+  }
+  .purchase-button {
+    font-size: 0.6rem;
+  }
+}
+
+@media screen and (max-width: 361px) {
+  .pull-xs-left a {
+    font-size: 12px !important;
+  }
+
+  .pull-xs-right {
+    width: 150px;
+    max-width: 150px;
+    .first {
+      padding: 14px 0px 0px 0px !important;
+      width: 30px;
+      float: left !important;
+    }
+    .second {
+      padding-right: 0px !important;
+      padding-left: 15px !important;
+      float: right;
+    }
+    .user-info {
+      float: right;
+    }
+  }
+
+  .btn-position {
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+}
+
+.company-info {
+  ul {
+    box-shadow: 10px 9px 20px $border-radius;
+    border-color: $border-radius;
+  }
+  a:hover {
+    text-decoration: none !important;
+  }
+  list-style: none;
+  display: inline-block;
+  .nav-link:focus, .nav-link:hover {
+    color: darken($sidebar-text-color, 10%) !important;
+    text-decoration: none !important;
+  }
+  .nav-link {
+    color: darken($sidebar-text-color, 10%) !important;
+
+  }
+  .view-company-info-bb {
+    border-bottom: 1px solid $border-color;
+    padding: 10px;
+    a {
+      padding-left: 10px;
+    }
+  }
+  .view-company-info-bt {
+    border-top: 1px solid $border-color;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    a {
+      margin-left: -5px;
+      min-width: 130px;
+      color: #1ccfc9;
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      i {
+        width: 15px;
+        height: 24px;
+        margin: 0px;
+      }
+
+    }
+  }
+  .view-company-info-br {
+    border-right: 1px solid $border-color;
+  }
+  .view-company-list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 10px 20px !important;
+    white-space: nowrap;
+    color: $gray;
+    .view-company-selected {
+      color: $navy !important;
+      float: right;
+    }
+  }
+  .view-company-list:hover {
+    color: $white;
+  }
+  .text-color {
+    color: $navy !important;
+  }
+
+}
+
+.value {
+  color: $navy !important;
+  display: inline-block !important;
+}
+
+.new-letters {
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  left: 37px;
+  color: red;
+}
+
+.display {
+  padding-left: 40px !important;
+}
+
+
+
+
+.new-item-badge {
+    position: absolute;
+    background: red;
+    z-index: 999;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 70%;
+    padding: 2px 4px 0;
+    top: 0px;
+    left: 8px;
+    line-height: 1.4;
+    -webkit-transform: rotate(-7deg);
+    transform: rotate(-7deg);
+    -webkit-transition: 0 0.1s ease-in;
+    -webkit-transition: -webkit-transform 0.1s ease-in;
+    transition: -webkit-transform 0.1s ease-in;
+    transition: transform 0.1s ease-in;
+    transition: transform 0.1s ease-in, -webkit-transform 0.1s ease-in;
+    /* Most of this code is necessary to style and position the badge. */
+}
+.newM {
+    /* This is also necessary to position it. */
+    
+    position: relative;
+    list-style: none;
+}
+.newM:hover .new-item-badge {
+    transform: rotate(-14deg);
+    -ms-transform: rotate(-14deg);
+    -webkit-transform: rotate(-14deg);
+    /* This combined with the transition properties above rotates the badge on hover. */
+}
+.accountBook{
+  padding-left: 15px;
+  padding-top: 14px;
+  font-size: 18px;
+}
+.text-ellipsis{
+  font-size: 16px;
+}

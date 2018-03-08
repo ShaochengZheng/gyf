@@ -1,0 +1,71 @@
+<div class="row content-body">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="table-title">上传成功！请为您导入的银行流水 或对账单选择<管有方>系统匹配项目</div>
+    
+    <form role="form">
+        <div class="table-responsive">
+            <div class="table table-hover">
+                <thead class="col-xs-12">
+                    <tr class="col-xs-12">
+                        <th colspan="" class="col-sm-8 col-xs-6 text-xs-center">银行流水账记录</th>
+                        <th class="col-sm-4 col-xs-6 text-xs-center">匹配<管有方>项目</th>
+                    </tr>
+                </thead>
+                <tbody class="col-xs-12">
+                    <tr class="col-xs-12">
+                        <td class="col-sm-4 col-xs-6">导入的对账单表头</td>
+                        <td class="col-sm-4 hidden-xs-down">对账单第一行内容（示例）</td>
+                        <td colspan="" class="col-sm-4 col-xs-6 text-xs-center">对应的<管有方>对账单表头</td>
+                    </tr>
+                    <tr class="col-xs-12" *ngFor="let item of dataList">
+                        <td class="col-xs-4">{{item.columnName}}</td>
+                        <td class="col-xs-4"><p class="p_e"> {{item.columnData}}</p></td>
+                        
+                        <td class="col-xs-4" >
+                            <ng-select [allowClear]="true" [items]="columnsList" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.mappingColumnName"
+                                placeholder="请选择对账项">
+                            </ng-select>
+                        </td>     
+                    </tr>
+                </tbody>
+                <div class="btn-group col-sm-4 pull-right">
+                    <div class="col-xs-6">
+                        <button [disabled]="issave" class="btn btn-primary" (click)="save()">保存</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-secondary" (click)="import()">取消</button>
+                    </div>
+                </div>
+                <div class="btn-group col-sm-2 pull-right">{{savename}}</div>
+
+            </div>
+        </div>
+    </form>
+
+    <div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                    <h4 class="modal-title">匹配失败</h4>
+                </div>
+                <div class="modal-body">
+                    <p>糟糕！数据存在问题，无法成功存储～</p>
+                    <div>
+                        <download url="/api/v1/statement_attachment/{{statementAttachmentId}}/export" >下载表格查看错误原因</download>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button  [disabled]="issave"  type="button" class="btn btn-primary" (click)="reImport()">重新导入</button>
+                    <button type="button" class="btn btn-secondary" (click)="modal.hide()">取消</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

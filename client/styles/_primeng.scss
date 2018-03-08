@@ -1,0 +1,41 @@
+@import 'variables';
+// override primeng css
+.ui-shadow{
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.5);
+}
+
+.ui-state-highlight{
+    color: #fff;
+    border: none !important;
+    -webkit-border-radius: 5px!important;
+    border-radius: 5px !important;
+}
+
+.ui-growl-message-success{
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.ui-growl-message-info{
+    background-color: #2196f3;
+    border-color: #2196f3;
+}
+
+.ui-growl-message-warn{
+    background-color: #FFB300;
+    border-color: #FFB300;
+}
+
+.ui-growl-message-error{
+    background-color: #f44336;
+    border-color: #f44336;
+}
+.ui-progressbar{
+    border: solid 1px #40a5eb !important;
+    background-color: #82cbff !important;
+    border-radius: 4px 4px 4px 4px !important;
+}
+.ui-progressbar-value{
+    border: 0px none !important
+
+}

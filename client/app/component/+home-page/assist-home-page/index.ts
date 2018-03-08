@@ -1,0 +1,1 @@
+export * from './assist-home-page.component';

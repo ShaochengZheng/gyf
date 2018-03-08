@@ -1,0 +1,19 @@
+@media screen and (max-width: 768px) {
+  .widget-header {
+    margin: 10px !important;
+  }
+
+  .widget-form {
+    margin: 5px !important;
+    padding: 10px 0px 10px 0px !important;
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 5px 10px 10px 6px rgba(219, 219, 219, 0.5);
+  }
+
+  .alert-container {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

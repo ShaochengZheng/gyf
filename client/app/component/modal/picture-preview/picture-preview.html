@@ -1,0 +1,28 @@
+<div bsModal #modal="bs-modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                </div>
+                <!--blob预览-->
+                <div class="imgs" id="imgs" *ngIf="imageshow && issava">
+                </div>
+                <!--URL预览-->
+                <div class="issava" *ngIf="imageshow && !issava">
+                    <img [src]="imgurl" alt="预览图">
+                </div>
+            </div>
+        </div>
+        <div class="operation">
+            <i (click)="previous()" class="fa fa-angle-left fa-2x"></i>
+            <i (click)="next()" class="fa fa-angle-right fa-2x"></i>
+            <i (click)="downloadAttachment()" class="fa fa-download fa-2x"></i>
+            <i *ngIf="!disableDelete" (click)="Deleteattachment()" class="fa fa-trash-o fa-2x"></i>
+        </div>
+    </div>
+</div>

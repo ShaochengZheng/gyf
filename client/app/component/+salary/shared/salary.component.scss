@@ -1,0 +1,25 @@
+@import '../../../../styles/_variables.scss';
+.m-t-20 {
+    margin-top: 20px;
+}
+
+.m-l-15 {
+    margin-left: 15px;
+}
+
+.m-b-10 {
+    margin-bottom: 10px;
+}
+
+.m-r-15 {
+    margin-right: 15px;
+}
+
+.t-vertical-align {
+    vertical-align: middle;
+}
+
+.white-bg {
+    background-color: $white;
+    box-shadow: 1px 2px 4px rgba(113, 113, 113, 0.5);
+}

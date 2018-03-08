@@ -1,0 +1,89 @@
+<div class="navbar container-fluid row border-bottom white-bg" [hidden]="hiednav">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <nav role="navigation" class="navbar-static-top">
+        <!-- .navbar-header contains links seen on xs & sm screens -->
+        <div class="navbar-header">
+            <ul class="nav navbar-nav">
+            </ul>
+        </div>
+
+        <!-- this part is hidden for xs screens -->
+        <div class="navbar-collapse">
+            <!--公司列表-->
+            <span *ngIf="!hideLeft" class="nav navbar-nav pull-xs-left">
+                <li class="nav-item  company-info">
+                <a [routerLink]="['/app/company-list']" id="CompanyDropdownMenu"  class="nav-link ">
+                   <span class="text-ellipsis"
+                         title="{{authorizationService.Session?.currentAccount?.name}}"><i class="fa fa-arrow-left" aria-hidden="true"></i>{{authorizationService.Session?.currentAccount?.name}}</span>
+                </a>
+            <!--<ul class="dropdown-menu dropdown-menu-left">
+          
+                <li *ngFor="let company of companies" (click)="switchAccount(company)">
+                    <a class="dropdown-item view-company-list" title="{{company.name}}">
+                        <span class="view-company-name text-ellipsis">{{company.name}}</span>
+                        <i class="fa fa-check m-l-1 view-company-selected" *ngIf="authorizationService.Session?.currentAccount?.name === company.name"></i>
+                    </a>
+                </li>
+                <li class="view-company-info-bt">
+                    <a [routerLink]="['/create-ways']" *ngIf="session.role === 'Manger'" class="view-company-info-br"><i
+                            class="fa fa-plus m-l-1"></i> 创建账套</a>
+                    <a (click)="go()"><i class="fa fa-bars m-l-1"></i> 账套列表</a>
+                </li>
+            </ul>-->
+            </li>
+            </span>
+            <!--公司列表-->
+
+            <!--账套列表只显示标题-->
+            <h3 *ngIf="hideLeft" class="nav navbar-nav pull-xs-left">
+                <div class="accountBook">{{currentCompanyName}}</div>
+            </h3>
+            
+            <!--账套列表只显示标题-->
+            
+            <button class="navbar-toggler hidden-md-up p-t-1 pull-xs-left" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar"
+                aria-expanded="false" aria-label="Toggle navigation">
+                &#9776;
+            </button>
+            <!--右边-->
+            <ul class="nav navbar-nav pull-xs-right">
+
+
+                <!--站内信-->
+                <!--<li class="nav-item dropdown">
+                    <a class="nav-link first newM" (click)="displayLettersList()">
+                        <div *ngIf="hasNewLetter" class="new-item-badge new-letters">New</div>
+
+                        <i class="fa fa-envelope-o fa-lg m-l-1 doubletap" aria-hidden="true" placement="left"></i>
+                    </a>
+                </li>-->
+                <!--帮助中心-->
+                <li class="nav-item dropdown">
+                    <a id="helpCenter" href="http://support.guanplus.com/hc/" target="_blank" class="nav-link first">
+                        <i class="fa fa-question-circle m-l-1 " aria-hidden="true" placement="left" tooltip="帮助中心"></i>
+                    </a>
+                </li>
+                <!--用户名-->
+                <li class="nav-item dropdown user-info">
+                    <a id="personalInfoDropdownMenu" class="nav-link second" data-toggle="dropdown">
+                        <span class="text-ellipsis" title="{{session.user?.name}}">{{authorizationService.Session?.user?.name}}</span>
+                        <i class="fa fa-ellipsis-v m-l-1" aria-hidden="true"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <!--<li><a id="personalInfo" class="dropdown-item" [routerLink]="['/app/setting/personal-info']">
+                            &nbsp; 个人信息</a></li>-->
+
+                        <li><a id="personalInfo" class="dropdown-item" [routerLink]="" (click)="personalInfoShow()">
+                            &nbsp; 个人信息</a></li>
+                        <li><a class="dropdown-item" (click)="ExitSystem()"><i class="fa fa-sign-out"></i> &nbsp; 退出</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<!--个人信息-->
+<gpw-personal-info-modal #personalInfoModal #c="child"></gpw-personal-info-modal>

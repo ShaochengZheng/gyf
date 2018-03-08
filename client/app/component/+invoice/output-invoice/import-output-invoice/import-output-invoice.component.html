@@ -1,0 +1,91 @@
+<div class="content-header">
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-book fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">导入开票</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="content-body padding-content row">
+    <div class="col-sm-8 text-center" *ngIf="!showDetail">
+        <div class="import-guide">
+            <p>1.请上传您按照模版填写的表格（excel格式。如果是csv格式，另存为excel即可）&nbsp;&nbsp;<a *ngIf="!isGeneralTaxpayer" href="../../../../../../assets/template/开票导入.xlsx">点此下载模版</a>
+                <a *ngIf="isGeneralTaxpayer" href="../../../../../../assets/template/一般纳税人开票导入.xlsx">点此下载模版</a>
+            </p>
+            <p>2.上传成功后将自动跳转到开票列表页面</p>
+        </div>
+        <div class="choose-file">
+            <upload-attachments class="btn-upload" [url]="uploadExcel" [type]="type" (results)="resultExcel($event)" (success)="successExcel($event)"
+                [labelText]="labelText"></upload-attachments>
+        </div>
+        <div class="remark">
+            <p>备注：一次可以导入的上限为1000条（不含表头)</p>
+        </div>
+
+    </div>
+
+    <div class="col-sm-8" *ngIf="showDetail">
+        <div class=" detail">
+            <span class="text-xs-left col-sm-2 total">共{{outputInvoiceItemList.length}}条记录</span>
+            <span class="text-xs-center col-sm-8">文件名：{{currentItemName}}，导入时间：{{currentItemTime|date:'yyyy/MM/dd hh:mm:ss'}}</span>
+            <span class="text-xs-right col-sm-2 back" (click)="showImport()">收起</span>
+        </div>
+        <table class="table table-bordered  table-striped table-sm">
+            <thead class="thead-head">
+                <tr>
+                    <th>日期</th>
+                    <th class="">发票类型</th>
+                    <th class="">发票状态</th>
+                    <th class="">对方信息</th>
+                    <th class="">类别</th>
+                    <th class="">部门性质</th>
+                    <th class="">价税合计</th>
+                    <th class="">摘要</th>
+                </tr>
+            </thead>
+
+            <tbody *ngFor="let item of outputInvoiceItemList; let i=index">
+                <tr>
+                    <td>{{item.recordDate | date:'yyyy-MM-dd'}}</td>
+                    <td>{{item.invoiceType.name}}</td>
+                    <td>{{item.invoiceStatus.name}}</td>
+                    <td>{{item.contact.name}}</td>
+                    <td>{{item.invoiceItemModels[0].businessCategory?.name}}</td>
+                    <td>{{item.invoiceItemModels[0].departmentType?.name}}</td>
+                    <td>{{item.invoiceItemModels[0].amount}}</td>
+                    <td>{{item.invoiceItemModels[0].description}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <div class="col-sm-4 leftBorder">
+        <h6 class="import-head">历史导入记录：</h6>
+        <div class="list-history">
+            <table class="table table-bordered  table-striped table-sm">
+                <thead class="thead-head">
+                    <tr>
+                        <th>日期</th>
+                        <th class="">文件名</th>
+                        <th class="">操作</th>
+                    </tr>
+                </thead>
+
+                <tbody *ngFor="let item of historyFiles; let i=index">
+                    <tr (click)="goDetail(item)">
+                        <td>{{item.createdOn| date:'yyyy/MM/dd hh:mm:ss'}}</td>
+                        <td><span>{{item.fileName}}</span></td>
+                        <td><span class="delete" (click)="openDeleteModal(item)"> 删除</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)"></confirm-widget>

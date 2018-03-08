@@ -1,0 +1,137 @@
+<div class="alert-fixed" *ngFor="let alert of alerts">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="btn-group pull-left">
+            <!--<input type="checkbox" (click)="records()"> 只看明细-->
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class=" pull-right">
+            <button style="margin-right: 15px" lockIn expire class="btn btn-primary" (click)="import()">导入</button>
+
+            <button roles class="btn btn-primary" lockIn (click)="reconcile()" [disabled]="noDataList">
+                同步收支记录
+            </button>
+            <button class="btn btn-filter" (click)="toggleSifting()">
+                筛选&nbsp;<i class="fa fa-chevron-down"></i>
+            </button>
+
+        </div>
+    </div>
+</div>
+<div class="content-search" [hidden]="!isSifting ">
+    <form [formGroup]="searchForm">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xl-5 calendar">
+                <div class="form-inline">
+                    <div class="col-sm-12 form-group calendar-group">
+                        <p-calendar class="col-sm-5" [(ngModel)]="searchModel.startDate" (onSelect)="searchBlur(value)" placeholder="开始日期" inputStyleClass="dp-width-255 vertical-bsline"
+                            showAnim="slideDown" [showIcon]="true" #startDate="ngForm" [formControl]="searchForm.controls['startDate']"></p-calendar>
+                        <span class="slash"> - </span>
+                        <p-calendar class="col-sm-5 calendar2" [(ngModel)]="searchModel.endDate" (onSelect)="searchBlur(value)" placeholder="结束日期"
+                            minDate={{searchModel.startDate}} inputStyleClass="dp-width-255 vertical-bsline" showAnim="slideDown"
+                            [showIcon]="true" #endDate="ngForm" [formControl]="searchForm.controls['endDate']"></p-calendar>
+                    </div>
+                    <div *ngIf="(!startDate.control.hasError('required') && startDate.control.hasError('invalidDateFormat')) || (!endDate.control.hasError('required') && endDate.control.hasError('invalidDateFormat'))"
+                        class="col-sm-12 text-danger validation-message ">
+                        日期格式有误,应类似于2016-02-12
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="content-body">
+    <div class="row">
+        <div id="responsive-table" class="col-lg-12">
+            <table class="table table-striped table-hover table-sm" *ngIf="account.id">
+                <thead>
+                    <tr>
+                        <th class="text-center">日期</th>
+                        <th class="text-center">导入记录</th>
+                        <th roles class="text-xs-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of dataList">
+                    <tr *ngIf="item.statementRecords!=0">
+                        <td class="text-center" data-title="日期:">{{item.createdOn | date: 'yyyy-MM-dd'}}</td>
+                        <td class="text-center" data-title="导入记录:">成功导入{{item.bankStatementModels.length}}条记录</td>
+                        <td roles data-title="操作:" class="text-xs-center">
+                            <button class="btn btn-secondary btn-circle-sm btn-green" data-toggle="tooltip" placement="top" tooltip="查看详情" (click)="toggleSub(item)">
+                                    <i  class="fa fa-chevron-up" *ngIf="!item.showSubtable"></i>
+                                    <i  class="fa fa-chevron-down" *ngIf="item.showSubtable"></i>
+                                </button>
+                            <button class="btn btn-secondary btn-circle-sm" (click)="openDeleteModal(item,1)" data-toggle="tooltip" placement="top" tooltip="删除">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                        </td>
+                    </tr>
+                    <tr class="sub-tr" *ngIf="item.showSubtable">
+                        <td colspan="10">
+                            <table class="table table-sm" *ngIf="account.id">
+                                <thead class="thead-head">
+                                    <tr>
+                                        <th width="100">日期</th>
+                                        <th>摘要</th>
+                                        <th>对方户名</th>
+                                        <th>对方账户号</th>
+                                        <th class="text-xs-right">收入</th>
+                                        <th class="text-xs-right">支出</th>
+                                        <!--<th class="text-xs-right" width="80">状态</th>-->
+                                        <th roles class="text-xs-right" width="80">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let subItem of item.bankStatementModels">
+                                        <td data-title="日期:">{{subItem.accountTransDate | date: 'yyyy-MM-dd'}}</td>
+                                        <td data-title="摘要:">{{subItem.description || null}}</td>
+                                        <td data-title="对方户名:">{{subItem.toAccountName || null}}</td>
+                                        <td data-title="对方账户号:">{{subItem.toAccountNumber || null}}</td>
+                                        <td *ngIf="subItem.debit" data-title="收入:" class="text-xs-right" class="text-xs-right">{{subItem.debit | currency:'CNY':true:'1.2-2' }}</td>
+                                        <td *ngIf="!subItem.debit" data-title="收入:" class="text-xs-right" class="text-xs-right"></td>
+
+                                        <td *ngIf="subItem.credit" data-title="支出" class="text-xs-right" class="text-xs-right">{{subItem.credit | currency:'CNY':true:'1.2-2' }}</td>
+                                        <td *ngIf="!subItem.credit" data-title="支出" class="text-xs-right" class="text-xs-right"></td>
+
+                                        <!--<td data-title="状态:" class="text-xs-right">{{subItem.statementStatus.name}}</td>-->
+                                        <td roles data-title="操作:" class="text-xs-right">
+                                            <!--<button *ngIf="subItem.statementStatus.value === 'Statement'" class="btn btn-secondary btn-circle-sm btn-green" (click)="openCancelModal(subItem)" data-toggle="tooltip" placement="top" tooltip="撤销对账">
+                                                    <i  class="fa fa-reply"></i>
+                                                </button>-->
+                                            <button class="btn btn-secondary btn-circle-sm" (click)="openDeleteModal(subItem,2)" data-toggle="tooltip" placement="top"
+                                                tooltip="删除">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="noDataList">
+                    <tr>
+                        <td colspan="3">
+                            <div class="noData">您还没有导入过对账单，您可以到银行网站下载银行对账单或流水后导入！</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 totle">
+            <pagination class="pagination-sm pull-right inline-block" (pageChanged)="pageChanged($event)" [totalItems]="recordCount"
+                [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;"
+                nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+        </div>
+    </div>
+</div>
+<div class="content-footer"></div>
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)"></confirm-widget>
+<confirm-widget #cancelModal (confirmEvent)="cancel($event)" title="确定撤销"></confirm-widget>
+<confirm-widget #confirmWidget2 (confirmEvent)="delete2($event)"></confirm-widget>
+<!--<div>history!!!!!!!!!!</div>-->

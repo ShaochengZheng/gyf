@@ -1,0 +1,146 @@
+<div class="frame">
+    <!--弹窗提示-->
+    <div class="alert-fixed">
+        <alert  *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--选项-->
+    <div class="row">
+        <form role="form" [formGroup]="transactionForm" class="outcome-from">
+            <div class="col-sm-3">
+                <div class="form-group calendar">
+                    <label>记账日期</label>
+                    <p-calendar placeholder="交易时间" inputStyleClass="form-control  vertical-bsline" showAnim="slideDown" autocomplete="off" [showIcon]="true" [minDate]="minDate" [maxDate]="maxDate"
+                        [(ngModel)]="transaction.accountTransDate" #accountTransDate="ngForm" [ngClass]="{'has-danger':(!accountTransDate.valid && accountTransDate.touched)|| checkaccountTransDate}"
+                        [formControl]="transactionForm.controls['accountTransDate']" (onSelect)="transaction.accountTransDate=$event">
+                    </p-calendar>
+                    <!--<div *ngIf="accountTransDate.control.touched" class="warn">
+
+                        <div *ngIf="accountTransDate.control.hasError('required')" class="text-danger validation-message">
+                            请选择记账日期
+                        </div>
+                        <div *ngIf="accountTransDate.control.hasError('invalidDateFormat')" class="text-danger validation-message">
+                            日期格式有误,应类似于2016-02-12
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group accountList">
+                    <label>交易账户</label>
+                    <ng-select  [items]="accountList" textField="name" placeholder="交易账户" (selected)="setBankAccount($event)"
+                        [(ngModel)]="initBankAccount" #bankAccount="ngForm" [ngClass]="{'has-danger':(!bankAccount.valid && bankAccount.touched)|| checkbankAccount}"
+                        [formControl]="transactionForm.controls['bankAccount']">
+                    </ng-select>
+                    <!--<div *ngIf="!bankAccount.control.hasError('required') && !bankAccount.control.touched" class="text-danger validation-message">请选择交易账户
+                    </div>-->
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group contactList">
+                    <label>对方信息  </label>
+                    <ng-select [(ngModel)]="initContact" (selected)="setContact($event)" [items]="contactList" textField="name"
+                        placeholder="对方信息" #contact="ngForm" [ngClass]="{'has-danger':(!contact.valid  && contact.touched)|| checkcontact}"
+                        [isSubject]='false' [formControl]="transactionForm.controls['contact']">
+                    </ng-select>
+                    <!--<div *ngIf="contact.control.hasError('required') && contact.control.touched" class="text-danger validation-message">
+                        请选择对方信息
+                    </div>-->
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <!--表单-->
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-striped table-hover table-bordered table-sm detail-table">
+                <thead>
+                    <tr>
+                        <th>类别</th>
+                        <th>金额</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of transaction.accountTransLineItemModels;let i=index">
+                        <th data-title="类别">
+                            <!--<ng-select [(ngModel)]="item.businessCategory" [hasChildren]="true" (selected)="selected($event, i)" [allowClear]="true"
+                                [hasChildren]="true" 
+                                [items]="bussinessCategoryList">
+                            </ng-select>-->
+                            <ng-select [ngClass]="{'has-danger':item.needBusinessCategory }" [isSubject]='false' [items]="bussinessCategoryList" [allowClear]="true"
+                                (selected)="item.businessCategory.id=$event.id;item.businessCategory.name=$event.text" placeholder="类别">
+                            </ng-select>
+                        </th>
+
+                        <td data-title="金额">
+                            <bp-input class="text-right" (blur)="TotalAmount($event)" [ngClass]="{'has-danger':item.needAmount }" [isEditable]='true'
+                                [(ngModel)]="item.amount"></bp-input>
+                        </td>
+                        <td data-title="备注">
+                            <input [(ngModel)]="item.description" type="text" maxlength="50" class="form-control">
+                        </td>
+                        <td data-title="操作" class="operation">
+                            <button (click)="deleteItem(item,i)" class="btn btn-secondary btn-circle text-danger" placement="top" tooltip="删除">
+                            <i class="fa fa-trash fa-lg"></i>
+                        </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template [ngIf]="true">
+                    <tbody (click)="newItem()" tabindex="-1" class="newCoating">
+                        <tr>
+                            <th data-title="类别">
+                                <ng-select (selected)="selected($event, i)" [allowClear]="true" [hasChildren]="true" [items]="bussinessCategoryList">
+                                </ng-select>
+                            </th>
+
+                            <td data-title="金额">
+                                <bp-input class="text-right" [isEditable]='true' value="0.00"></bp-input>
+                            </td>
+                            <td data-title="备注">
+                                <input type="text" maxlength="50" class="form-control">
+                            </td>
+                            <td data-title="操作" class="operation">
+                                <button class="btn btn-secondary btn-circle text-danger" placement="top" tooltip="删除">
+                            <i class="fa fa-trash fa-lg"></i>
+                        </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-template>
+            </table>
+        </div>
+    </div>
+    <!--总计-->
+    <div class="row">
+        <div class="col-sm-6">
+            <a (click)="newItem()">新增明细</a>
+        </div>
+        <div class="col-sm-6">
+            <span class="pull-right">总计 <span class="color-green h2">{{theTotalAmount | currency:'CNY':true:'1.2-2':true}}</span></span>
+        </div>
+    </div>
+    <!--标签-->
+    <tag #tag [addTagList]="addTagList"></tag>
+    <!--上传票据-->
+    <upload-attachments [url]="upurl" [dataList]="dataList" (success)="upDataList($event)" (results)="result($event)" (preview)="preview($event)"
+        [type]="type"></upload-attachments>
+    <!--预览票据-->
+    <gpw-picture-preview-modal (update)="dataList=$event" type='account_transaction' #picturePreviewModal></gpw-picture-preview-modal>
+    <!--保存按钮-->
+    <div class="row">
+        <div class="col-md-12">
+            <span class="pull-right">
+                        <button (click)="validation(true)" class="btn btn-primary btn-again">保存并新增</button>
+                        <button (click)="validation(false)" class="btn btn-primary">保存</button>
+                        <button (click)="back()"class="btn">取消</button>
+            </span>
+        </div>
+
+    </div>
+
+
+    <gpw-contact-details-modal #contactDetailsModal (result)="result($event)" (success)="newItemAdded($event, 'contact')"></gpw-contact-details-modal>
+    <gpw-account-details-modal #accountDetailsModal (result)="result($event)" (success)="newItemAdded($event, 'account')"></gpw-account-details-modal>

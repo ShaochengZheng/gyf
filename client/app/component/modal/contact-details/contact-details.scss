@@ -1,0 +1,17 @@
+// @import "../../../../styles/variables";
+
+@media screen and (width:568px){
+    .modal-content{
+        width:500px;
+        margin-left:34px;
+    }
+}
+.showMore{
+    // color: $navy;
+    // cursor:pointer;
+    // text-decoration:underline;
+}
+
+.z-100 {
+    z-index: 100;
+}

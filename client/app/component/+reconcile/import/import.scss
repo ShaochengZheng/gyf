@@ -1,0 +1,136 @@
+$color-grey:#e4e4e4;
+.import-head {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.first {
+    color: #656980;
+}
+
+.dropdown-menu {
+    font-size: 14px;
+    background-color: #f6f7fa;
+    box-shadow: 2px 2px 3px 0 rgba(107, 107, 107, 0.5);
+    border: none;
+    .dropdown-divider {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .dropdown-item {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+hr {
+    border: 1px solid #eceeef;
+    margin: 20px 15px 40px;
+    display: block;
+    clear: both;
+}
+
+.alert {
+    margin: 0 15px 16px 15px;
+}
+
+.form-control-file {
+    display: inline-block;
+}
+
+.modal-dialog {
+    margin: 230px auto;
+}
+
+// .modal-lg{
+//     max-width: 1002px !important;
+//     .modal-header {
+//         padding: 0px;
+//     }
+.modal-content {
+    background-color: rgba(73, 76, 93, 0.64);
+    width: 820px;
+    padding: 0px;
+    .modal-header {
+        padding: 15px 15px 15px 0;
+        border-bottom: none;
+        .close {
+            color: #fff;
+            opacity: 0.8;
+        }
+        .close :focus,
+        .close:hover {
+            opacity: 0.9;
+        }
+    }
+    h5 {
+        color: #fff;
+    }
+    .modal-body {
+        padding: 0px;
+        .img-before {
+            width: 818px;
+            height: 672px;
+        }
+    }
+    .modal-fooder{
+        padding: 0px;
+    }
+}
+
+.import-guide {
+    padding-bottom: 30px;
+    margin: 0 auto;
+    width: 50%;
+    a {
+        color: #1CCFC9;
+    }
+    a:hover {
+        color: #138c88;
+        text-decoration: underline;
+    }
+}
+
+.remark {
+    margin-bottom: 40px;
+    p {
+        color: #9b9b9b;
+        text-align: center;
+    }
+}
+
+.choose-file {
+    text-align: center;
+    .btn-secondary {
+        color: #1CCFC9;
+        background-color: rgb(240, 240, 240);
+        border: none;
+    }
+    .btn-secondary:hover {
+        color: #1CCFC9 !important;
+        background-color: rgb(230, 230, 230) !important;
+        border: none !important;
+    }
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+        margin: 10px;
+        text-align: center;
+    }
+    .fileUpload input.upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 40px;
+        cursor: pointer;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+}
+
+p {
+    margin-top: 1rem;
+    font-size: 14px;
+}

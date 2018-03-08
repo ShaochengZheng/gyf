@@ -1,0 +1,36 @@
+<div class="content-header">
+        <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type"  dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa  fa-users fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">发票/抵扣/导入</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="content-body padding-content row">
+    <div class="col-sm-10">
+        <div class="import-guide text-center">
+            <p>1.请删除表头以上的多余信息，确保第一行是发票信息的表头（若有税务局下载的认证清单，可直接上传文件）&nbsp;&nbsp;<a href="../../../../../../assets/template/认证清单模板.xlsx">点此下载模版</a></p>
+            <p>2.请上传您按照模版填写的表格（excel格式。如果是csv格式，另存为excel即可）</p>
+        </div>
+        <div class="choose-file text-center">
+            <upload-attachments exportByOther="true" class="btn-upload" [url]="uploadExcel" [type]="type" (results)="resultExcel($event)" (success)="successExcel($event)"
+                [labelText]="labelText"></upload-attachments>
+        </div>
+        <div class="remark text-center">
+            <p>备注：一次可以导入的上限为1000条（不含表头)</p>
+        </div>
+        <hr />
+        <div class="text-xs-center">
+            <button type="button" class="btn btn-secondary" (click)="clickCancel()">放弃导入</button>
+        </div>
+    </div>
+</div>
+
+<confirm-widget #importDeduC (confirmEvent)="importDeduConfirm($event)"></confirm-widget>

@@ -1,0 +1,62 @@
+@import "../../../../../styles/variables";
+@import "../../../../../../node_modules/bootstrap/scss/bootstrap";
+
+.widget-container {
+    max-width: 800px;
+    padding-top: 150px;
+    .widget-form {
+      padding: 80px;
+      border-radius: 5px;
+      background-color: $white;
+      box-shadow: 5px 10px 10px 6px rgba(219, 219, 219, 0.5);
+      .col-form-label{
+          padding-top: 7px;
+      }
+      .form-group{
+          margin-bottom: 2rem;
+      }
+      .accountInfo{
+          margin-bottom: 2rem;
+          .form-group-static {
+            margin-bottom: 0;
+          }
+      }
+      .form-group:last-child{
+          margin-bottom: 0rem;
+      }
+    }
+    .form-container {
+      margin-top:30px;
+    }
+    button{
+        border-radius: 5px;
+        width: 100px;
+    }
+}
+.margin-t-12{
+    margin-top: 12px;
+} 
+.margin-b-10{
+    margin-bottom: -10px;
+}
+.color-navy{
+    color: $navy !important;
+}
+
+tbody {
+  box-shadow: none;
+}
+@media screen and (max-width: 768px) {
+    .widget-container {
+        padding: 30px;
+        .widget-form {
+            padding: 10px;
+            .col-form-label{
+                text-align: left !important;
+            }
+            table{
+                width: 100%;
+            }
+        }
+    }
+}

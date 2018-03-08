@@ -1,0 +1,60 @@
+<div class="content-header">
+    <p-growl [value]="msgs"></p-growl>
+    <div class="row row-xs-center">
+        <div class="col-sm-6">
+            <ol class="breadcrumb spec-title">
+                <li class="breadcrumb-null"><i class="fa fa-credit-card-alt fa-2x"></i></li>
+                <li class="breadcrumb-null page-title"><a expire  [routerLink]="['/app/account']">账户</a>/</li>
+                <li class="breadcrumb-null page-title "><span>{{account.accountName}}</span></li>
+                <!--<li  class="breadcrumb-have page-second-title" dropdown-toggle="true" data-toggle="dropdown">{{status}}</li>
+                <ul roles class="dropdown-menu dropdown-menu-right index-list">
+                    <li class="">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td *ngIf="showBank" [routerLink]="['/app/reconcile/detail/records', {id: account.id}]">查看银行对账单</td>
+
+                                    <td [routerLink]="['/app/reconcile/detail/transaction', {id: account.id}]">查看此账户的所有交易</td>
+                                </tr>
+                                <tr>
+                                    <td [routerLink]="['/app/transaction-details', {type: 'Income', accountId: account.id, accountName: account.accountName}]">记收入</td>
+                                    <td *ngIf="showBank" [routerLink]="['/app/reconcile/import', {id: account.id}]">导入银行对账单</td>
+                                </tr>
+                                <tr>
+                                    <td [routerLink]="['/app/transaction-details', {type: 'Outcome', accountId: account.id, accountName: account.accountName}]">记支出</td>
+                                    <td *ngIf="showBank" (click)="reconcile()">对账</td>
+                                </tr>
+                                <tr>
+                                    <td [routerLink]="['/app/transaction-details', {type: 'Transfer', accountId: account.id, accountName: account.accountName}]">记账户互转</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>-->
+            </ol>
+        </div>
+        <div class="col-sm-6">
+            <div class="">
+                <div class="ballance" *ngIf="showBank">
+                    <div *ngIf="false" class="col-sm-6 bank-ballance">、
+                        <div class="bank-num">{{reserveService.currentAccount.currentBankStatementBalance | currency:'CNY':true:'1.2-2'}}</div>
+                        <!--<div *ngIf="currentAccount.currentBankStatementBalance" class="bank-num">{{reserveService.currentAccount.currentBankStatementBalance | currency:'CNY':true:'1.2-2'}}</div>-->
+                        <!--<div *ngIf="!currentAccount.currentBankStatementBalance" class="bank-num">{{0 | currency:'CNY':true:'1.2-2'}}</div>-->
+                        <div>银行对账余额</div>
+                    </div>
+                    <div class="col-sm-6 guan-ballance">
+                        <div class="guan-num">{{reserveService.currentAccount.currentBalance || 0 | currency:'CNY':true:'1.2-2'}}</div>
+                        <div>
+                            <管有方>记录余额</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<router-outlet></router-outlet>
+
+<div class="content-footer"></div>

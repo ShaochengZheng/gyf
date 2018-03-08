@@ -1,0 +1,187 @@
+<div class="content-header">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-balance-scale fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">财务/凭证</li>
+                <li>
+                    <button class="pull-right btn btn-filter" (click)="toggleSifting()">筛选
+                        <!--<i *ngIf="!isSifting"  class="fa fa-chevron-down"></i><i *ngIf="isSifting"  class="fa fa-chevron-up"></i>-->
+                         <i [class.rotate]="!isSifting" [class.norotate]="isSifting"  class="fa fa-angle-down fa-lg angle-right" aria-hidden="true"></i>
+                    </button>
+                    <button lockIn style="margin-right: 15px" class="pull-right btn btn-primary" [routerLink]=" ['/app/finance/newvoucher']">新建凭证</button>
+                    <button style="margin-right: 15px" [disabled]="journalEntryList?.length<=0" class="pull-right btn btn-primary" (click)="export()">导出</button>
+                    <button style="margin-right: 15px" class="pull-right btn btn-primary" [disabled]="noDataDisplay" (click)="journalEntryOrder()">整理编号</button>
+                    <!--<button style="margin-right: 15px" class="pull-right btn btn-primary" (click)="sendWeChat()">发送</button>-->
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="content-body" *ngIf="isSifting">
+        <div class="row fontStyle m-t-1 ">
+            <span class="col-md-0 textH">会计期间:</span>
+            <div class="col-md-2" style="min-width:100px;padding-right:0px">
+                <ng-select placeholder="请选择年份" [items]="yearList" [(ngModel)]="defaultYear" (selected)="selected($event,'year')">
+                </ng-select>
+            </div>
+            <div class="col-md-2" style="min-width:100px;padding-right:0px">
+                <ng-select placeholder="请选择月份" [items]="monthList" [(ngModel)]="defaultMonth" (selected)="selected($event,'month')"></ng-select>
+            </div>
+            <span class="col-md-0 textH">关键字搜索:</span>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                    <input class="form-control" type="text" (blur)="searchConditions()" placeholder="凭证号／摘要" [(ngModel)]="searchModel.keyword" [ngModelOptions]="{standalone: true}">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="pull-left clear">
+                    <label (click)="clear()">清空搜索条件</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered  table-striped table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th rowspan="2">日期</th>
+                            <th rowspan="2">编号</th>
+                            <th rowspan="2">摘要</th>
+                            <th rowspan="2" width="200px">科目</th>
+                            <th colspan="2">金额</th>
+                            <th rowspan="2">制单人</th>
+                            <th rowspan="2">业务单号</th>
+                            <th rowspan="2">操作</th>
+                        </tr>
+                        <tr>
+                            <th>借</th>
+                            <th>贷</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="noDataDisplay">
+                        <tr>
+                            <td colspan="9">
+                                <div class="noData">没有数据</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngFor="let item of journalEntryList; let i=index">
+                        <tr>
+                            <td [attr.rowspan]="item.journalEntryLineItemModels.length + 1">{{item.accountedOn | date:'yyyy-MM-dd'}}</td>
+                            <td [attr.rowspan]="item.journalEntryLineItemModels.length + 1">记-{{item.journalEntryNumber}}</td>
+                            <td class="text-left">{{item.journalEntryLineItemModels[0].summary}}</td>
+                            <td class="text-left">{{item.journalEntryLineItemModels[0].account.id}}—{{item.journalEntryLineItemModels[0].account.name}}</td>
+                            <td class="text-right amount">{{item.journalEntryLineItemModels[0].debitAmount | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-right amount">{{item.journalEntryLineItemModels[0].creditAmount | currency:'CNY':true:'1.2-2'}}</td>
+                            <td [attr.rowspan]="item.journalEntryLineItemModels.length + 1">{{item.user.name}}</td>
+                            <td [attr.rowspan]="item.journalEntryLineItemModels.length + 1" class="number"><a (click)="redirect(item.entityType,item.entityId)">{{item.entityNumber}}</a></td>
+                            <td [attr.rowspan]="item.journalEntryLineItemModels.length + 1">
+                                <button *ngIf="item.attachmentModels.length > 0" [disabled]="item.entityId !== null" class="btn btn-secondary btn-circle-sm btn-green" placement="top" tooltip="附件" [routerLink]=" ['/app/finance/editvoucher',{id: item.id }]">
+                                    <i  class="fa fa-paperclip"></i>
+                                </button>
+                                <!--<button *ngIf="item.entityId !== null || item.journalEntryType === 'CarryForward' || item.sourceType ==='AutomaticGeneration'" expire class="btn btn-secondary btn-circle-sm"
+                                    [routerLink]=" ['/app/finance/editvoucher',{id: item.id }]" placement="top" tooltip="查看"> <i class="fa fa-eye"></i></button>
+                                <button *ngIf="item.entityId === null && item.journalEntryType !== 'CarryForward' && item.sourceType !=='AutomaticGeneration'" expire class="btn btn-secondary btn-circle-sm"
+                                    [routerLink]=" ['/app/finance/editvoucher',{id: item.id }]" placement="top" tooltip="编辑"> <i class="fa fa-pencil"></i></button>
+                                <button *ngIf="item.entityId === null && item.journalEntryType !== 'CarryForward' && item.sourceType !=='AutomaticGeneration'" expire class="btn btn-secondary btn-circle-sm"
+                                    (click)="openDeleteModal(item)" placement="top" tooltip="删除"><i class="fa fa-trash"></i></button>-->
+                                <button *ngIf="item.sourceType ==='AutomaticGeneration' || currentStatus !=='InProgress' || item.lock === true" class="btn btn-secondary btn-circle-sm" [routerLink]=" ['/app/finance/editvoucher', getRouteParams(item, i)]" placement="top" tooltip="查看"> <i class="fa fa-eye"></i></button>
+                                <button *ngIf="item.sourceType !=='AutomaticGeneration' && currentStatus ==='InProgress' && item.lock !== true" class="btn btn-secondary btn-circle-sm" [routerLink]=" ['/app/finance/editvoucher', getRouteParams(item, i)]" placement="top" tooltip="编辑"> <i class="fa fa-pencil"></i></button>
+                                <button *ngIf="item.sourceType !=='AutomaticGeneration' && currentStatus ==='InProgress' && item.lock !== true" class="btn btn-secondary btn-circle-sm" (click)="openDeleteModal(item)" placement="top" tooltip="删除"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <template [ngIf]="true" *ngFor="let itemLine of item.journalEntryLineItemModels; let y = index">
+                            <tr *ngIf="y > 0">
+                                <td class="text-left">{{itemLine.summary}}</td>
+                                <td class="text-left">{{itemLine.account.id}}—{{itemLine.account.name}}</td>
+                                <td class="text-right amount">{{itemLine.debitAmount | currency:'CNY':true:'1.2-2'}}</td>
+                                <td class="text-right amount">{{itemLine.creditAmount | currency:'CNY':true:'1.2-2'}}</td>
+                            </tr>
+                        </template>
+                        <template [ngIf]="true">
+                            <tr class="total">
+                                <td rowspan="4"></td>
+                                <td class="text-right" rowspan="4">合计：</td>
+                                <td rowspan="1" class="text-right amount">{{item.totalDebitAmount | currency:'CNY':true:'1.2-2'}}</td>
+                                <td rowspan="1" class="text-right amount">{{item.totalCreditAmount | currency:'CNY':true:'1.2-2'}}</td>
+                                <td rowspan="6"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <!--<div class="pull-left">
+                    累借：<span class="add-weight positive-text m-r-1">{{totalDebitAmount| currency:'CNY':true:'1.2-2'}}</span>累贷：
+                    <span class="add-weight negative-text">{{totalCreditAmount| currency:'CNY':true:'1.2-2'}}</span>
+                </div>-->
+                <pagination class="pagination-sm pull-right inline-block" (pageChanged)="pageChanged($event)" [totalItems]="recordCount" [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+                    firstText="&laquo;" lastText="&raquo;">
+                </pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)" (confirmEventCheck)="order($event)"></confirm-widget>
+<div id="printDiv" style="display:none;">
+    <ul style="padding-left:0px">
+        <div>
+            <h4 style="text-align:center">记账凭证</h4>
+            <p style="text-align:center">会计期间: {{accountPeriod.currentYear}}年{{accountPeriod.currentMonth}}月份</p>
+        </div>
+        <div style="padding-bottom:15px;margin-bottom:15px">
+            <span style="float:left">记字第{{voucherList.journalEntryNumber}}号</span>
+            <span style="float:right">记账日期:{{voucherList.accountedOn}}</span>
+        </div>
+        <table style="width:100%">
+            <thead>
+                <tr>
+                    <th style="text-align:center;border: 1px solid #e0e0e0;height:44px;">摘要</th>
+                    <th style="text-align:center;border: 1px solid #e0e0e0;">科目名称</th>
+                    <th style="text-align:center;border: 1px solid #e0e0e0;">对方信息</th>
+                    <th style="text-align:center;border: 1px solid #e0e0e0;">借方金额</th>
+                    <th style="text-align:center;border: 1px solid #e0e0e0;">贷方金额</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of voucherList.journalEntryLineItemModels; let i=index">
+                    <td data-title="摘要" style="text-align:center;border: 1px solid #e0e0e0;height:44px;">
+                        {{item.summary}}
+                    </td>
+                    <td data-title="科目名称" style="text-align:center;border: 1px solid #e0e0e0;">
+                        {{item.subjectName}}
+                    </td>
+                    <td data-title="对方信息" style="text-align:center;border: 1px solid #e0e0e0;">
+                        {{item.contactName}}
+                    </td>
+                    <td data-title="借方金额" style="text-align:center;border: 1px solid #e0e0e0;">
+                        {{item.debitAmount| currency:'CNY':true:'1.2-2'}}
+                    </td>
+                    <td data-title="贷方金额" style="text-align:center;border: 1px solid #e0e0e0;">
+                        {{item.creditAmount| currency:'CNY':true:'1.2-2'}}
+                    </td>
+                </tr>
+                <tr style="text-align:center;border: 1px solid #e0e0e0;">
+                    <td colspan="1" style="text-align:center;border: 1px solid #e0e0e0;height:44px;">合计</td>
+                    <td style="text-align:center;border: 1px solid #e0e0e0;" colspan="2">{{outputCharacters}}</td>
+                    <td style="text-align:center;border: 1px solid #e0e0e0;">{{debitTotal | currency:'CNY':true:'1.2-2'}}</td>
+                    <td style="text-align:center;border: 1px solid #e0e0e0;">{{creditTotal | currency:'CNY':true:'1.2-2'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="padding-top:15px;margin-top:15px">
+            <span style="float:left">附单据数量:{{voucherList.attachmentCount}}</span>
+            <span style="float:right">制单人:{{voucherList.user?.name}}</span>
+        </div>
+    </ul>
+</div>

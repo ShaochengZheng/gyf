@@ -1,0 +1,66 @@
+<div id="partnerDetailModal" bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" (onShown)="onShown()">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        <h4 class="modal-title">添加股东</h4>
+      </div>
+      <div class="modal-body clearfix">
+        <div class="alert-fixed" *ngFor="let alert of alerts">
+          <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+        </div>
+        <div>
+          <form class="col-sm-12" [formGroup]="partnerForm">
+            <div class="form-group row">
+              <label for="input-name" class="col-sm-3 form-control-label">名称</label>
+              <div class="col-xs-10" [ngClass]="{'has-danger':(!partnerModel.name && (submitAttempt||partnerModel.touched)&&clearHint)}">
+                <input #input autocomplete="off" id="input-name" type="text" class="form-control" placeholder="名称" [formControl]="partnerName"
+                  [(ngModel)]="partnerModel.name" onfocus="this.select()" maxlength="30">
+              </div>
+              <div *ngIf="!partnerModel.name && (submitAttempt||partnerName.touched)&&clearHint" class="text-danger validation-message col-sm-9 offset-sm-3">请填写名称</div>
+            </div>
+
+            <div class="form-group row">
+              <label for="submitAttempt" class="col-sm-3 form-control-label">实缴金额</label>
+              <div class="col-xs-10" [ngClass]="{'has-danger':(!partnerModel.amount && (submitAttempt||partnerModel.touched)&&clearHint)}">
+                <bp-input #input autocomplete="off" id="submitAttempt" placeholder="实缴金额" [formControl]="partnerAmount" decimal="2"
+                  [(ngModel)]="partnerModel.amount "  maxlength="30" (keypress)="keyPressHandler($event,'amount')" [isEditable]="true&&partnerModel.isEdit"
+                  type="text"></bp-input>
+              </div>
+              <div *ngIf="!partnerModel.amount && (submitAttempt||partnerAmount.touched)&&clearHint" class="text-danger validation-message col-sm-9 offset-sm-3">请填写实缴金额</div>
+              <div *ngIf="partnerModel.amount < 0" class="text-danger validation-message col-sm-9 offset-sm-3">请填写正确实缴金额</div>
+            </div>
+
+            <!--<div *ngIf="false" class="form-group row">
+              <label for="shareProp" class="col-sm-12 form-control-label">投资比例  ({{shareProp| number:'1.2-2'}}%)</label>
+              <div class="col-xs-10" [ngClass]="{'has-danger':(((!shareProp && (submitAttempt||partnerShare.touched)&&clearHint) ||wrongShare))}">
+                <input #share autocomplete="off" id="shareProp" class="form-control" placeholder="投资比例" [formControl]="partnerShare"
+                  [(ngModel)]="shareProp " maxlength="30" (keyup)="toDecimal(shareProp)" (keypress)="keyPressHandler($event,'share')"
+                  [disabled]="reconciledDisable || carryForwarddDisable" type="number" (blur)="shareCheck()">
+              </div>
+              <div *ngIf="(!shareProp && (submitAttempt||partnerShare.touched)&&clearHint) ||wrongShare || shareProp<0" class="text-danger validation-message col-sm-9 offset-sm-3">请填写正确投资比例(0<总投资比例<100.00%)</div>
+            </div>-->
+
+            <!--<div class="form-group row">
+                            <label for="input-partnerType" class="col-xs-8 col-sm-3 form-control-label">部门性质</label>
+                            <div class="col-xs-10">
+                                <ng-select id="input-partnerType" [allowClear]="true" [ngClass]="{'has-danger':(!partnerType.valid && (submitAttempt||partnerType.touched)&& clearHint&&partner.partnerType == null)}" [items]="partnerTypes" textField="text" [autocomplete]="true"
+                                    [formControl]="partnerType" [(ngModel)]="currentpartnerType" placeholder="请选择部门性质">
+                                </ng-select>
+                            </div>
+                            <div *ngIf="!partnerType.valid && (submitAttempt||partnerType.touched)&& clearHint" class="text-danger validation-message col-sm-9 offset-sm-3">请选择部门性质</div>
+                        </div>-->
+          </form>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button lockIn type="submit" class="btn btn-primary" (click)="save()">保存</button>
+        <button type="button" class="btn btn-secondary" (click)="close()">取消</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  (onShown)="onShown()">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        <h4 class="modal-title">记账户互转</h4>
+      </div>
+      <div class="modal-body clearfix">
+        <div class="alert-fixed" *ngFor="let alert of alerts">
+          <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true" class="z-100">{{ alert?.msg }}</alert>
+        </div>
+         <div class="myform" *ngIf="item">
+          <form (keypress)="keyPressHandler($event)">
+
+             <div class="form-group row">
+              <label for="date" class="col-xs-6 col-sm-2 form-control-label">发生日</label>
+              <div class="col-sm-4" [ngClass]="{'has-danger':!item.currentAccount.transationDateTime}">
+                <p-calendar placeholder="发生日期" showAnim="slideDown" defaultDate="date"  [minDate]="minDate"
+                 [maxDate]="maxDate" [(ngModel)]="item.currentAccount.transationDateTime" name="date" [showIcon]="true" >
+                </p-calendar>
+              </div>
+              <!-- <div *ngIf="clearHint && date.hasError('required')&&(date.touched||clearHint)" class="text-danger validation-message col-sm-10 offset-sm-2">请选择日期</div> -->
+            </div>
+            <div class="form-group row" *ngIf="accountList">
+              <label for="input-porperty" class="col-xs-6 col-sm-2 form-control-label">资金流向</label>
+              <div class="col-sm-4">
+                <ng-select [items]="accountList" name="district0" [(ngModel)]="item.currentAccount.bankAccount" placeholder="账户" (selected)="selected($event)"
+                  *ngIf="isOut" [disabled]="isOut">
+                </ng-select>
+                <ng-select [items]="accountList" name="district0" [(ngModel)]="item.currentAccount.toBankAccount" placeholder="账户" (selected)="selected($event)"
+                  *ngIf="!isOut" [disabled]="isOut">
+                </ng-select>
+              </div>
+              <div><i class="fa fa-long-arrow-right" style="margin-top:15px" aria-hidden="true"></i></div>
+              <div class="col-sm-4">
+                <ng-select [items]="accountList" name="district1" [(ngModel)]="item.currentAccount.toBankAccount" placeholder="账户" (selected)="selected($event)"
+                  *ngIf="isOut" [disabled]="!isOut">
+                </ng-select>
+                <ng-select [items]="accountList" name="district1" [(ngModel)]="item.currentAccount.bankAccount" placeholder="账户" (selected)="selected($event)"
+                  *ngIf="!isOut" [disabled]="!isOut">
+                </ng-select>
+              </div>
+            </div>
+            <div>
+              <div class="form-group row">
+                <label class="col-xs-6 col-sm-2 form-control-label">金额</label>
+                <div class="col-sm-4">
+                   {{item.currentAccount.amount | currency:'CNY':true:'1.2-2'}} 
+                  <!-- <bp-input #input autocomplete="off" id="submitAttempt" placeholder="金额" decimal="2"
+                  [(ngModel)]="item.currentAccount.amount "  maxlength="30" [isEditable]="false"
+                  type="text"></bp-input> -->
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="input" class="col-xs-6 col-sm-2 form-control-label">备注：</label>
+                <div class="col-sm-4">
+                  <input id="input" type="text" class="form-control" [(ngModel)]="item.currentAccount.summary" [ngModelOptions]="{standalone: true}"
+                    placeholder="备注">
+                </div>
+              </div>
+            </div> 
+          </form>
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button lockIn type="button" class="btn btn-primary" (click)="save()">保存</button>
+        <button type="button" class="btn btn-secondary" (click)="close()">取消</button>
+      </div>
+    </div>
+  </div>
+</div>

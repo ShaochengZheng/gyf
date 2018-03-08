@@ -1,0 +1,25 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{title}}</h4>
+      </div>
+      <div id="confirmText" class="modal-body">
+        <div>{{message}}</div>
+        <span [innerHtml]="htmlMessage"></span>
+        <div *ngIf="orderNumber" style="padding-top:25px;">
+          <input id="checkBox" class="checkbox-b" type="checkbox" (click)="action()"/><span>   重新整理凭证编号</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmButton" *ngIf="default || isSingle" type="button" class="btn btn-primary" data-dismiss="modal" (click)="save()">{{confirmText}}</button>
+        <!--适配三个按钮用的，用不到，不要传数据就行-->
+        <button id="otherButton" *ngIf="otherText" type="button" class="btn btn-default" (click)="otherClick()">{{otherText}}</button>
+        <button id="cancelButton" *ngIf="default" type="button" class="btn btn-default" (click)="modal.hide()">{{cancelText}}</button>
+      </div>
+    </div>
+  </div>
+</div>

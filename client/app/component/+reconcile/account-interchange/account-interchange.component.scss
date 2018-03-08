@@ -1,0 +1,84 @@
+    table {
+        border: solid 1px #dadada;
+        thead {
+            background-color: #f7fcff;
+            th {
+                text-align: center;
+            }
+            td {
+                width: 100%;
+            }
+        }
+        font-family: SourceHanSansCN-Normal;
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        color: #656980;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .table tbody>tr>td.vert-align {
+        vertical-align: middle;
+    }
+    
+    .form-control {
+        width: 120px;
+        display: inline-block;
+    }
+    
+    ng-select,
+    p-calendar {
+        width: 155px;
+        display: inline-block;
+    }
+    
+    .mid-width {
+        min-width: 120px;
+        width: 100%;
+    }
+    
+    .r-margin {
+        margin-right: 10px;
+    }
+    
+    .t-boder {
+        border-right: solid 1px #dadada;
+    }
+    
+    .title {
+        margin: 25px;
+    }
+    
+    .calendar {
+        width: 100%;
+        display: block;
+    }
+    
+    .content-body {
+        margin-bottom: 170px;
+    }
+    
+    .save {
+        padding: 20px 0;
+    }
+    
+    .clearPadding {
+        padding: 0px;
+    }
+
+.ng-sele-W {
+    width: 80%;
+}
+.p_e{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+        /* min-width: 100px; */
+    max-width: 200px;
+}
+.blank-style {
+    color: lightgray;
+    font-size: 13px;
+}

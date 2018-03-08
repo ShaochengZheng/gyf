@@ -1,0 +1,97 @@
+@import "../../../../styles/variables";
+.upload {
+    display: none;
+}
+
+.annex {
+    .preview {
+        margin: 15px;
+        position: relative;
+    }
+    div {
+        margin-top: 15px;
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
+
+.fileUpload {
+    span {
+        label {
+            color: $navy;
+        }
+        font-size: 14px;
+        span {
+            /* 非规范色*/
+            color: #9b9b9b;
+        }
+    }
+}
+
+.annex-preview {
+    cursor: pointer;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 24px;
+}
+
+.accountbook-style{
+     font-size: 18px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin: 0 auto;
+    padding: 30px;
+    color:white;
+
+    background: #15CEC8;
+
+}
+
+.ipicture-preview {
+    font-size: 18px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin: 0 auto;
+    padding: 30px;
+
+}
+
+// 字数少，所以padding 更大
+.large-padd {
+        background: #65C200;
+
+    padding-left: 45px;
+    padding-right: 48px;
+}
+
+.ipicture-preview-nocolor {
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.btn-select-file {
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    border: 1px solid $black;
+    font-size: 14px;
+    background-color: $white;
+    cursor: pointer;
+}
+
+// .annex{
+//     .preview{
+//         margin: 15px;
+//         position: relative;
+//     }
+//     div{
+//         margin-top: 15px;
+//         img{
+//                 max-width: 100%;
+//                 height: auto;
+//         }
+//     }
+// }

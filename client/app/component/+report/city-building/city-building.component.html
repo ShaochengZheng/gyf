@@ -1,0 +1,177 @@
+<div class="balance-sheet">
+    <!--<p>城建税 教育费附加</p>-->
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-12 col-sm-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null ">
+                        <i class="fa  fa-area-chart fa-2x"></i>
+                    </li>
+                    <li class="breadcrumb-null page-title">
+                        <a>
+                            <span>报表</span>
+                        </a>
+                        <span>/</span>
+                        <span>城建税，教育费附加，地方教育附加税（费）模拟申报表</span>
+                    </li>
+                    <!--<li>
+            <button style="margin-right: 15px" class="pull-right btn btn-primary">导出</button>
+          </li>-->
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+        </div>
+    </div>
+    <div class="content-body search" lockTax>
+        <div class="row">
+            <div class="col-lg-12 monthSearchStyle">
+                <template ngFor let-item [ngForOf]="monthList" let-index="index">
+          <button class="monthPic" [ngClass]="{'clickStyle': index === isChecked, 'noDataStyle': !item.isExist}" [disabled]="!item.isExist"
+            (click)="monthSearch(item, index)">
+                        <span [ngClass]="{'fontCenter': index < 9, 'doubleFont': index >= 9}">{{item.month}}</span>
+                    </button>
+          <div [ngClass]="{'monthLine': index < 11, 'noDataStyle': !item.isExist}"></div>
+        </template>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-body list">
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                <h3 class="text-center titleMargin">城建税，教育费附加，地方教育附加税（费）模拟申报表</h3>
+            </div>
+        </div>
+        <div class="line"></div>
+
+        <div class="line"></div>
+
+        <div class="row m-t-20">
+            <div class="col-lg-10 col-xs-12">
+                <span>税款所属期限：自{{cityModel.startTime | date:'yyyy-MM-dd'}} 至{{cityModel.endTime | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;填表日期：{{addDate}} &nbsp;&nbsp;&nbsp; </span>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+                <p class="text-right">金额单位：元至角分</p>
+            </div>
+        </div>
+
+        <div class="row m-t-10">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-sm">
+
+                    <tbody>
+                        <tr>
+                            <td class="text-left">纳税人识别号</td>
+                            <td class="text-left" colspan="11">{{cityModel.taxNumber}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">纳税人信息</td>
+                            <td class="text-center" colspan="2" nowrap="nowrap">名称</td>
+                            <td class="text-center" colspan="3" nowrap="nowrap">{{cityModel?.taxPlayer}}</td>
+                            <td class="text-center"></td>
+                            <td class="text-center" colspan="5">
+                                <div class="m-input-inline">
+                                    <div style="margin-right:15px;">
+                                        <input type="checkbox" name="company" value="1"><label> 单位</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="personal" value="2"> <label> 个人</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left"></td>
+                            <td class="text-center" colspan="2">登记注册类型</td>
+                            <td class="text-center" colspan="3"></td>
+                            <td class="text-center">所属行业</td>
+                            <td class="text-center" colspan="5">{{cityModel.industry?.name}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left"></td>
+                            <td class="text-center" colspan="2">身份证号码</td>
+                            <td class="text-center" colspan="3">{{cityModel.idNo}}</td>
+                            <td class="text-center">联系方式</td>
+                            <td class="text-center" colspan="5">{{cityModel.phone}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">税（费）种（税目）</td>
+                            <td class="text-center" colspan="5">计税（费）依据</td>
+                            <td class="text-center" rowspan="3">税率（征收率）</td>
+                            <td class="text-center" rowspan="3">本期应纳税（费）额</td>
+                            <td class="text-center" rowspan="2" colspan="2" nowrap="nowrap">本期减免税（费）额</td>
+                            <td class="text-center" rowspan="3">本期已缴税（费）额</td>
+                            <td class="text-center" rowspan="3">本期应补（退）税（费）额</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left"></td>
+                            <td class="text-center" colspan="2">增值税</td>
+                            <td class="text-center">消费税</td>
+                            <td class="text-center">营业税</td>
+                            <td class="text-center">合计</td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-left"></td>
+                            <td class="text-center" nowrap="nowrap">一般增值税</td>
+                            <td class="text-center" nowrap="nowrap">免抵税额</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="code-nowrap">
+                                <p>减免性质代码</p>
+                            </td>
+                            <td class="text-center" nowrap="nowrap">减免额</td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-left"></td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">2</td>
+                            <td class="text-center">3</td>
+                            <td class="text-center">4</td>
+                            <td class="text-center">5=1+2+3+4</td>
+                            <td class="text-center">6</td>
+                            <td class="text-center">7=5x6</td>
+                            <td class="text-center">8</td>
+                            <td class="text-center">9</td>
+                            <td class="text-center">10</td>
+                            <td class="text-center">11=7-9-10</td>
+                        </tr>
+                        <tr *ngFor="let item of cityModel.itemModels ;let i = index;">
+                            <td class="text-left">{{item.name}}</td>
+                            <td class="text-right">{{item.generalVAT | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.expessVAT | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.coumptionTax | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.businessTax | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.sum | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right" *ngIf="i!==cityModel.itemModels.length-1">{{ item.taxRate | percent}}</td>
+                            <td class="text-right" *ngIf="i===cityModel.itemModels.length-1">-</td>
+                            <td class="text-right">{{ item.dutiableTax | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.reductionCode | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.incomeRelief | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.paidTax | currency:'CNY':true:'1.2-2' }}</td>
+                            <td class="text-right">{{ item.amountOfDuePaid | currency:'CNY':true:'1.2-2' }}</td>
+                        </tr>
+                        <!--<tr>
+              <td class="text-left" nowrap="nowrap">合计</td>
+              <td class="text-center">{{ cityModel.sumGeneralVAT | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumExpessVAT | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumCoumptionTax | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumBusinessTax | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumSum | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumTaxRate | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumDutiableTax | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumReductionCode | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumIncomeRelief | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumPaidTax | currency:'CNY':true:'1.2-2' }}</td>
+              <td class="text-center">{{ cityModel.sumAmountOfDuePaid | currency:'CNY':true:'1.2-2' }}</td>
+            </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,112 @@
+<div class="content">
+  <div class="alert-fixed" *ngFor="let alert of alerts">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+  </div>
+
+  <div class="">
+
+    <div class="row row-xs-center ">
+      <div class=" m-t-r col-xs-12 col-sm-12">
+          <ol class="breadcrumb m-b-a">
+            <li class="breadcrumb-null "><i class="fa  fa-balance-scale fa-2x"></i></li>
+            <li class="breadcrumb-null page-title f-20">财务/总账</li>
+            <li>
+              <div class="btn-group pull-right">
+                <button id="" type="button" class="pull-right btn btn-filter" (click)="showScreenBoard()"> 筛选
+        <i [class.rotate]="isScreenShow" [class.norotate]="!isScreenShow"  class="fa fa-angle-down fa-lg angle-right" aria-hidden="true"></i></button>
+              </div>
+            </li>
+          <li>
+            <button style="margin-right: -15px" class="pull-right btn btn-primary" [disabled]="itemList.length===0" (click)="export()">导出</button>
+          </li>
+          </ol>
+      </div>
+    </div>
+
+    <div class="header t-m" *ngIf="!isScreenShow">
+      <form class="m-t-15">
+        <div class="row">
+          <div class="col-md-6 sel">
+            <span class=" col-md-2">科目:</span>
+            <div class="col-md-8 col-xs-8">
+              <ng-select name="accountCategoryId" class="selectStyle" placeholder="请选择科目" [(ngModel)]="defaultACI" [items]="itemList" [allowClear]="true"
+                (selected)="selected($event,'type')"></ng-select>
+            </div>
+          </div>
+
+          <div class="col-md-5 sel">
+            <span class="col-md-3 t-a-c">会计期间:</span>
+            <div class="col-md-8">
+              <ng-select name="year" class="selectStyle" placeholder="2017" [items]="yearList" [allowClear]="true" [(ngModel)]="defaultYear"
+                (selected)="selected($event,'year')"></ng-select>
+            </div>
+          </div>
+
+          <!--<div class="row thin col-md-3 m-t-15">
+            <div id="cashType" class="form-inline">
+              <div class="radio abc-radio">
+                <input id="All" type="radio" name="transactionType" value="" #all (click)="searchModel.isCurrentPeriod = true;search()" checked>
+                <label for="All">本期发生</label>
+              </div>
+              <div class="radio abc-radio">
+                <input id="Income" type="radio" name="transactionType" value="1" #small (click)="search.isCurrentPeriod = false ;search()">
+                <label for="Income">全年累计</label>
+              </div>
+            </div>
+          </div>-->
+        </div>
+      </form>
+    </div>
+
+    <div class="content-td content-list row m-t-1">
+      <div class="col-lg-12">
+        <table class="table table-bordered table-sm fontStyle">
+          <thead class="thead-head">
+            <tr>
+              <th class="text-center verticalAlign" rowspan="2">日期</th>
+              <th class="text-center verticalAlign" rowspan="2">摘要</th>
+              <th class="text-center">借</th>
+              <th class="text-center">贷</th>
+              <th class="text-center verticalAlign" rowspan="2">方向</th>
+              <th class="text-center verticalAlign" rowspan="2">期末余额</th>
+            </tr>
+            <!--<tr>
+              <th class="text-center">借</th>
+              <th class="text-center">贷</th>
+            </tr>-->
+          </thead>
+          <tbody>
+            <tr *ngFor='let item of dataList, let i = index'>
+              <td data-title="日期">
+                {{item.date}}</td>
+              <!--<td data-title="凭证号">
+                {{item.journalNumber}}</td>-->
+              <td data-title="摘要">
+                {{item.summary}}</td>
+              <!--<td data-title="对方科目">
+                {{item.accountCage}}</td>-->
+              <td data-title="本期发生-借" class="t-a-r">
+                &nbsp;{{item.debit | currency:'CNY':true:'1.2-2'}}</td>
+              <td data-title="本期发生-贷" class="t-a-r">
+                &nbsp;{{item.credit | currency:'CNY':true:'1.2-2'}}</td>
+              <td data-title="方向">
+                {{item.balanceText}}</td>
+              <td data-title="期末余额" class="t-a-r">
+                &nbsp;{{item.endingbalance | currency:'CNY':true:'1.2-2'}}</td>
+              <!--<td>
+                <button class="btn fontStyle newBtn" (click)="openAssignModal(1)">分配</button>
+              </td>-->
+            </tr>
+            <tr *ngIf="noData">
+              <td colspan="12">
+                <div class="noData">
+                  没有数据
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

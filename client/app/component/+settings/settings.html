@@ -1,0 +1,45 @@
+<div class="content-header">
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-cogs fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">设置</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+<ul id="settingItems" class="nav nav-tabs">
+
+
+    <li class="nav-item " *ngIf = "isManager || isAccount">
+        <a class="nav-link" [routerLink]="['/app/setting/company-billing']" routerLinkActive="active">账套信息</a>
+    </li>
+    <li class="nav-item " *ngIf = "isAssist || isAccount">
+        <a class="nav-link" [routerLink]="['contact']"  routerLinkActive="active">往来信息</a>
+    </li>
+     <li class="nav-item " *ngIf = "isManager">
+        <a class="nav-link" [routerLink]="['multi-user']"  routerLinkActive="active">用户管理</a>
+    </li>
+    <li class="nav-item " *ngIf = "isAccount">
+        <a class="nav-link" [routerLink]="['partner-set']"  routerLinkActive="active">股东</a>
+    </li>
+    <li class="nav-item " *ngIf = "isAccount">
+        <a class="nav-link" [routerLink]="['tax-rate']" routerLinkActive="active">税率设置</a>
+    </li>
+    <!--<li class="nav-item ">
+        <a class="nav-link" [routerLink]="['business-category']">收支类别</a>
+    </li>
+    <li class="nav-item ">
+        <a class="nav-link" [routerLink]="['department']">部门信息</a>
+    </li>-->
+
+</ul>
+<div class="tab-content border-tab">
+    <div class="tab-panel">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+<div class="content-footer"></div>

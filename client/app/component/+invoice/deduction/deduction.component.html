@@ -1,0 +1,291 @@
+<div class="content-header">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-file-text fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">发票／抵扣</li>
+                <li>
+                    <button style="margin-right: 15px" class="pull-right btn btn-primary" [disabled]="deduList.length===0" (click)="exportDeduction()">导出</button>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="square">
+        <div class="m-l-0" [class.active]="waitForDeduction" (click)="choose('Deducting')">
+            待抵扣清单
+            <p>{{headerList[0].count}}笔<span class="pull-right">{{headerList[0].taxAmount | currency:'CNY':true:'1.2-2'}}</span></p>
+            <p class="text-right">税额合计</p>
+        </div>
+        <div [class.active]="certificate" (click)="choose('Certification')">
+            认证清单
+            <p>{{headerList[1].count}}笔<span class="pull-right">{{headerList[1].taxAmount | currency:'CNY':true:'1.2-2'}}</span></p>
+            <p class="text-right">税额合计</p>
+        </div>
+        <div [class.active]="moveOut" (click)="choose('DeductingRollout')">
+            待抵扣转出清单
+            <p>{{headerList[2].count}}笔<span class="pull-right">{{headerList[2].taxAmount | currency:'CNY':true:'1.2-2'}}</span></p>
+            <p class="text-right">税额合计</p>
+        </div>
+    </div>
+    <div class="list" style="padding-top:15px">
+        <div class="row">
+            <div class="col-lg-12 searchArea">
+                <div class="col-lg-4 p-l-0">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                        <input class="form-control" type="text" placeholder="对方信息／发票号" (blur)="blurkeyWord(ture)" (keypress)="keyPressHandler($event)"
+                            [(ngModel)]="modal.keyword" [ngModelOptions]="{standalone: true}">
+                    </div>
+                </div>
+                <div class="col-lg-1"><a (click)="showDate()"><img style="width:48px" src="assets/images/dedu-search.png" ></a></div>
+                <div *ngIf="waitForDeduction" class="col-lg-7">
+                    <ol class="breadcrumb">
+                        <li>
+                            <button lockIn [disabled]="!deduSelect" style="margin-right: 15px" class="pull-right btn btn-primary" (click)="addToRollout()">加入待抵扣转出清单</button>
+                            <button lockIn [disabled]="!deduSelect" style="margin-right: 15px" class="pull-right btn btn-primary" (click)="addToCertification()">加入认证清单</button>
+                            <button lockIn style="margin-right: 15px" class="pull-right btn btn-primary" (click)="importRollout()">导入认证清单</button>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div *ngIf="isDate" class="row col-lg-12" style="margin-bottom: 15px">
+                <div class="col-lg-2">
+                    <ng-select name="year" class="selectStyle" placeholder="年" [items]="yearList" [allowClear]="false" [(ngModel)]="defaultYear"
+                        (selected)="selected($event,'year')">
+                    </ng-select>
+                </div>
+                <div style="margin-top: 15px">年</div>
+                <div class="col-lg-2">
+                    <ng-select name="year" class="selectStyle" placeholder="月" [items]="monthList" [allowClear]="true" [(ngModel)]="defaultMonth1"
+                        (selected)="selected($event,'month1')">
+                    </ng-select>
+                </div>
+                <div>_</div>
+                <div class="col-lg-2">
+                    <ng-select name="year" class="selectStyle" placeholder="月" [items]="monthList" [allowClear]="true" [(ngModel)]="defaultMonth2"
+                        (selected)="selected($event,'month2')">
+                    </ng-select>
+                </div>
+                <div class="col-lg-5">
+                    <a class="bot" [routerLink]="" (click)="clearSearch()">清空筛选条件</a>
+                </div>
+            </div>
+            <!---->
+            <!--待抵扣清单-->
+            <!---->
+            <div class="col-lg-12">
+                <table *ngIf="waitForDeduction" class="table table-bordered  table-striped table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th>选择</th>
+                            <th>记账日期</th>
+                            <!--<th>类别</th>-->
+                            <th>流水单号</th>
+                            <th>发票号码</th>
+                            <th>对方信息</th>
+                            <th>税率</th>
+                            <th>税额</th>
+                            <th>不含税金额</th>
+                            <th>价税合计</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="deduList.length === 0">
+                        <tr>
+                            <td colspan="9">
+                                <div class="noData">没有数据</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr *ngFor="let item of deduList;let i=index">
+                            <td>
+                                <input class="checkbox-b" type="checkbox" (click)="selectTarget(item, i)" />
+                            </td>
+                            <td>{{item.recordDate | date:'yyyy-MM-dd'}}</td>
+                            <!--<td>
+                                <div class="oneline" tooltip={{item.cage}}>
+                                    {{item.cage}}
+                                </div>
+                            </td>-->
+                            <td><a [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.id }]">{{item.number}}</a></td>
+                            <td><a [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.id }]">{{item.invoiceItemModels[0].invoiceNumber}}</a></td>
+                            <td>{{item.contact.name}}</td>
+                            <td>{{item.taxS}}</td>
+                            <td class="text-right">
+                                <div tooltip={{item.taxMString}}>
+                                    {{item.tax | currency:'CNY':true:'1.2-2'}}
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div tooltip={{item.expMString}}>
+                                    {{item.totalAmount - item.tax | currency:'CNY':true:'1.2-2'}}
+                                </div>
+                            </td>
+                            <td class="text-right">{{item.totalAmount | currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" colspan="6">总计:</th>
+                            <th class="text-right">{{currentTaxC | currency:'CNY':true:'1.2-2'}}</th>
+                            <th class="text-right">{{currentExpTax | currency:'CNY':true:'1.2-2'}}</th>
+                            <th class="text-right">{{currentCount | currency:'CNY':true:'1.2-2'}}</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <!---->
+                <!--认证清单-->
+                <!---->
+                <table *ngIf="certificate" class="table table-bordered  table-striped table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th>记账日期</th>
+                            <th>流水单号</th>
+                            <th>发票号码</th>
+                            <th>对方信息</th>
+                            <th>税率</th>
+                            <th>税额</th>
+                            <th>不含税金额</th>
+                            <th>价税合计</th>
+                            <th>认证期间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="deduList.length === 0">
+                        <tr>
+                            <td colspan="10">
+                                <div class="noData">没有数据</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr *ngFor="let item of deduList;let i=index">
+                            <td>{{item.recordDate | date:'yyyy-MM-dd'}}</td>
+                            <td><a [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.id }]">{{item.number}}</a></td>
+                            <td><a [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.id }]">{{item.invoiceItemModels[0].invoiceNumber}}</a></td>
+                            <td>{{item.contact.name}}</td>
+                            <td>{{item.taxS}}</td>
+                            <td class="text-right">
+                                <div tooltip={{item.taxMString}}>
+                                    {{item.tax | currency:'CNY':true:'1.2-2'}}
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div tooltip={{item.expMString}}>
+                                    {{item.totalAmount - item.tax | currency:'CNY':true:'1.2-2'}}
+                                </div>
+                            </td>
+                            <td class="text-right">{{item.totalAmount | currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{item.deductTime }}</td>
+                            <td>
+                                <button *ngIf="item.isTran && item.deductstatus ==='Certification'" lockIn class="btn btn-secondary btn-circle-sm btn-green"
+                                    (click)="deduMoveOut(item)" data-toggle="tooltip" data-placement="top" title="进项税转出">
+                                    <i  class="fa fa-sign-out"></i>
+                                </button>
+                                <span *ngIf="item.deductstatus ==='CertificationRollout'">已转出</span>
+                                <button *ngIf="item.deductstatus ==='CertificationRollout'" lockIn [disabled]="!item.isRevoked || item.isDele"   class="btn btn-secondary btn-circle-sm btn-green"
+                                    (click)="revokeDeduMoveOut(item)" data-toggle="tooltip" data-placement="top" title="撤销进项税转出">
+                                    <i  class="fa fa-reply"></i>
+                                </button>
+                                <button *ngIf="item.isDele&&item.deductstatus ==='Certification'"   [disabled]="item.isDis" lockIn class="btn btn-secondary btn-circle-sm btn-green" (click)="deduDelete(item,'Certification')"
+                                    data-toggle="tooltip" data-placement="top" title="删除">
+                                    <i  class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" colspan="5">总计:</th>
+                            <th class="text-right">{{currentTaxC | currency:'CNY':true:'1.2-2'}}</th>
+                            <th class="text-right">{{currentExpTax | currency:'CNY':true:'1.2-2'}}</th>
+                            <th class="text-right">{{currentCount | currency:'CNY':true:'1.2-2'}}</th>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!---->
+                <!--待抵扣转出清单-->
+                <!---->
+                <table *ngIf="moveOut" class="table table-bordered  table-striped table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th>记账日期</th>
+                            <th>流水单号</th>
+                            <th>发票号码</th>
+                            <th>对方信息</th>
+                            <th>税率</th>
+                            <th>税额</th>
+                            <th>不含税金额</th>
+                            <th>价税合计</th>
+                            <th>结转期间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="deduList.length === 0">
+                        <tr>
+                            <td colspan="10">
+                                <div class="noData">没有数据</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr *ngFor="let item of deduList;let i=index">
+                            <td>{{item.recordDate  | date:'yyyy-MM-dd'}}</td>
+                            <td><a [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.id }]">{{item.number}}</a></td>
+                            <td><a [routerLink]=" ['/app/invoice/tab/edit-input-invoice',{id: item.id }]">{{item.invoiceItemModels[0].invoiceNumber}}</a></td>
+                            <td>{{item.contact.name}}</td>
+                            <td>{{item.taxS}}</td>
+                            <td class="text-right">
+                                <div tooltip={{item.taxMString}}>
+                                    {{item.tax | currency:'CNY':true:'1.2-2'}}
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div tooltip={{item.expMString}}>
+                                    {{item.totalAmount - item.tax | currency:'CNY':true:'1.2-2'}}
+                                </div>
+                            </td>
+                            <td class="text-right">{{item.totalAmount | currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{item.deductTime }}</td>
+                            <td>
+                                <button lockIn class="btn btn-secondary btn-circle-sm btn-green" (click)="deduDelete(item,'DeductingRollout')" data-toggle="tooltip"
+                                    data-placement="top" title="删除">
+                                    <i  class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" colspan="5">总计:</th>
+                            <th class="text-right">{{currentTaxC | currency:'CNY':true:'1.2-2'}}</th>
+                            <th class="text-right">{{currentExpTax | currency:'CNY':true:'1.2-2'}}</th>
+                            <th class="text-right">{{currentCount | currency:'CNY':true:'1.2-2'}}</th>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-xs-12">
+                <span class="pull-left m-boldface">
+							合计：{{currentCount | currency:'CNY':true:'1.2-2'}}
+						</span>
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-xs-12">
+                <pagination class="pagination-sm pull-right inline-block" (pageChanged)="pageChanged($event)" [totalItems]="recordCount"
+                    [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;"
+                    nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                </pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<confirm-widget #addRollOutAlert (confirmEvent)="addRollOutA($event)"></confirm-widget>
+<confirm-widget #addDeductingConfirm (confirmEvent)="addDeductingC($event)"></confirm-widget>
+<confirm-widget #deleteConfirm (confirmEvent)="deleteCon($event)"></confirm-widget>
+<confirm-widget #certiMoveOut (confirmEvent)="certiMoveO($event)"></confirm-widget>

@@ -1,0 +1,259 @@
+<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div id="account-page" class="content-header m-t-r">
+    <div class="row row-xs-center">
+        <div class="col-xs-6 col-sm-6">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null p-0"><i class="p-0 fa fa-credit-card-alt fa-2x"></i></li>
+                <li class="breadcrumb-null page-title p-0"><span class="p-0 account-name">账户</span></li>
+            </ol>
+        </div>
+        <div roles class="col-xs-6 col-sm-6 add-account pull-right">
+            <button lockIn id="addAccountButton" expire [routerLink]="['/app/account']" type="button" class="btn btn-primary pull-right" (click)="newAccount()"><span class="fa fa-plus"></span> 添加
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row content-body m-t-0">
+    <ol *ngIf="!noDataList">
+        <li *ngFor="let item of dataList" class="account-list-panel effect col-xs-12">
+            <div [ngSwitch]="item.bankAccountType.value">
+                <div class="panel" *ngSwitchCase="'Bank'">
+                    <div class="panel-heading bank-color">
+                        <i class="fa fa-university fa-lg navbar-brand "></i>
+                        <span class="account-type">
+                            <a id="bankNameLink" expire
+                               [routerLink]="['/app/reconcile/detail/account-trans', {id: item.id, type: 'account'}]">{{item.accountName}}（账户类型：银行账户）</a></span>
+                        <span roles class="pull-right">
+                            <a id="bankEditLink" expire [routerLink]="['/app/account']" (click)="editAccount(item)"
+                               placement="top" tooltip="编辑">
+                                <i class="fa fa-pencil-square-o fa-2x"></i>
+                            </a>
+                            <a lockIn id="bankDeleteLink" expire [routerLink]="['/app/account']"
+                               (click)="openDeleteModal(item)" class="m-l-1" placement="top" tooltip="删除">
+                                <i class="fa fa-trash fa-2x" [ngClass]="{'i-disable': item.account !== null}"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="panel-body clearfix">
+                        <div class="col-xl-6">
+                            <ol>
+                                <li *ngIf="item.currentBalance" class="spec-title space-mon m-b-10">
+                                    <span class="margin-r-30 m-t">账户余额：</span><span class="h3  text-xs-left m-b-20">{{item.currentBalance | number:'1.2-2'}} </span>
+                                </li>
+                                 <li *ngIf="!item.currentBalance" class="spec-title space-mon m-b-10">
+                                    <span class="margin-r-30 m-t">账户余额：</span><span class="h3 text-xs-left m-b-20">{{item.currentBalance | number:'1.2-2'}} </span>
+                                </li> 
+                                <li ><label class="line"></label></li>
+                                <!--<li *ngIf="item.currentBankStatementBalance" class="spec-title space-mon">
+                                    <span class="margin-r-30">银行对账余额：</span><span class="h3  text-xs-left">{{item.currentBankStatementBalance | number:'1.2-2'}} </span>
+                                </li>
+                                <li *ngIf="!item.currentBankStatementBalance" class="spec-title space-mon">
+                                    <span class="margin-r-30">银行对账余额：</span><span class="h3 text-xs-left">{{0 | number:'1.2-2'}} </span>
+                                </li>-->
+                                <li class="t-r"><span class="margin-r-5 ">开户行：</span>
+                                    <span title="{{item.bankName}}{{item.subbranch}}">{{item.bankName}}{{item.subbranch}}</span>
+                                    <span *ngIf="!item.bankName&&!item.subbranch" class="warn">请完善账户信息</span>
+                                </li>
+                                <li class="t-r"><span class="margin-r-5 ">账户号：</span><span>{{item.accountNumber}}</span>
+                                    <span *ngIf="!item.accountNumber" class="warn">请完善账户信息</span>
+                                </li>
+                                <li class="t-r" *ngIf="item.noStatementAccunt > 0">
+                                    <a lockIn [routerLink]="['/app/reconcile/multi-sync',{ id: item.id }]">未同步银行对账单&#12288; {{item.noStatementAccunt}}笔</a>
+                                </li>
+                                <li class="t-r" *ngIf="item.noTransStatemenAccount > 0">
+                                    <a lockIn [routerLink]="['/app/reconcile/account-interchange',{ id: item.id }]">未匹配互转信息&#12288; {{item.noTransStatemenAccount}}笔</a>
+                                </li>
+                                <!-- <li><span class="margin-r-1 description-hyphens">备注：</span><span class="text-ellipsis" title="{{item.description}}">{{item.description}}</span>
+                                </li> -->
+                            </ol>
+                        </div>
+                        <div class="col-xl-3 b-r">
+                            <ol>
+                                <!--<li>管有方</li>-->
+                                <li  roles id="bankRecordIncome"><a lockIn expire [routerLink]="['/app/transaction/detail/Income', {type: 'Income', accountId: item.id, accountName: item.accountName}]">
+                                    记收入</a><span class="h3 margin-r-30">&nbsp;</span></li>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/Outcome', {type: 'Outcome', accountId: item.id, accountName: item.accountName}]">
+                                    记支出</a></li>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/accountTransfers', {type: 'Transfer', accountId: item.id, accountName: item.accountName}]">
+                                    记账户互转</a></li>
+                                <li><a expire [routerLink]="['/app/reconcile/detail/account-trans', {id: item.id, type: 'account'}]">查看该账户收支</a>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="col-xl-3 p-l-30">
+                            <ol>
+                                <!--<li>银行</li>-->
+                                <li roles><a lockIn expire [routerLink]="['/app/reconcile/import', {id: item.id, where: 'account'}]">导入银行对账单</a></li>
+
+                                <!--<li roles ><a expire
+                                       [routerLink]="['/app/reconcile/detail', {id: item.id, isReconcile: true}]">对账</a>
+                                </li>-->
+                                <li><a expire [routerLink]="['/app/reconcile/detail/history', {id: item.id, type: 'bill'}]">查看银行对账单</a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel" *ngSwitchCase="'WeChat'">
+                    <div class="panel-heading wechat-color">
+                        <i class="fa fa-weixin fa-lg navbar-brand "></i>
+                        <span class="account-type"><a expire
+                                                      [routerLink]="['/app/reconcile/detail/account-trans', {id: item.id, type: 'account', cash: 'cash'}]">{{item.accountName}}（账户类型：微信）</a></span>
+                        <span roles class="pull-right">
+                            <a expire [routerLink]="['/app/account']" (click)="editAccount(item)" placement="top"
+                               tooltip="编辑">
+                                <i class="fa fa-pencil-square-o fa-2x"></i>
+                            </a>
+                            <a lockIn expire [routerLink]="['/app/account']" (click)="openDeleteModal(item)" class="m-l-1"
+                               placement="top" tooltip="删除">
+                                <i class="fa fa-trash fa-2x" [ngClass]="{'i-disable': item.account !== null}"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="panel-body clearfix">
+                        <div class="col-xl-8">
+                            <ol>
+                                <li class="space-mon">
+                                    <span class="margin-r-30 m-t">当前余额：</span><span class="h3 positive-text">{{item.currentBalance | number:'1.2-2'}} </span>
+                                </li>
+                                <li ><label class="line"></label></li>
+                                <li class="t-r"><span class="margin-r-5">微信账号：</span><span>{{item.accountNumber}}</span>
+                                            <span *ngIf="!item.accountNumber" class="warn">请完善账户信息</span>
+                                </li>
+                                <li class="t-r"  *ngIf="item.description"><span class="margin-r-5">备&#12288;注：</span><span class="text-ellipsis" title="{{item.description}}">{{item.description}}</span>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="col-xl-4 ">
+                        <!--<div class="col-xl-3 b-r">-->
+                            <ol>
+                                <li  roles id="bankRecordIncome"><a lockIn expire [routerLink]="['/app/transaction/detail/Income', {type: 'Income', accountId: item.id, accountName: item.accountName}]">
+                                    记收入</a><span class="h3 margin-r-30">&nbsp;</span></li>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/Outcome', {type: 'Outcome', accountId: item.id, accountName: item.accountName}]">
+                                    记支出</a></li>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/accountTransfers', {type: 'Transfer', accountId: item.id, accountName: item.accountName}]">
+                                    记账户互转</a></li>
+                                <li><a expire [routerLink]="['/app/reconcile/detail/account-trans',{id: item.id, type: 'account', cash: 'cash'}]">查看该账户收支</a>
+                                </li>
+                            </ol>
+                        </div>
+                        <!--<div class="col-xl-3 p-l-30">
+                            <ol>
+                                <li roles><a expire [routerLink]="['/app/reconcile/import', {id: item.id,where: 'account'}]">导入微信对账单</a></li>
+
+                                <li><a expire [routerLink]="['/app/reconcile/detail', {id: item.id, type: 'bill'}]">查看微信对账单</a></li>
+                            </ol>
+                        </div>-->
+                    </div>
+                </div>
+
+                <div class="panel" *ngSwitchCase="'Cash'">
+                    <div class="panel-heading cash-color">
+                        <span class="fa fa-money fa-lg navbar-brand"></span>
+                        <span class="account-type"><a expire
+                                                      [routerLink]="['/app/reconcile/detail/account-trans',{id: item.id, type: 'account', cash: 'cash'}]">{{item.accountName}}（账户类型：现金）</a></span>
+                        <span roles class="pull-right">
+                            <a expire     (click)="editAccount(item)" placement="top"
+                               tooltip="编辑">
+                                <i class="fa fa-pencil-square-o fa-2x"></i>
+                            </a>
+                            <!--[routerLink]="['/app/account']" (click)="openDeleteModal(item)"-->
+                            <a lockIn expire  routerLinkActive="active"   class="m-l-1" 
+                               placement="top" tooltip="删除" >
+                                <i class="fa fa-trash fa-2x" [ngClass]="{'i-disable': item.account !== null}"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="panel-body clearfix">
+                        <div class="col-xl-8">
+                            <ol>
+                                <li class="space-mon">
+                                    <span class="margin-r-30 m-t">当前余额：</span><span class="h3 positive-text">{{item.currentBalance | number:'1.2-2'}} </span>
+                                </li>
+                                <li ><label class="line"></label></li>
+                                <li class="t-r" *ngIf="item.description"><span class="margin-r-5">备&#12288;&#12288;注：</span><span class="text-ellipsis" title="{{item.description}}">{{item.description}}</span>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="col-xl-4">
+                            <ol>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/Income', {type: 'Income', accountId: item.id, accountName: item.accountName}]">
+                                    记收入</a><span class="h3 margin-r-30">&nbsp;</span></li>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/Outcome', {type: 'Outcome', accountId: item.id, accountName: item.accountName}]">
+                                    记支出</a></li>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/accountTransfers', {type: 'Transfer', accountId: item.id, accountName: item.accountName}]">
+                                    记账户互转</a></li>
+                                <li><a expire [routerLink]="['/app/reconcile/detail/account-trans', {id: item.id, type: 'account', cash: 'cash'}]">查看该账户收支</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel" *ngSwitchCase="'Alipay'">
+                    <div class="panel-heading alipay-color">
+                        <span class="fa i_alipay fa-lg navbar-brand"></span>
+                        <span class="account-type"><a expire
+                                                      [routerLink]="['/app/reconcile/detail/account-trans', {id: item.id, type: 'account', cash: 'cash'}]">{{item.accountName}}（账户类型：支付宝）</a></span>
+                        <span roles class="pull-right">
+                            <a expire [routerLink]="['/app/account']" (click)="editAccount(item)" placement="top"
+                               tooltip="编辑">
+                                <i class="fa fa-pencil-square-o fa-2x"></i>
+                            </a>
+                            <a lockIn expire [routerLink]="['/app/account']" (click)="openDeleteModal(item)" class="m-l-1"
+                               placement="top" tooltip="删除">
+                                <i class="fa fa-trash fa-2x" [ngClass]="{'i-disable': item.account !== null}"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="panel-body clearfix">
+                        <div class="col-xl-8">
+                            <ol>
+                                <li class="space-mon">
+                                    <span class="margin-r-30 m-t">当前余额：</span><span class="h3 positive-text">{{item.currentBalance | number:'1.2-2'}} </span>
+                                </li>
+                                <li ><label class="line"></label></li>
+                                <li class="t-r"><span class="margin-r-5">支付宝号：</span>
+                                            <span>{{item.accountNumber}}</span>
+                                            <span *ngIf="!item.accountNumber" class="warn">请完善账户信息</span>
+                                </li>
+                                <li class="t-r" *ngIf="item.description" ><span class="margin-r-5">备&#12288;注：</span><span class="text-ellipsis" title="{{item.description}}">{{item.description}}</span>
+                                </li>
+                            </ol>
+                        </div>
+                       <!--<div class="col-xl-3 b-r">-->
+                       <div class="col-xl-4 ">
+                            <ol>
+                                <li  roles id="bankRecordIncome"><a lockIn expire [routerLink]="['/app/transaction/detail/Income', {type: 'Income', accountId: item.id, accountName: item.accountName}]">
+                                    记收入</a><span class="h3 margin-r-30">&nbsp;</span></li>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/Outcome', {type: 'Outcome', accountId: item.id, accountName: item.accountName}]">
+                                    记支出</a></li>
+                                <li  roles><a lockIn expire [routerLink]="['/app/transaction/detail/accountTransfers', {type: 'Transfer', accountId: item.id, accountName: item.accountName}]">
+                                    记账户互转</a></li>
+                                <li><a expire [routerLink]="['/app/reconcile/detail/account-trans', {id: item.id, type: 'account', cash: 'cash'}]">查看该账户收支</a>
+                                </li>
+                            </ol>
+                        </div>
+                        <!--<div class="col-xl-3 p-l-30">
+                            <ol>
+                                <li roles><a expire [routerLink]="['/app/reconcile/import', {id: item.id,where: 'account'}]">导入支付宝对账单</a></li>
+
+                                <li><a expire [routerLink]="['/app/reconcile/detail', {id: item.id, type: 'bill'}]">查看支付宝对账单</a></li>
+                            </ol>
+                        </div>-->
+                    </div>
+                </div>
+
+            </div>
+        </li>
+    </ol>
+    <div roles class="noData" *ngIf="noDataList">
+        您还没有任何账户！您可以通过左上角“添加”按钮增加银行卡 、微信、支付宝等类型的账户，并自定义该账户的基础信息！
+    </div>
+</div>
+<!--currency:'CNY':true:'1.2-2'-->
+<div class="content-footer"></div>
+<gpw-account-details-modal #accountDetailsModal (result)="result($event)"></gpw-account-details-modal>
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)" message="确定删除这个账户吗？"></confirm-widget>

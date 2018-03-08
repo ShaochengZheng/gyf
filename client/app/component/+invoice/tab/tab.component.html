@@ -1,0 +1,15 @@
+<ul class="nav nav-tabs">
+    <li *ngIf="new" class="nav-item" >
+        <a [routerLink]="['/app/invoice/tab/new-input-invoice']" routerLinkActive="active" class="nav-link" >记收票</a>
+    </li>
+    <li *ngIf="new" class="nav-item" >
+        <a [routerLink]="['/app/invoice/tab/new-output-invoice']" routerLinkActive="active" class="nav-link" >记开票</a>
+    </li>
+     <li *ngIf="editOutput" class="nav-item" >
+        <a [routerLink]="['/app/invoice/tab/edit-output-invoice']" routerLinkActive="active" class="nav-link" >编辑开票</a>
+    </li>
+    <li  *ngIf="editInput" class="nav-item" >
+        <a [routerLink]="['/app/invoice/tab/edit-input-invoice']" routerLinkActive="active" class="nav-link" >编辑收票</a>
+    </li>
+</ul>
+<router-outlet></router-outlet>

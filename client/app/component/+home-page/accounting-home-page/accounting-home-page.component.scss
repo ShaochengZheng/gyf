@@ -1,0 +1,109 @@
+@import "../../../../styles/variables";
+
+/* 外层盒子*/
+.box-body{
+  height: 88px;
+  white-space:nowrap;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+    margin: 15px 0;
+    padding: 15px;
+    background: $white;
+    border-radius: 0.2rem;
+    box-shadow: 3px 3px 4px 0 rgba(0, 0, 0, 0.1);
+}
+/* 文字居右*/
+.textCenterRight{
+	text-align: right;
+  direction: rtl;
+}
+/* 文字居右*/
+.textCenterRightlite{
+	text-align: right;
+}
+/* 文字居中*/
+.writingInTheMiddle{
+	text-align: center;
+}
+/* 右边框*/
+.rightMargin{
+	          border-right: 1px solid $Formheaderbordercolor;
+}
+/* 上下内边框*/
+.paddingUpAndDown{
+	padding: 5px 0;
+}
+/* 选择时间*/
+.toChooseTime{
+  padding: 0;
+	margin:10px 0;
+
+
+}
+/* 表格属性*/
+.accounting-home-page{
+	  margin: 15px 0;
+	  /*padding-bottom: 15px;*/
+  .table {
+    .thead-head {
+      background-color: $Auxiliarycolor;
+      tr{
+        th{
+          vertical-align:middle;
+          text-align: center;
+          border: 1px solid $Formheaderbordercolor;
+        }
+      }
+    }
+    tbody {
+      background-color: $white;
+      tr{
+        th td{
+          border: 1px solid $Formbordercolor;
+          vertical-align: middle;
+          padding: 0;
+          background-color: red;
+        }
+      }
+    }
+  }
+}
+/* 左边距 0*/
+.theLeftMargin0{
+  margin-left: 0;
+  padding-left: 0;
+}
+.title{
+  margin-top: 15px;
+    span{
+    display: inline-block;
+    margin-right: 15px;
+  }
+}
+.search{
+
+  div{  
+    margin: 15px 0;
+    background-color: white;
+    button{
+      margin-left: 15px;
+    }
+    label{
+      margin-top: 10px;
+    }
+    span{
+      color: $navy;
+      cursor: pointer;
+      float: right;
+      margin-top: 10px;
+    }
+  }
+}
+button:disabled{
+  background-color: $light-gray;
+  color: #2b2d2f;
+}
+.min95{
+  min-width: 95px;
+}

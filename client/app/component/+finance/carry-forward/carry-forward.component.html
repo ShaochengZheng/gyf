@@ -1,0 +1,55 @@
+<div class="carryForward">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-6 col-sm-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null "><i class="fa fa-anchor fa-2x"></i></li>
+                    <li class="breadcrumb-null page-title"><span>财务/结转</span></li>
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+            <div class="col-xs-12 col-md-3  pull-right">
+                <ng-select [allowClear]="true" [items]="yearList" (selected)="selectYear($event)" [(ngModel)]="currentSelect" placeholder='请选择年'></ng-select>
+            </div>
+
+        </div>
+        <p class="Prompt">注：一笔收支记录中包含多个明细项，合计算为一笔</p>
+    </div>
+
+    <div class="row">
+        <div *ngFor="let item of accountBookModel" class="col-lg-4 col-xs-12 " on-mouseenter="show(item)" on-mouseleave="hide()">
+            <div class="info-block">
+                <div class="carryForwardBox col-xs-12" (click)="goList(item)">
+                    <button expire roles *ngIf="item.status.value === 'Done'" class="lock">
+                    <i class="fa fa-lock"></i>
+                     </button>
+                    <img src="../../../../assets/images/carryForward.png" alt="carryForward">
+                    <div class="col-xs-12">
+                        <p class="time col-xs-4">
+                            {{item.accountPeriodMonth}}月份
+                        </p>
+                        <div *ngIf="item.status.value==='InProgress' || item.status.value==='CarryForward';else carryOver" class="state col-xs-12">
+                            <button class="btn btn-primary" [disabled]="item.status.value==='InProgress'" (click)="postingCarryForward(item)">结转</button>
+                        </div>
+
+                        <ng-template #carryOver>
+                            <p class="state col-xs-12">
+                                状态：{{item.strStatus}}
+                            </p>
+                        </ng-template>
+                    </div>
+                </div>
+                <!--<div *ngIf="item.status.value!=='Done' && showBtn" class="btn-block">
+                    <button class="btn btn-primary" (click)="postingCarryForward(item)">{{item.btnStatus}}</button>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <!--<gpw-reverse-carry-forward #modal (confirmEvent)="isRevokeCarryForward()"></gpw-reverse-carry-forward>-->
+    <div *ngIf="noData" class="itemblank">
+        <p>您还没有任何收支记录可以用来结转，请先去记录收支信息！</p>
+    </div>
+</div>

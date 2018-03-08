@@ -1,0 +1,276 @@
+<div class="beginning-period">
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="content-header m-t-r">
+		<div class="row row-xs-center">
+			<div class="col-xs-12 col-sm-12">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-null "><i class="fa  fa-balance-scale fa-2x"></i></li>
+					<li class="breadcrumb-null page-title"><span>财务/期初账</span></li>
+				</ol>
+			</div>
+			<div class="col-md-3 col-xs-1"></div>
+		</div>
+	</div>
+    <div class="content-btn">
+        <div class="row fontStyle">
+            <div class="col-md-1 p-r-0">试算平衡：</div>
+            <div class="col-md-3 p-r-0">
+                <table class="table m-b-0 bg-c-white">
+                    <thead>
+                        <tr>
+                            <th class="text-center noBorder1" colspan="3">本年期初余额</th>
+                        </tr>
+                    </thead>
+                    <tbody class="noBorder1">
+                        <tr>
+                            <td>借方</td>
+                            <td class="text-xs-right">{{bpAmountBorrow | currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>贷方</td>
+                            <td class="text-xs-right">{{bpAmountLoan | currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                        </tr>
+                        <tr class="borderTop">
+                            <td>差额</td>
+                            <td class="text-xs-right" [ngClass]="{'redFont': bpAmountBorrow - bpAmountLoan !== 0}">
+                                {{(bpAmountBorrow - bpAmountLoan) | currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td *ngIf="bpAmountBorrow - bpAmountLoan === 0">试算平衡</td>
+                            <td *ngIf="bpAmountBorrow - bpAmountLoan !== 0" [ngClass]="{'redFont': bpAmountBorrow - bpAmountLoan !== 0}">试算不平衡</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3 p-r-0">
+                <table class="table m-b-0 bg-c-white">
+                    <thead>
+                        <tr>
+                            <th class="text-center noBorder1" colspan="3">累计发生额</th>
+                        </tr>
+                    </thead>
+                    <tbody class="noBorder1">
+                        <tr>
+                            <td>借方</td>
+                            <td class="text-xs-right">{{periodAmountBorrow | currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>贷方</td>
+                            <td class="text-xs-right">{{periodAmountLoan | currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                        </tr>
+                        <tr class="borderTop">
+                            <td>差额</td>
+                            <td class="text-xs-right" [ngClass]="{'redFont': periodAmountBorrow - periodAmountLoan !== 0}">
+                                {{(periodAmountBorrow - periodAmountLoan) | currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td *ngIf="periodAmountBorrow - periodAmountLoan === 0">试算平衡</td>
+                            <td *ngIf="periodAmountBorrow - periodAmountLoan !== 0" [ngClass]="{'redFont': periodAmountBorrow - periodAmountLoan !== 0}">试算不平衡</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3 p-r-0">
+                <table class="table m-b-0 bg-c-white">
+                    <thead>
+                        <tr>
+                            <th class="text-center noBorder1" colspan="3">期初余额</th>
+                        </tr>
+                    </thead>
+                    <tbody class="noBorder1">
+                        <tr>
+                            <td>借方</td>
+                            <td class="text-xs-right">{{periodEndAmountBorrow | currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>贷方</td>
+                            <td class="text-xs-right">{{periodEndAmountLoan | currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                        </tr>
+                        <tr class="borderTop">
+                            <td>差额</td>
+                            <td class="text-xs-right" [ngClass]="{'redFont': periodEndAmountBorrow - periodEndAmountLoan !== 0}">
+                                {{(periodEndAmountBorrow - periodEndAmountLoan) | currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td *ngIf="periodEndAmountBorrow - periodEndAmountLoan === 0">试算平衡</td>
+                            <td *ngIf="periodEndAmountBorrow - periodEndAmountLoan !== 0" [ngClass]="{'redFont': periodEndAmountBorrow - periodEndAmountLoan !== 0}">试算不平衡</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row fontStyle m-t-20">
+            <div class="col-lg-4 time-l-h" *ngIf="isEnableBP">启用账套日期：<span class="p-l-6">{{enableTime}}</span></div>
+            <div class="col-lg-4" *ngIf="!isEnableBP">
+                <div class="time-l-h" *ngIf="!isEdit">启用账套日期：<span class="p-l-6">{{enableTime | date: 'yyyy-MM'}}</span></div>
+                <form class="form-inline" *ngIf="isEdit">
+                    <div class="form-group">
+                        <label>启用账套日期：</label>
+                        <datepicker name="msDate" [(ngModel)]="enableTime" datepickerMode="month" minMode="month" (selectionDone)="selected($event)"
+                            class="dp-width-monthpicker">
+                        </datepicker>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <div class="btn-group pull-right" *ngIf="!isEnableBP">
+                    <button class="btn btn-primary margin-l" (click)="enableBP()" 
+                    [disabled]="isEdit && !isPosting">启用期初账</button>
+                </div>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-primary margin-l" *ngIf="!isEdit && !isPosting" (click)="edit();">编辑</button>
+                    <button class="btn btn-primary margin-l" *ngIf="isEdit" (click)="save();">保存</button>
+                </div>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-primary margin-l" *ngIf="!isPosting" [disabled]="isEdit" (click)="go()">导入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="row">
+			<div class="col-lg-12">
+                <!--防止下面的input框在，自动填充记住密码的数据 start-->
+                <form style="display:none">
+                    <input type="text"/>
+                </form>
+                <input type="password" style="width:0;height:0;float:left;visibility:hidden;display:none"/>
+                <!--防止下面的input框在，自动填充记住密码的数据 end-->
+                <table class="table table-bordered table-sm fontStyle">
+					<thead class="thead-head">
+						<tr>
+							<th class="text-center verticalAlign" rowspan="2">科目编码</th>
+							<th class="text-center verticalAlign" rowspan="2">科目名称</th>
+                            <!--<th class="text-center verticalAlign" rowspan="2">余额方向</th>-->
+							<th class="text-center " colspan="2">本年期初余额</th>
+							<th class="text-center " colspan="2">本年累计发生额</th>
+							<th class="text-center " colspan="2">期初余额</th>
+                            <th class="text-center verticalAlign" rowspan="2" *ngIf="!isEdit">操作</th>
+						</tr>
+                        <tr>
+                            <th class="text-center">借</th>
+                            <th class="text-center">贷</th>
+                            <th class="text-center">借</th>
+                            <th class="text-center">贷</th>
+                            <th class="text-center">借</th>
+                            <th class="text-center">贷</th>
+                        </tr>
+					</thead>
+					<tbody>
+                        <tr [ngClass]="{'first': (item.level === '1'), 'second':(item.level === '2'), 'third':(item.level === '3'), 'noAssgin':(item.isAssign === item.accountAssignType.value) }"
+                            [hidden]='item.show' *ngFor="let item of dataList; let i=index;trackBy:trackByFn;" [ngSwitch]="item.balanceDirection.value">
+                            <td>
+                                <span class="inline-block" [ngStyle]="{'margin-left.px':((item.level - 1) * 10)}"></span>
+                                <span (click)="expansion(item)">
+                                    <span>{{item.code}}</span>
+                                    <span *ngIf="item.hasChildren">
+                                        <span [class.rotate]="item.isExpansion" [class.norotate]="!item.isExpansion" class="fa fa-caret-down caretPointer"></span>
+                                    </span>
+                                </span>
+                            </td>
+                            <td>
+                                <span>{{item.name}}</span>
+                            </td>
+                            <template [ngSwitchCase]="'Debit'">
+                                <td *ngIf="!item.isProfitLoss">
+                                    <a tabindex="{{item.tabindex}}" href="javascritp:void(0);" class="bp-spanStyle" [ngClass]="{'bp-edit-spanStyle': (!item.hasChildren && isEdit)}" *ngIf="item.hasChildren || !item.isPDebit" (focus)="inputSwitch(item, 1)" (click)="inputSwitch(item, 1)">{{item.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</a>
+                                    <input id='{{inputId}}' autocomplete="false" *ngIf="!item.hasChildren && item.isPDebit" class="form-control inputStyle" 
+                                        [ngModel]="item.periodInitialDebit" (blur)="caculateSum(item.code, item, 1, $event)" (focus)="oldVal($event)" onfocus="this.select()" type="text">
+                                </td>
+                                <td *ngIf="item.isProfitLoss">
+                                    <span class="bp-spanStyle">{{item.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</span>
+                                </td>
+                                <td>
+                                    <span class="bp-spanStyle">{{item.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</span>
+                                </td>
+                            </template>
+                            <template [ngSwitchCase]="'Credit'">
+                                <td>
+                                    <span class="bp-spanStyle">{{item.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</span>
+                                </td>
+                                <td *ngIf="item.isProfitLoss">
+                                    <span class="bp-spanStyle">{{item.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</span>
+                                </td>
+                                <td *ngIf="!item.isProfitLoss">
+                                    <a tabindex="{{item.tabindex}}" href="javascritp:void(0);" class="bp-spanStyle" [ngClass]="{'bp-edit-spanStyle': (!item.hasChildren && isEdit)}" *ngIf="item.hasChildren || !item.isPCredit" (focus)="inputSwitch(item, 2)" (click)="inputSwitch(item, 2)">{{item.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</a>
+                                    <input id='{{inputId}}' autocomplete="false" *ngIf="!item.hasChildren && item.isPCredit" class="form-control inputStyle" 
+                                        [ngModel]="item.periodInitialCredit" (blur)="caculateSum(item.code, item, 2, $event)" (focus)="oldVal($event)" onfocus="this.select()" type="text">
+                                </td>
+                            </template>
+                            <template [ngIf]="!item.isProfitLoss">
+                                <td>
+                                    <a tabindex="{{item.tabindex}}" href="javascritp:void(0);" class="bp-spanStyle" [ngClass]="{'bp-edit-spanStyle': (!item.hasChildren && isEdit)}" *ngIf="item.hasChildren || !item.isDebit" (focus)="inputSwitch(item, 3)" (click)="inputSwitch(item, 3)">{{item.debit | currency:'CNY':true:'1.2-2'}}</a>
+                                    
+                                    <input id='{{inputId}}' *ngIf='!item.hasChildren && item.isDebit' class="form-control inputStyle"
+                                        [ngModel]="item.debit" (blur)="caculateSum(item.code, item, 3, $event)" (focus)="oldVal($event)" onfocus="this.select()" type="text">
+                                </td>
+                                <td>
+                                    <a tabindex="{{item.tabindex}}" href="javascritp:void(0);" class="bp-spanStyle" [ngClass]="{'bp-edit-spanStyle': (!item.hasChildren && isEdit)}" *ngIf="item.hasChildren || !item.isCredit" (focus)="inputSwitch(item, 4)" (click)="inputSwitch(item, 4)">{{item.credit | currency:'CNY':true:'1.2-2'}}</a>
+                                    
+                                    <input id='{{inputId}}' *ngIf='!item.hasChildren && item.isCredit' class="form-control inputStyle"
+                                        [ngModel]="item.credit | currency:'CNY':true:'1.2-2'" (blur)="caculateSum(item.code, item, 4, $event)" (focus)="oldVal($event)" onfocus="this.select()" type="text">
+                                </td>
+                            </template>
+                            <template [ngIf]="item.isProfitLoss">
+                                <td *ngIf="item.balanceDirection.value === 'Debit'">
+                                    <a tabindex="{{item.tabindex}}" href="javascritp:void(0);" class="bp-spanStyle" [ngClass]="{'bp-edit-spanStyle': (!item.hasChildren && isEdit)}" *ngIf="item.hasChildren || !item.isDebit" (focus)="inputSwitch(item, 3)" (click)="inputSwitch(item, 3)">{{item.debit | currency:'CNY':true:'1.2-2'}}</a>
+                                    
+                                    <input id='{{inputId}}' *ngIf='!item.hasChildren && item.isDebit' class="form-control inputStyle"
+                                        [ngModel]="item.debit" (blur)="caculateSum(item.code, item, 3, $event)" (focus)="oldVal($event)" onfocus="this.select()" type="text">
+                                </td>
+                                <td *ngIf="item.balanceDirection.value === 'Debit'">
+                                    <span class="bp-spanStyle">{{item.credit | currency:'CNY':true:'1.2-2'}}</span>
+                                </td>
+                                <td *ngIf="item.balanceDirection.value === 'Credit'">
+                                    <span class="bp-spanStyle">{{item.debit | currency:'CNY':true:'1.2-2'}}</span>
+                                </td>
+                                <td *ngIf="item.balanceDirection.value === 'Credit'">
+                                    <a tabindex="{{item.tabindex}}" href="javascritp:void(0);" class="bp-spanStyle" [ngClass]="{'bp-edit-spanStyle': (!item.hasChildren && isEdit)}" *ngIf="item.hasChildren || !item.isCredit" (focus)="inputSwitch(item, 4)" (click)="inputSwitch(item, 4)">{{item.credit | currency:'CNY':true:'1.2-2'}}</a>
+                                    
+                                    <input id='{{inputId}}' *ngIf='!item.hasChildren && item.isCredit' class="form-control inputStyle"
+                                        [ngModel]="item.credit | currency:'CNY':true:'1.2-2'" (blur)="caculateSum(item.code, item, 4, $event)" (focus)="oldVal($event)" onfocus="this.select()" type="text">
+                                </td>
+                            </template>
+                            <td>
+                                <span class="bp-spanStyle">{{item.periodEndDebit | currency:'CNY':true:'1.2-2'}}</span>
+                            </td>
+                            <td>
+                                <span class="bp-spanStyle">{{item.periodEndCredit | currency:'CNY':true:'1.2-2'}}</span>
+                            </td>
+                            <td *ngIf="!isEdit" class="text-center">
+                                <button *ngIf="item.accountAssignType.value === 'BankAccount'" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'Alipay'" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'WeChat'" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'Receivable'" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'Payable'" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'OtherReceivable'" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'OtherPayable'" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'Shareholder'" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'FixedAssets'" [disabled]="(item.balanceDirection.value === 'Debit' && item.periodEndDebit === 0) || (item.balanceDirection.value === 'Credit' && item.periodEndCredit === 0)" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                                <button *ngIf="item.accountAssignType.value === 'IntangibleAssets'" [disabled]="(item.balanceDirection.value === 'Debit' && item.periodEndDebit === 0) || (item.balanceDirection.value === 'Credit' && item.periodEndCredit === 0)" class="btn fontStyle newBtn" (click)="openAssignModal(item)">分配</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+    <div class="content-footer"></div>
+</div>
+
+<gpw-bp-addBankAccount #bPAddBankAccount (result)="result($event)" ></gpw-bp-addBankAccount>
+<gpw-bp-assets #bPAssets (result)="result($event)" ></gpw-bp-assets>
+<gpw-bp-shareholder #bPShareholder (result)="result($event)" ></gpw-bp-shareholder>
+<gpw-bp-contacts #bPContacts (result)="result($event)" ></gpw-bp-contacts>
+<confirm-widget #isSecondLoad (confirmEvent)="continueLoad($event)"></confirm-widget>
+<!--<confirm-widget #dateError (confirmEvent)="dateErrorPrompt($event)"></confirm-widget>-->
+<confirm-widget #dateError></confirm-widget>
+<confirm-widget #fixedValidaterError (confirmEvent)="fixedValidaterErrorPrompt($event)"></confirm-widget>

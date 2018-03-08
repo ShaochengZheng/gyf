@@ -1,0 +1,349 @@
+@import "../../../styles/variables";
+@media screen and (min-width:416px) {
+  ol {
+    width: 100%;
+    list-style-type: none;
+  }
+  .account-list-panel {
+    float: left;
+    padding: 0;
+    .panel {
+      border-radius: 10px;
+      border: solid 1px $border-color; //min-width: 350px;
+    }
+    .panel-heading {
+      padding: 10px 20px 10px 20px;
+      color: $white; // background-color: $dark-slate-gray;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      img {
+        width: 23px;
+        height: 28px;
+      }
+      a {
+        color: $white;
+        &:hover {
+          color: $navy;
+          text-decoration: none;
+        }
+      }
+    }
+    .panel-body {
+      padding: 20px;
+      border-top: 1px solid #dadada;
+      position: relative;
+      ol li {
+        padding: 5px 0 5px 0;
+      }
+    }
+    .bankName-hyphens {
+      letter-spacing: .5em;
+    }
+    .accountNumber-hyphens {
+      letter-spacing: 1em;
+    }
+    .description-hyphens {
+      letter-spacing: 2em;
+    }
+  }
+  .bank-color {
+    background-color: $banks-color;
+  }
+  .cash-color {
+    background-color: $cashs-color;
+  }
+  .alipay-color {
+    background-color: $alipays-color;
+  }
+  .wechat-color {
+    background-color: $wechats-color;
+  }
+  .margin-r-30 {
+    margin-right: 30px
+  }
+  .margin-r-22 {
+    margin-right: 22px
+  }
+  .margin-r-5 {
+    margin-right: 5px;
+  }
+  .margin-r-1 {
+    margin-right: -1px
+  }
+  ol {
+    padding: 0;
+    li {
+      padding: 15px;
+    }
+  }
+  .content-body {
+    //min-width: 400px;
+  }
+  .p-0 {
+    padding: 0px !important;
+  }
+  .account-name {
+    font-size: 20px !important;
+  }
+  .m-t-0 {
+    margin-top: 0px;
+  }
+  .m-t-r {
+    margin: 25px 0px;
+  }
+}
+
+;
+@media screen and (max-width:415px) {
+  i {
+    width: 25px;
+    height: 25px;
+  }
+  .account-type {
+    font-size: 16px;
+  }
+  ol {
+    width: 100%;
+    list-style-type: none;
+  }
+  .positive-text {
+    font-size: 20px;
+  }
+  .navbar-brand {
+    margin-right: 8px;
+  }
+  .m-l-1 {
+    margin-left: 5px !important;
+  }
+  .account-list-panel {
+    float: left;
+    padding: 0;
+    .panel {
+      border-radius: 10px;
+      border: solid 1px $border-color; //min-width: 350px;
+    }
+    .panel-heading {
+      padding: 10px 0px 10px 5px;
+      color: $white; // background-color: $dark-slate-gray;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      height: 60px;
+      img {
+        width: 23px;
+        height: 28px;
+      }
+      a {
+        color: $white;
+        &:hover {
+          color: $navy;
+          text-decoration: none;
+        }
+      }
+    }
+    .panel-body {
+      padding: 20px 10px;
+      border-top: 1px solid #dadada;
+      position: relative;
+      ol li {
+        padding: 5px 0 5px 0;
+      }
+    }
+  }
+  .bank-color {
+    background-color: $banks-color;
+  }
+  .cash-color {
+    background-color: $cashs-color;
+  }
+  .alipay-color {
+    background-color: $alipays-color;
+  }
+  .wechat-color {
+    background-color: $wechats-color;
+  }
+  .margin-r-30 {
+    margin-right: 30px
+  }
+  ol {
+    padding: 0;
+    li {
+      padding: 10px;
+    }
+  }
+  .content-body {
+    //min-width: 400px;
+  }
+  .p-0 {
+    padding: 0px !important;
+  }
+  .m-t-0 {
+    margin-top: 0px;
+    padding: 0px;
+  }
+  .m-t-r {
+    margin: 25px 0px;
+  }
+  .fa-2x {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (width:320px) {
+  i {
+    width: 25px;
+    height: 25px;
+  }
+  .account-type {
+    font-size: 14px;
+  }
+  ol {
+    width: 100%;
+    list-style-type: none;
+  }
+  .positive-text {
+    font-size: 20px;
+  }
+  .navbar-brand {
+    margin-right: 8px;
+  }
+  .m-l-1 {
+    margin-left: 5px !important;
+  }
+  .account-list-panel {
+    float: left;
+    padding: 0;
+    .panel {
+      border-radius: 10px;
+      border: solid 1px $border-color; //min-width: 350px;
+    }
+    .panel-heading {
+      padding: 10px 5px 10px 5px;
+      color: $white; // background-color: $dark-slate-gray;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      img {
+        width: 23px;
+        height: 28px;
+      }
+      a {
+        color: $white;
+        &:hover {
+          color: $navy;
+          text-decoration: none;
+        }
+      }
+    }
+    .panel-body {
+      padding: 20px 10px;
+      border-top: 1px solid #dadada;
+      position: relative;
+      ol li {
+        padding: 5px 0 5px 0;
+      }
+    }
+  }
+  .bank-color {
+    background-color: $banks-color;
+  }
+  .cash-color {
+    background-color: $cashs-color;
+  }
+  .alipay-color {
+    background-color: $alipays-color;
+  }
+  .wechat-color {
+    background-color: $wechats-color;
+  }
+  .margin-r-30 {
+    margin-right: 30px
+  }
+  ol {
+    padding: 0;
+    li {
+      padding: 10px;
+    }
+  }
+  .p-0 {
+    padding: 0px !important;
+  }
+  .m-t-0 {
+    margin-top: 0px;
+    padding: 0px;
+  }
+  .m-t-r {
+    margin: 25px 0px;
+  }
+  .fa-2x {
+    font-size: 1.5em;
+  }
+}
+
+.b-r {
+  padding-right: 0px;
+  border-right: 1px solid $border-color;
+}
+
+.p-l-30 {
+  padding-left: 30px;
+}
+
+.i_alipay {
+  margin-top: -0.15em;
+}
+
+.balance {
+  display: inline-block;
+  width: 40%;
+}
+
+.spec-title {
+  width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.space-mon {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: -10px;
+}
+
+.noData {
+  margin: 80px auto;
+  width: 55%;
+  text-align: center;
+}
+
+.i-disable {
+  color: white;
+  opacity: 0.3;
+}
+
+.line {
+  width: 70%;
+  height: 1px;
+  background-color: black;
+}
+
+.m-b-20 {
+  margin-bottom: -20px;
+}
+
+.m-b-10 {
+  margin-bottom: -10px;
+}
+
+.m-t {
+  margin-top: 10px;
+}
+
+.t-r {
+  text-align: right;
+  margin-right: 30%;
+}
+
+.warn{
+  color: lightgrey;
+}

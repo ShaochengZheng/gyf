@@ -1,0 +1,569 @@
+<div class="value-addes">
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-12 col-sm-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null ">
+                        <i class="fa  fa-area-chart fa-2x"></i>
+                    </li>
+                    <li class="breadcrumb-null page-title">
+                        <a>
+                            <span>报表</span>
+                        </a>
+                        <span>/</span>
+                        <span>增值税纳税模拟申报表附列资料(一)</span>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+        </div>
+    </div>
+    <div class="content-body search">
+        <div class="row">
+            <div class="col-lg-12 monthSearchStyle">
+                <template ngFor let-item [ngForOf]="monthList" let-index="index">
+                    <button class="monthPic" [ngClass]="{'clickStyle': index === isChecked, 'noDataStyle': !item.isExist}"
+                            [disabled]="!item.isExist" (click)="monthSearch(item, index)">
+                        <span [ngClass]="{'fontCenter': index < 9, 'doubleFont': index >= 9}">{{item.month}}</span>
+                    </button>
+                    <div [ngClass]="{'monthLine': index < 11, 'noDataStyle': !item.isExist}"></div>
+                </template>
+            </div>
+        </div>
+    </div>
+    <div class="content-body list">
+        <div class="row m-t-20">
+            <div class="col-lg-12 titleMargin">
+                <h3 class="text-center">增值税纳税模拟申报表附列资料（一）</h3>
+                <p class="text-center">（本期销售情况明细）</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="text-center">税款所属期:{{dataList.startTime| date:'yyyy-MM-dd'}}至{{dataList.endTime| date:'yyyy-MM-dd'}}</p>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row l-h-34">
+            <div class="col-lg-4 alignCenter ">
+                <p class="p-l-4">纳税人名称：{{dataList.taxpayerName}}</p>
+            </div>
+            <div class="col-lg-4 alignCenter text-center">
+            </div>
+            <div class="col-lg-4 alignCenter text-right">
+                <p class="p-l-4">金额单位：元至角分</p>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row m-t-20">
+            <div class="col-lg-12">
+                <div class="table-wrapper">
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead-head">
+                        <tr>
+                            <th colspan="4" rowspan="3" class="">项目及栏次</th>
+                            <th colspan="2" class="">开具增值税专用发票</th>
+                            <th colspan="2" class="">开具其他发票</th>
+                            <th colspan="2" class="">未开具发票</th>
+                            <th colspan="2" class="">纳税检查调整</th>
+                            <th colspan="3" class="">合计</th>
+                            <th rowspan="2" class="min-w-120">服务、不动产和无形资产扣除项目本期实际扣除金额</th>
+                            <th colspan="2" class="">扣除后</th>
+                        </tr>
+                        <tr>
+                            <th class="white-space-nowrap">销售额</th>
+                            <th class="min-w-80">销项(应纳)税额</th>
+                            <th class="white-space-nowrap">销售额</th>
+                            <th class="min-w-80">销项(应纳)税额</th>
+                            <th class="white-space-nowrap">销售额</th>
+                            <th class="min-w-80">销项(应纳)税额</th>
+                            <th class="white-space-nowrap">销售额</th>
+                            <th class="min-w-80">销项(应纳)税额</th>
+                            <th class="white-space-nowrap">销售额</th>
+                            <th class="min-w-80">销项(应纳)税额</th>
+                            <th class="white-space-nowrap">价税合计</th>
+                            <th class="min-w-80">含税(免税)销售额</th>
+                            <th class="min-w-80">销项(应纳)税额</th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                            <th>9=1+3+5+7</th>
+                            <th>10=2+4+6+8</th>
+                            <th>11=9+10</th>
+                            <th>12</th>
+                            <th>13=11-12</th>
+                            <th>14=13÷(100%+税率或征收率)×税率或征收率</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="dataList.details">
+                        <tr>
+                            <td rowspan="8" class="align-middle">
+                                一、一般计税方法计税
+                            </td>
+                            <td rowspan="6" class="align-middle">
+                                全部征税项目
+                            </td>
+                            <th>
+                                17%税率的货物及加工修理修配劳务
+                            </th>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                {{dataList.details[0].proInvoice.sales| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td>
+                                {{dataList.details[0].proInvoice.tax| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td>
+                                {{dataList.details[0].otherInvoice.sales| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td>
+                                {{dataList.details[0].otherInvoice.tax| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td>
+                                {{dataList.details[0].noInvoice.sales| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td>
+                                {{dataList.details[0].noInvoice.tax| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                {{dataList.details[0].total.sales| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td>
+                                {{dataList.details[0].total.tax| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td>
+                                --
+                            </td>
+                            <td>
+                                --
+                            </td>
+                            <td>
+                                --
+                            </td>
+                            <td>
+                                --
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>17%税率的服务、不动产和无形资产</th>
+                            <td>2</td>
+                            <td>{{dataList.details[1].proInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].proInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].otherInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].otherInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].noInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].noInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{dataList.details[1].total.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].total.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].allAccount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td>{{dataList.details[1].deduction.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[1].deduction.tax| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>13%税率</th>
+                            <td>3</td>
+                            <td>{{dataList.details[2].proInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].proInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].otherInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].otherInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].noInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].noInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{dataList.details[2].total.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[2].total.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>11%税率的货物及加工修理修配劳务</th>
+                            <td>4a</td>
+                            <td>{{dataList.details[3].proInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].proInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].otherInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].otherInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].noInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].noInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{dataList.details[3].total.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].total.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].allAccount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td>{{dataList.details[3].deduction.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[3].deduction.tax| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>11%税率的服务、不动产和无形资产</th>
+                            <td>4b</td>
+                            <td>{{dataList.details[4].proInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].proInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].otherInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].otherInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].noInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].noInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{dataList.details[4].total.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].total.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].allAccount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td>{{dataList.details[4].deduction.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[4].deduction.tax| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>6%税率</th>
+                            <td>5</td>
+                            <td>{{dataList.details[5].proInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].proInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].otherInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].otherInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].noInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].noInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{dataList.details[5].total.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].total.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].allAccount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td>{{dataList.details[5].deduction.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[5].deduction.tax| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="align-middle">其中：即征即退项目</td>
+                            <th>即征即退货物及加工修理修配劳务</th>
+                            <td>6</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>即征即退服务、不动产和无形资产</th>
+                            <td>7</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="11">二、简易计税方法计税</td>
+                            <td rowspan="9" class="align-middle">全部征税项目</td>
+                            <th>6%征收率</th>
+                            <td>8</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>5%征收率的货物及加工修理修配劳务</th>
+                            <td>9a</td>
+                            <td>{{dataList.details[9].proInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[9].proInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[9].otherInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[9].otherInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[9].noInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[9].noInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>{{dataList.details[9].total.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[9].total.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+
+                        <tr>
+                            <th>5%征收率的服务、不动产和无形资产</th>
+                            <td>9b</td>
+                            <td>{{dataList.details[10].proInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].proInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].otherInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].otherInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].noInvoice.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].noInvoice.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>{{dataList.details[10].total.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].total.tax| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].allAccount| currency:'CNY':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td>{{dataList.details[10].deduction.sales| currency:'CNY':true:'1.2-2'}}</td>
+                            <td>{{dataList.details[10].deduction.tax| currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>4%征收率</th>
+                            <td>10</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>3%征收率的货物及加工修理修配劳务</th>
+                            <td>11</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <td>3%征收率的服务、不动产和无形资产</td>
+                            <td>12</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>预征率 %</th>
+                            <td>13a</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>预征率 %</th>
+                            <td>13b</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>预征率 %</th>
+                            <td>13c</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="align-middle">其中：即征即退项目</td>
+                            <th>即征即退货物及加工修理修配劳务</th>
+                            <td>14</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th>即征即退服务、不动产和无形资产</th>
+                            <td>15</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">三、免抵退税</td>
+                            <th colspan="2">货物及加工修理修配劳务</th>
+                            <td>16</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">服务、不动产和无形资产</th>
+                            <td>17</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">四、免税</td>
+                            <th colspan="2">货物及加工修理修配劳务</th>
+                            <td>18</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">服务、不动产和无形资产</th>
+                            <td>19</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                            <td>--</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>--</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

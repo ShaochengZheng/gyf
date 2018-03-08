@@ -1,0 +1,21 @@
+<ul class="nav nav-tabs">
+    <li *ngIf="record" class="nav-item">
+        <a [routerLink]=" ['/app/transaction/detail/Outcome']" routerLinkActive="active" class="nav-link">记支出</a>
+    </li>
+    <li  *ngIf="editOutcome" class="nav-item">
+        <a [routerLink]=" ['/app/transaction/detail/editOutcome']" routerLinkActive="active" class="nav-link">编辑支出</a>
+    </li>
+    <li *ngIf="record" class="nav-item">
+        <a [routerLink]=" ['/app/transaction/detail/Income']" routerLinkActive="active" class="nav-link ">记收入</a>
+    </li>
+    <li *ngIf="editIncome"  class="nav-item">
+        <a [routerLink]=" ['/app/transaction/detail/editIncome']" routerLinkActive="active" class="nav-link">编辑收入</a>
+    </li>
+    <li *ngIf="record" class="nav-item">
+        <a [routerLink]=" ['/app/transaction/detail/accountTransfers']" routerLinkActive="active" class="nav-link">记账户互转</a>
+    </li>
+    <li *ngIf="editaccountTransfers" class="nav-item">
+        <a [routerLink]=" ['/app/transaction/detail/editaccountTransfers']" routerLinkActive="active" class="nav-link">编辑账户互转</a>
+    </li>
+</ul>
+<router-outlet></router-outlet>

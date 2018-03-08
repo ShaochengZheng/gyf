@@ -1,0 +1,70 @@
+<div tabindex="0"
+   *ngIf="multiple === false"
+   (keyup)="mainClick($event)"
+   [offClick]="clickedOutside"
+   class="ui-select-container dropdown open">
+  <div [ngClass]="{'ui-disabled': disabled}"></div>
+  <div class="ui-select-match"
+       *ngIf="!inputMode">
+    <span tabindex="-1"
+        class="btn btn-default btn-secondary form-control ui-select-toggle"
+        (keydown)="inputEvent($event)"
+        (keyup)="inputEvent($event, true)"
+        (click)="matchClick($event)"
+        style="outline: 0; width: 100%">
+      <span *ngIf="active.length <= 0" class="ui-select-placeholder pull-left text-muted">{{placeholder}}</span>
+      <span *ngIf="active.length > 0" class="ui-select-match-text pull-left text-truncate"
+            [ngClass]="{'ui-select-allow-clear': allowClear && active.length > 0}"
+            [innerHTML]="active[0].text"></span>
+      <i class="dropdown-toggle pull-right"></i>
+      <i class="caret pull-right"></i>
+      <a *ngIf="allowClear && active.length>0"
+        (click)="remove(activeOption)" class="close pull-right">
+        &times;
+      </a>
+    </span>
+  </div>
+  <input type="text" autocomplete="off" tabindex="-1"
+         (keydown)="inputEvent($event)"
+         (keyup)="inputEvent($event, true)"
+         [disabled]="disabled"
+         class="form-control ui-select-search"
+         *ngIf="inputMode"
+         style="outline: 0; width: 100%"
+         placeholder="{{active.length <= 0 ? placeholder : ''}}">
+  ${{optionsTemplate}}
+</div>
+
+<div tabindex="0"
+   *ngIf="multiple === true"
+   (keyup)="mainClick($event)"
+   (focus)="focusToInput('')"
+   class="ui-select-container ui-select-multiple dropdown form-control open">
+  <div [ngClass]="{'ui-disabled': disabled}"></div>
+  <span class="ui-select-match">
+      <span *ngFor="let a of active">
+          <span class="ui-select-match-item btn btn-default btn-secondary btn-sm"
+                tabindex="-1"
+                type="button"
+                [ngClass]="{'btn-default': true}">
+             <a class="close"
+                style="margin-left: 10px; padding: 0;"
+                (click)="remove(a)">&times;</a>
+             <span>{{a.text}}</span>
+         </span>
+      </span>
+  </span>
+  <input type="text"
+         (keydown)="inputEvent($event)"
+         (keyup)="inputEvent($event, true)"
+         (click)="matchClick($event)"
+         [disabled]="disabled"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"
+         class="form-control ui-select-search"
+         placeholder="{{active.length <= 0 ? placeholder : ''}}"
+         role="combobox">
+  ${{optionsTemplate}}
+</div>

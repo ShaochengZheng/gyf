@@ -1,0 +1,157 @@
+<div bsModal #modal="bs-modal" class="modal fade modalOpen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" (onHide)="onHide($event)" aria-hidden="true" [config]="{backdrop: 'static',keyboard:false}">
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="modal-dialog modal-lg" style="max-width: 1200px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal-title">
+                    <span>{{title}}</span>
+                </div>
+                <!--<div class="choose-file" *ngIf="!isPosting">
+                    <div class="fileUpload btn btn-secondary">
+                        <span class="fontStyle">导入</span>
+                        <input id="uploadFixedBtn" type="file" accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                            class="upload upload-btn" (change)="importedFiles($event)" />
+                    </div>
+                    <div class="download">
+                        <a [attr.href]="template">下载模版</a>
+                    </div>
+                </div>-->
+                <div class="choose-file" *ngIf="!isPosting">
+                    <div class="file">
+                        <span class="fontStyle">导入</span>
+                        <input id="uploadFixedBtn" type="file" accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" class="" (change)="importedFiles($event)" />
+                    </div>
+                    <a [attr.href]="template" class="downloadPosition">下载模版</a>
+                </div>
+            </div>
+
+            <!--分配分类-->
+            <div class="modal-body clearfix">
+                <div class="row fontStyle">
+                    <div class="col-md-12 basicInfoStyle">
+                        <span *ngIf="isEnableBPAssets">若对固定资产/无形资产进行测算后，发现折旧金额与期初余额存在差异，系统将自动生成调整凭证</span>
+                        <span class="pull-right">期初余额：{{endingBalance | currency:'CNY':true:'1.2-2'}}</span>
+                        <!--<p-calendar placeholder="交易时间" showAnim="slideDown" [showIcon]="true"></p-calendar>-->
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">凭证编号</th>
+                                    <th class="text-center" width="170">购买日期*</th>
+                                    <th class="text-center">部门性质*</th>
+                                    <th class="text-center">分类*</th>
+                                    <th class="text-center nowrap">名称（品牌／规格／型号）*</th>
+                                    <th class="text-center" width="60">数量*</th>
+                                    <th class="text-center" width="80" *ngIf="assetFlag === 'IntangibleAssets'">摊销期(年)*</th>
+                                    <th class="text-center" width="140">总额*</th>
+                                    <th class="text-center nowrap" *ngIf="!isPosting">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="!isPosting">
+                                <tr *ngFor="let item of fixedAssetLists; let i=index;trackBy:trackByFn;">
+                                    <td class="text-center">
+                                        <!--<span>{{item.purchasingDate}}</span>-->
+                                        <input class="form-control" type="text" [(ngModel)]="item.code" />
+                                    </td>
+                                    <td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needPurchasingDate}">
+                                            <!--<p-calendar placeholder="交易时间" showAnim="slideDown" [showIcon]="true" [(ngModel)]="item.purchasingDate" [minDate]="minDate"
+                                                [maxDate]="maxDate"></p-calendar>-->
+                                            <p-calendar placeholder="交易时间" showAnim="slideDown" [showIcon]="true" [(ngModel)]="item.purchasingDate" [maxDate]="maxDate"></p-calendar>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needDepartmentType}">
+                                            <ng-select class="selectStyle" placeholder="部门性质" [items]="sectorNatureLists" [(ngModel)]="item.departmentType" [allowClear]="true"></ng-select>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needDdepreciationCategory}">
+                                            <ng-select class="selectStyle" placeholder="类别" [items]="fixedTypeLists" textField="name" [(ngModel)]="item.depreciationCategory" [allowClear]="true" (selected)="selected($event, item)"></ng-select>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needName}">
+                                            <input class="form-control" type="text" [(ngModel)]="item.name" />
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needQty}">
+                                            <input class="form-control" type="number" [(ngModel)]="item.qty" />
+                                        </div>
+                                    </td>
+                                    <td class="text-center" *ngIf="assetFlag === 'IntangibleAssets'">
+                                        <div [ngClass]="{'has-danger': item.needLifespan}">
+                                            <input class="form-control" type="number" [(ngModel)]="item.lifespan" />
+                                        </div>
+                                    </td>
+                                    <td class="text-xs-right">
+                                        <div [ngClass]="{'has-danger': item.needOriginalPrice}">
+                                            <input class="form-control text-xs-right" type="text" [ngModel]="item.originalPrice | currency:'CNY':true:'1.2-2'" (focus)="oldVal($event)" (blur)="countOriginalPrice($event, item)" />
+                                            <!--<bp-input [(ngModel)]="item.originalPrice" [isEditable]="true" type="number" (blur)="countOriginalPrice()"></bp-input>-->
+                                        </div>
+                                    </td>
+                                    <td class="text-center" *ngIf="!isPosting">
+                                        <button class="btn newBtn" (click)="delAssetItem(i);"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="isPosting">
+                                <tr *ngFor="let item of fixedAssetLists; let i=index;trackBy:trackByFn;">
+                                    <td class="text-center">
+                                        <span>{{item.code}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span>{{item.purchasingDate | date: 'yyyy-MM-dd'}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span>{{item.departmentType[0].text}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span>{{item.depreciationCategory[0].name}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span>{{item.name}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span>{{item.qty}}</span>
+                                    </td>
+                                    <td class="text-center" *ngIf="assetFlag === 'IntangibleAssets'">
+                                        <span>{{item.lifespan}}</span>
+                                    </td>
+                                    <td class="text-xs-right">
+                                        <span>{{item.originalPrice | currency:'CNY':true:'1.2-2'}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" *ngIf="!isPosting">
+                        <button class="btn newBtn pull-right">
+                            <button class="btn newBtn" (click)="newAssetItem();">新增行</button>
+                        </button>
+                    </div>
+                    <div class="col-md-12 p-t-40">
+                        <span class="pull-right">总额合计： <span class="color-green">{{totalOriginalPrice | currency:'CNY':true:'1.2-2'}}</span></span>
+                    </div>
+                    <div class="col-md-12">
+                        <span class="pull-right">差额： <span class="color-green">{{endingBalance - totalOriginalPrice | currency:'CNY':true:'1.2-2'}}</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" *ngIf="!isPosting">
+                <button type="button" class="btn btn-primary" (click)="saveAssignInfo()">保存</button>
+                <button type="button" class="btn btn-secondary" (click)="modal.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

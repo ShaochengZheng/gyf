@@ -1,0 +1,102 @@
+<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert?.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div>
+    <div class="content-body clearfix">
+        <h4 class="title">一键同步
+            <管有方> 记录</h4>
+        <div class="col-lg-12 clearPadding">
+            <template ngFor let-item [ngForOf]="dataList" let-index="index">
+                <table class="table table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th width="100px"></th>
+                            <th width="150px">日期</th>
+                            <th width="60px" *ngIf="item.debit" class="text-xs-right">收入</th>
+                            <th width="60px" *ngIf="item.credit" class="text-xs-right">支出</th>
+                            <th width="260px">类别</th>
+                            <th width="260px" *ngIf="!item.isTransfer">对方信息</th>
+                            <th width="260px" *ngIf="item.isTransfer"><span *ngIf="item.debit">转出账户</span><span *ngIf="item.credit">转入账户</span></th>
+                            <!--<th width="115px" >部门</th>-->
+                            <th width="">摘要</th>
+                            <!--<th width="" >操作</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td width="">银行对账单</td>
+                            <td>{{item.accountTransDate | date: 'yyyy-MM-dd'}}</td>
+                            <td class="text-xs-right" *ngIf="item.debit">
+                                <span>{{item.debit | currency:'CNY':true:'1.2-2'}}</span>
+                            </td>
+                            <td class="text-xs-right" *ngIf="item.credit">
+                                <span>{{item.credit | currency:'CNY':true:'1.2-2'}}</span>
+                            </td>
+                            <td width=""></td>
+                            <td class="text" *ngIf="!item.isTransfer">{{item.toAccountName}}</td>
+                            <td class="账户互转" *ngIf="item.isTransfer"></td>
+                            <!--<td width=""></td>   -->
+                            <td width="" class="t-boder">{{item.description}}</td>
+                            <!--<td rowspan='2' class='vert-align' >
+                                <a (click)="cancelsync(item, index)" href="javascript:void(0)" >取消同步</a>
+                            </td>                                 -->
+                        </tr>
+                        <tr class="">
+                            <td width="" class="vert-align">
+                                <管有方>记录</td>
+                            <td class="vert-align">
+                                <p-calendar class="calendar" [ngClass]="{'has-danger':(!item.transaction.accountTransDate&&!isInit)}" placeholder="交易时间"
+                                    [minDate]="minDate" [maxDate]="maxDate" inputStyleClass="form-control vertical-bsline" showAnim="slideDown"
+                                    [showIcon]="false" [(ngModel)]="item.transaction.accountTransDate">
+                                </p-calendar>
+                            </td>
+                            <td class="text-xs-right vert-align" *ngIf="item.debit">
+                                <span>{{item.debit | currency:'CNY':true:'1.2-2'}}</span>
+                            </td>
+                            <td class="text-xs-right vert-align" *ngIf="item.credit">
+                                <span>{{item.credit | currency:'CNY':true:'1.2-2'}}</span>
+                            </td>
+                            <td width="" class="vert-align vert-align ">
+                                <ng-select class="ng-sele-W" [ngClass]="{'has-danger':(item.transaction.businessCategory&&item.transaction.businessCategory.id==='error')}"
+                                    *ngIf="item.debit" [allowClear]="true" [hasChildren]="true" [items]="incomeBCList" (selected)="selected($event, index,'Income')"
+                                    [(ngModel)]="item.transaction.businessCategory">
+                                </ng-select>
+                                <ng-select class="ng-sele-W" [ngClass]="{'has-danger':(item.transaction.businessCategory&&item.transaction.businessCategory.id==='error')}"
+                                    *ngIf="item.credit" [allowClear]="true" [hasChildren]="true" [items]="outcomeBCList" (selected)="selected($event, index,'Outcome')"
+                                    [(ngModel)]="item.transaction.businessCategory">
+                                </ng-select>
+                            </td>
+                            <td class="text" class="vert-align">
+                                <ng-select *ngIf="!item.isTransfer" [ngClass]="{'has-danger':(item.transaction.contact&&item.transaction.contact.id==='error')}"
+                                    class="mid-width" [allowClear]="true" [items]="contactList" (selected)="selected($event, index,'contact')"
+                                    [(ngModel)]="item.transaction.contact">
+                                </ng-select>
+                                <ng-select *ngIf="item.isTransfer" [ngClass]="{'has-danger':(item.account&&item.account.id==='error')}" class="mid-width"
+                                    [allowClear]="true" [items]="accountList" (selected)="selected($event, index, 'account')"
+                                    [(ngModel)]="item.account">
+                                </ng-select>
+                            </td>
+                            <!--<td width="" class="vert-align">
+                                 <ng-select [ngClass]="{'has-danger':(item.transaction.department&&item.transaction.department.id==='error')}" class="mid-width" [allowClear]="true" [items]="departmentList" (selected)="selected($event, index)" [(ngModel)]="item.transaction.department">
+                                 </ng-select>
+                            </td>   -->
+                            <td width="" class="t-boder vert-align">
+                                <input type="text" class="form-control fontStyle" [(ngModel)]="item.transaction.description">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
+            <div class="noData" *ngIf="noData">您还没有对账单信息，您可以去账户导入对账单！</div>
+            <div class="row pull-xs-right save" *ngIf="!noData">
+                <button class="btn btn-primary r-margin" (click)="save()">保存</button>
+                <button class="btn r-margin" (click)="back()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<gpw-business-category-modal #businessCategoryModal (result)="result($event, 'businessCategory')" (success)="newItemAdded($event, 'businessCategory')"></gpw-business-category-modal>-->
+<gpw-contact-details-modal #contactDetailsModal (result)="result($event, 'contact')" (success)="newItemAdded($event, 'contact')"></gpw-contact-details-modal>
+<!--<gpw-department-details-modal #departmentDetailsModal (result)="result($event, 'department')" (success)="newItemAdded($event, 'department')"></gpw-department-details-modal>-->
+
+<!--<div>multi-sync!!!!!</div>-->

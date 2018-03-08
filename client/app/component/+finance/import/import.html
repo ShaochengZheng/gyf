@@ -1,0 +1,36 @@
+<div class="content-header">
+
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-cogs fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">期初账／导入</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="content-body  row">
+    <div class="col-sm-12">
+        <div *ngIf="display" class="import-guide text-center">
+            <!--<p>1.下载模版,根据模版完善期初账信息<a href="../../../../../../assets/template/期初导入.xlsx">下载模版</a></p>-->
+            <!--<p>＊模版里只需输入期初账末级科目的借贷金额</p>-->
+            <p>1.请上传期初余额表（excel格式。如果是csv格式，另存为excel格式即可））</p>
+        </div>
+        <div *ngIf="display" class="choose-file text-center">
+            <upload-attachments [url]="uploadExcel" [type]="type" (results)="resultExcel($event)" (success)="successExcel($event)" [labelText]="labelText"></upload-attachments>
+        </div>
+        <div *ngIf="display" class="remark text-center">
+            <p>备注：一次可以导入的上限为1000条（不含表头)</p>
+        </div>
+        <hr *ngIf="display" />
+        <div class="text-xs-center">
+            <button *ngIf="display" type="button" class="btn btn-secondary" (click)="clickCancel()">放弃导入</button>
+             <p  *ngIf="!display" (click)="clickCancel()">只有期初阶段才能导入期初账</p>
+        </div>
+    </div>
+</div>

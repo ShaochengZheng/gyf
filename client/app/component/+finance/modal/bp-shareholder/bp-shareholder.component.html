@@ -1,0 +1,105 @@
+<div bsModal #modal="bs-modal" class="modal fade modalOpen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" (onHide)="onHide($event)"
+    aria-hidden="true" [config]="{backdrop: 'static',keyboard:false}">
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal-title">
+                    <span>股东</span>
+                </div>
+                <div class="choose-file" *ngIf="!isPosting">
+                    <div class="file">
+                        <span class="fontStyle">导入</span>
+                        <input id="uploadShareholderBtn" type="file" accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                            class="" (change)="importedFiles($event)" />
+                    </div>
+                    <a [attr.href]="template" class="downloadPosition">下载模版</a>
+                </div>
+            </div>
+
+            <!--股东-->
+            <div class="modal-body clearfix p-b-8">
+                <div class="row fontStyle">
+                    <div class="col-md-12 basicInfoStyle">
+                        <span class="pull-right">期初余额：{{endingBalance | currency:'CNY':true:'1.2-2'}}</span>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">名称*</th>
+                                    <th class="text-center">实缴金额*</th>
+                                    <!--<th class="text-center">投资比例(%)*</th>-->
+                                    <th class="text-center" *ngIf="!isPosting">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="!isPosting">
+                                <tr *ngFor="let item of shareholdLists; let i=index;trackBy:trackByFn;">
+                                    <td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needName}">
+                                            <input class="form-control" type="text" [(ngModel)]="item.name" />
+                                        </div>
+                                    </td>
+                                    <td class="text-xs-right">
+                                        <div [ngClass]="{'has-danger': item.needAmount}">
+                                            <!--<input class="form-control" type="text" [(ngModel)]="item.amount"/>-->
+                                             <input class="form-control text-xs-right" type="text" [ngModel]="item.amount | currency:'CNY':true:'1.2-2'" (focus)="oldVal($event)" (blur)="onChangeAmount($event, item)"/>
+                                        </div>
+                                    </td>
+                                    <!--<td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needShareProportion}">
+                                            <input class="form-control" type="number" [ngModel]="item.shareProportion" (blur)="onChange($event, item)"/>
+                                        </div>
+                                    </td>-->
+                                    <td class="text-center" *ngIf="!isPosting">
+                                        <button class="btn newBtn" (click)="delShareholderItem(i);"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="isPosting">
+                                <tr *ngFor="let item of shareholdLists; let i=index;trackBy:trackByFn;">
+                                    <td class="text-center">
+                                        <span>{{item.name}}</span>
+                                    </td>
+                                    <td class="text-xs-right">
+                                        <span>{{item.amount | currency:'CNY':true:'1.2-2'}}</span>
+                                    </td>
+                                    <!--<td class="text-center">
+                                        <span>{{item.shareProportion}}</span>
+                                    </td>-->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" *ngIf="!isPosting">
+                        <button class="btn newBtn pull-right" (click)="newShareholderItem();">新增行</button>
+                    </div>
+                    <!--<div class="col-md-12 p-t-40" [ngClass]="{'redFont': redColor}">
+                        <span class="pull-right">投资比例合计： <span class="color-green">{{totalProportion | currency:'CNY':true:'1.2-2'}}%（包含设置--股东）</span></span>
+                    </div>
+                    <div class="col-md-12">
+                        <span class="pull-right">差额： <span class="color-green">{{100 - totalProportion | currency:'CNY':true:'1.2-2'}}%</span></span>
+                    </div>-->
+                    <div class="col-md-12 p-t-40">
+                        <span class="pull-right">金额合计： <span class="color-green">{{calculateShareholdLists() | currency:'CNY':true:'1.2-2'}}</span></span>
+                    </div>
+                    <div class="col-md-12">
+                        <span class="pull-right">差额： <span class="color-green">{{endingBalance - totalAmount | currency:'CNY':true:'1.2-2'}}</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" *ngIf="!isPosting">
+                <button type="button" class="btn btn-primary" (click)="saveAssignInfo()">保存</button>
+                <button type="button" class="btn btn-secondary" (click)="modal.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

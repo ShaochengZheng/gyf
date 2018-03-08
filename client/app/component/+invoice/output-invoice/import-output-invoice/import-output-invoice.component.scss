@@ -1,0 +1,131 @@
+@import "../../../../../styles/variables";
+.padding-content{
+    // padding-bottom:50px;
+    .import-guide{
+        padding-top:50px;
+        padding-bottom: 30px;
+        margin:0 auto;
+        a {
+            color:#1CCFC9; 
+        }
+        a:hover{
+            color: #138c88;
+            text-decoration: underline;
+        }
+    }
+
+    .choose-file{
+        text-align: center;
+        .btn-secondary{
+            color: #1CCFC9;
+            background-color:rgb(240,240,240);
+            border: none;
+        }
+        .btn-secondary:hover{
+            color: #1CCFC9 !important;
+            background-color:rgb(230,230,230) !important;
+            border: none !important;
+        }
+        .fileUpload {
+        position: relative;
+        overflow: hidden;
+        margin: 10px;
+        text-align: center;
+        }
+        .fileUpload input.upload {  position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 40px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+    }
+
+    p{
+        margin-top: 1rem;
+        font-size:14px;
+    }
+    .remark{
+        margin-bottom: 40px;
+        p{
+            color: #9b9b9b;
+        }
+    }
+}
+
+.leftBorder{
+    border-left:1px solid rgba(66,66,66,0.3);
+}
+
+.import-head{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.list-history{
+    height: 400px;
+    overflow-y:auto;
+    .list{
+        overflow: hidden;
+        padding-bottom: 10px;
+    }
+    .file{
+        float: left;
+        cursor: pointer;
+        // margin-right:50px;
+    }
+    .delete{
+        cursor: pointer;
+        float:right;
+    }
+    .file:hover{
+        color:$navy;
+
+    }
+    .delete:hover{
+        color:red;
+    }
+}
+
+.detail{
+    padding-top:10px;
+    padding-left: 0px !important;
+    .total{
+        padding-bottom: 15px;
+    }
+    .back{
+        color:$navy;
+        cursor: pointer;
+
+    }
+}
+td {
+  vertical-align: middle;
+  text-align: center;
+  padding: 0px;
+  .type{
+    padding-top: 4px;
+  }
+   label{
+      font-size: 14px;
+  }
+}
+tbody{
+  box-shadow: $basic-shadow;
+  tr{
+      cursor: pointer;
+  }
+}
+.table {
+    .thead-head {
+        background-color: $Auxiliarycolor;
+        th {
+            vertical-align: middle;
+            text-align: center;
+            border: 1px solid $Formheaderbordercolor;
+        }
+    }
+}

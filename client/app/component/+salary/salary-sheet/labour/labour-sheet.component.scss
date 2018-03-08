@@ -1,0 +1,28 @@
+.labour-sheet {
+    .thead-head {
+        background-color: #e6f1f7;
+    }
+    .t-vertical-align {
+        vertical-align: middle;
+    }
+    .table-bordered th {
+        border: 1px solid #e0e0e0;
+    }
+}
+
+.input-amount {
+    min-width: 70px;
+     width: 200px;
+}
+
+// chrome
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+// firefox
+input[type="number"] {
+    -moz-appearance: textfield;
+}

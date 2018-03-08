@@ -1,0 +1,46 @@
+<div>
+    <div class="alert-fixed" >
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row">
+        <div class="col-md-8 m-l-30">
+            <a href="http://www.guanplus.com/" target="_blank"><img class="img-fluid header-logo" src="assets/images/logo.png"></a>
+        </div>
+    </div>
+    <div class="bg-content m-l-30 p-b-10 m-r-64">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="text-center p-t-10">
+                    <span>创建账套</span>
+                </h3>
+
+            </div>
+        </div>
+        <div class="conpanyList-back" *ngIf="showback">
+            <a expire [routerLink]="['/app/company-list']"> <i class="fa fa-arrow-left"></i> 返回</a>
+        </div>
+
+        <div class="p-b-200 p-t-50">
+            <div class="row m-b-50 hr-center">
+                <div class="choose-file ">
+                    <upload-attachments class="btn-upload" [url]="uploadUrl" [type]="firstType"  (results)="result($event)" (success)="successData($event)" ></upload-attachments>
+                </div>
+            </div>
+
+            <div class="m-b-50 hr-center m-l-56">
+                <div class="choose-file ">
+                    <upload-attachments class="btn-upload" createWays="createWays" [url]="uploadExcel" [type]="secondType"  (results)="resultExcel($event)" (success)="successExcel($event)" ></upload-attachments>
+                </div>
+                <a class="download" href="../../../../../assets/template/批量导入公司.xlsx"> 下载模版</a>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center ">
+                    <a id="manual-link" (click)="switch()">手动创建</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer-external></footer-external>
+
+
+</div>

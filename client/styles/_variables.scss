@@ -1,0 +1,134 @@
+// font family 字体
+$font-family: "SF Pro SC",
+"SF Pro Text",
+"SF Pro Icons",
+"PingFang SC",
+"Helvetica Neue",
+"Helvetica",
+"Arial",
+"Microsoft YaHei New",
+"Microsoft Yahei",
+"微软雅黑",
+"华文细黑",
+sans-serif;
+// Basic Colors 基本颜色
+$navy: #1CCFC9;
+// 一级标题
+$h1-size:30px;
+// 二级标题
+$h2:20px;
+// Subtitle 副标题
+$Subtitle:14px;
+// Notes 注释
+$notes:12px;
+// Primary color 原色
+$dark-gray: #BCC2C7;
+$green: green;
+$header-color:#48bcba;
+// Default input color 默认输入颜色 文本颜色-中
+$gray: #656980;
+$dark-background: #2f4050;
+$light-background: $gray;
+$success-color: #3CB142;
+$error-color: #F44336;
+$border-color: #DADADA;
+$dark-navy: #0CBC99;
+//  Main tone 主色调
+$maintone:#15cec8;
+// Auxiliary color 辅助色
+$Auxiliarycolor:#e6f1f7;
+// Navigation bar 导航条
+$Navigationbar:#2a3245;
+// Border color 边框颜色
+$Bordercolor:#dadada;
+// Form border color 表单边框颜色
+$Formbordercolor:#eceeef;
+// Form header border color 表单头边框颜色
+$Formheaderbordercolor: #e0e0e0;
+// Hover color 悬停颜色
+$blue: #1c84c6;
+// Success color 成功颜色
+$lazur: #23c6c8;
+// Info color 信息颜色
+$yellow: #f8ac59;
+// Warrning color 警告颜色
+$red: #F44336;
+// Danger color
+$white: #FFFFFF;
+$black: #262626;
+$dark-slate-gray: #656980;
+// Various colors
+$text-color: $dark-slate-gray;
+// Body text 正文 文本颜色-深
+$text-color-dark: #494C5D;
+// Dark text color 灰色字体颜色 文本颜色-亮
+$text-color-light: #B5C1DA;
+// Light Text Color
+// Background wrapper color
+$light-gray: #D1DADE;
+// Default label, badget
+$label-badget-color: #5E5E5E;
+$light-blue: #f3f6fb;
+$brown: #A52A2A;
+$ghost-white: #F3F3F4;
+// Spiner color and margin
+$spin-color: $navy;
+$spin-margin: 0 auto;
+//Sidebar width 侧边栏宽度
+$sidebar-width: 220px;
+// 表头颜色
+$thead-head: #d3eeff;
+// Color for numeric
+$positive-number-color: #1ab394;
+$negative-number-color: #ed5565;
+//Colors for 4 accounts 4个账户的颜色
+$banks-color:#ea7253;
+$cashs-color:#e9799a;
+$wechats-color:#4cbd1b;
+$alipays-color:#1daeeb;
+// Bootstrap variables
+$input-border-focus: $navy !default;
+$input-box-shadow-focus: rgba(28, 207, 201, 0.6) !default;
+$brand-primary: $navy !default;
+$table-bg-hover: #E0FFF9 !default;
+$zindex-modal: 3000 !default;
+// Font Awesome variables
+// ------------------------
+$fa-font-path: "assets/fonts/font-awesome" !default;
+$font-size-normal: 14px;
+// Glyphicons
+// ----------
+$glyphicons-halflings-include-bonus: false !default;
+$glyphicons-halflings-class-prefix: glyphicon !default;
+// Widgets 小部件
+// -------------------------
+$widget-padding-vertical: 5px !default;
+$widget-padding-horizontal: 20px !default;
+$widget-bg-color: $white;
+$chart-spacer-y: 0.65rem !default;
+// content
+// --------------------------
+$content-padding-vertical: 20px !default;
+$content-padding-top: $content-padding-vertical !default;
+$content-padding-horizontal: 20px !default;
+//** Unit-less `line-height` for use in components like buttons.  行高
+$line-height-base : 1.428571429 !default; // 20/14
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc. 计算行高
+$line-height-computed : floor((1rem * $line-height-base)) !default;
+$basic-shadow: 3px 3px 4px 0 rgba(0, 0, 0, 0.1);
+// Form states and alerts
+//
+// Define colors for form feedback states and, by default, alerts.
+$state-success-text : #fff !default;
+$state-success-bg : rgba(83, 179, 87, 0.9) !default;
+$state-success-border : darken($state-success-bg, 5%) !default;
+$state-info-text : #31708f !default;
+$state-info-bg : #d9edf7 !default;
+$state-info-border : darken($state-info-bg, 7%) !default;
+$state-warning-text : #8a6d3b !default;
+$state-warning-bg : #fcf8e3 !default;
+$mark-bg : $state-warning-bg !default;
+$state-warning-border : darken($state-warning-bg, 5%) !default;
+$state-danger-text : #fff !default;
+$state-danger-bg : rgba(243, 76, 64, 0.9) !default;
+$state-danger-border : darken($state-danger-bg, 5%) !default;

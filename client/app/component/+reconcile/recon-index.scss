@@ -1,0 +1,141 @@
+.border-tab{
+  border-left: 1px solid transparent;border-color: #ddd #ddd transparent;
+}
+
+// .breadcrumb{
+//   background-color:#fff;
+// }
+.ballance{
+  min-width: 350px;
+  padding: 0px 20px;
+  margin:10px auto;
+  clear:both;
+  float:none !important;
+  height:50px;
+  .bank-ballance{
+    border-right:1px solid #979797;
+    .bank-num{
+      font-size:1.5rem !important;
+      color:#656988 !important;
+    }
+    div{
+      text-align:center;
+      font-size:0.8rem;
+      color:#656980;
+     }
+   }
+  .guan-ballance{
+    .guan-num{
+      font-size:1.5rem !important;
+      color:#656988 !important;
+    }
+    div{
+      text-align:center;
+      font-size:0.8rem;
+      color:#656980;
+     }
+   }
+ }
+.btn-fontStyle{
+  font-family: SourceHanSansCN-Normal;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  text-align: center;
+}
+.btn-filter{
+    min-width: 117px;
+    height: 35px;
+    border-radius: 100px;
+    border: solid 1px #1ccfc9;
+    background: #fff;
+    color: #1ccfc9
+  }
+
+.dropdown-menu{
+    box-shadow:3px 3px 10px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    overflow: hidden;
+    background-color:#f6f7fa; 
+    margin-top: 5px;
+}
+
+.dropdown-toggle:hover{
+  color:#2ecfc8;
+}
+.index-list{  
+  table{
+    margin-bottom:0px !important;
+    border:none; 
+    td{
+      border:none;
+      border-right:1px solid rgb(236, 238, 239);
+      padding:0.5rem;
+      text-align:center;
+      min-width:172px;
+      color:#656988;
+      font-size:0.9rem;
+
+    }
+    th{
+      border:none;
+      border-right:1px solid rgb(236, 238, 239);
+      text-align: center;
+    }
+    td:hover{
+      background-color:#2ecfc8;
+      color:white !important;
+      cursor:pointer;
+    }
+  }
+}
+
+.dropdown-toggle{
+  cursor:pointer;
+}
+
+.accountlist{
+  margin-left:120px;
+  li:hover{
+    background-color:#2ecfc8;
+    cursor:pointer;
+    color:white;
+  }
+  li{
+    padding:0.5rem;
+    text-align:center; 
+    color:#656988;
+    font-size:0.8rem;
+  }
+}
+
+@media screen and (width:320px){
+  .nav-link{
+    padding:10px 10px;
+    font-size:14px;
+  }
+  .tab-panel{
+    padding:32px 20px;
+  }
+}
+
+@media screen and (min-width:321px) and (max-width:700px){
+  .breadnav{
+    padding-left:0px;
+    .page-title{
+      font-size:17px;
+      padding-right:10px;
+    }
+    .fa{
+      font-size:1.5em;
+    }
+  }
+}
+
+.spec-title{
+    width: 100%;
+    // overflow: hidden;
+    white-space: nowrap;
+    // text-overflow: ellipsis;
+}

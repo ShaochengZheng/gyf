@@ -1,0 +1,113 @@
+<div bsModal #modal="bs-modal" class="modal fade modalOpen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" (onHide)="onHide($event)" aria-hidden="true" [config]="{backdrop: 'static',keyboard:false}">
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal-title m-r-5">
+                    <span>{{title}}</span>
+                </div>
+                <div class="choose-file" *ngIf="!isPosting">
+                    <div class="file">
+                        <span class="fontStyle">导入</span>
+                        <input id="uploadContactsrBtn" type="file" [disabled]="isExistItem || count > 0" accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" (change)="importedFiles($event)" />
+                    </div>
+                    <a [attr.href]="template" class="downloadPosition m-l-5">下载模版</a>
+                    <span class="m-l-5">重复导入往来信息，金额将被替换</span>
+                </div>
+            </div>
+
+            <!--临时借出资金分配-->
+            <div class="modal-body clearfix">
+                <div class="row fontStyle">
+                    <!--<div class="col-md-6 basicInfoStyle">
+                       <span>初始余额日期：2017-3-1</span> 
+                    </div>-->
+                    <div class="col-md-12 basicInfoStyle">
+                        <button [disabled]="isPosting" class="btn btn-primary" (click)="resetting();">重置</button>
+                        <span class="pull-right">期初余额：{{endingBalance | currency:'CNY':true:'1.2-2'}}</span>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">行号</th>
+                                    <th class="text-center" width="160">性质*</th>
+                                    <th class="text-center">名称*</th>
+                                    <th class="text-center">金额*</th>
+                                    <th class="text-center" *ngIf="!isPosting">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="!isPosting">
+                                <tr [ngClass]="{'error-border':item.repeated}" *ngFor="let item of contactModelLists; let i=index; trackBy:trackByFn1;" [hidden]="item.isHide">
+                                    <td class="text-center">{{i + 1}}</td>
+                                    <td class="text-center" *ngIf="!item.isEmployee">
+                                        <div [ngClass]="{'has-danger': item.needContactType}">
+                                            <ng-select class="selectStyle" placeholder="往来性质" [disabled]="item.isDefault" [items]="contactNatureLists" [(ngModel)]='item.contactType' [allowClear]="true"></ng-select>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" *ngIf="item.isEmployee">
+                                        <div [ngClass]="{'has-danger': item.needContactType}">
+                                            <ng-select class="selectStyle" placeholder="往来性质" [disabled]="item.isEmployee" [items]="contactNatureLists1" [(ngModel)]='item.contactType' [allowClear]="true"></ng-select>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div [ngClass]="{'has-danger': item.needName}">
+                                            <input class="form-control" type="text" [disabled]="item.isDefault" [(ngModel)]="item.name" />
+                                        </div>
+                                    </td>
+                                    <td class="text-xs-right">
+                                        <div [ngClass]="{'has-danger': item.needOpeningBalance}">
+                                            <input class="form-control text-xs-right" type="text" [ngModel]="item.auxiliaryBusinessAccountingBalance.openingBalance | currency:'CNY':true:'1.2-2'" (focus)="oldVal($event)" (blur)="countOpeningBalance($event, item)" />
+                                            <!--<bp-input [(ngModel)]="item.auxiliaryBusinessAccountingBalance.openingBalance" [isEditable]="true" type="number" (blur)="countOpeningBalance()"></bp-input>-->
+                                        </div>
+                                    </td>
+                                    <td class="text-center" *ngIf="!isPosting">
+                                        <button class="btn newBtn" [disabled]="item.isDefault" (click)="delContactItem(i);"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="isPosting">
+                                <tr *ngFor="let item of contactModelLists; let i=index; trackBy:trackByFn1;">
+                                    <td class="text-center">{{i + 1}}</td>
+                                    <td class="text-center" *ngIf="!item.isEmployee">
+                                        <span>{{item.contactType[0].text}}</span>
+                                    </td>
+                                    <td class="text-center" *ngIf="item.isEmployee">
+                                        <span>{{item.contactType[0].text}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span>{{item.name}}</span>
+                                    </td>
+                                    <td class="text-xs-right">
+                                        <span>{{item.auxiliaryBusinessAccountingBalance.openingBalance | currency:'CNY':true:'1.2-2'}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" *ngIf="!isPosting">
+                        <button class="btn newBtn pull-right" (click)="newContactItem();">新增行</button>
+                    </div>
+                    <div class="col-md-12 p-t-40">
+                        <span class="pull-right">金额合计： <span class="color-green">{{totalOpeningBalance | currency:'CNY':true:'1.2-2'}}</span></span>
+                    </div>
+                    <div class="col-md-12">
+                        <span class="pull-right">差额： <span class="color-green">{{endingBalance - totalOpeningBalance | currency:'CNY':true:'1.2-2'}}</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" *ngIf="!isPosting">
+                <button type="button" class="btn btn-primary" (click)="saveAssignInfo()">保存</button>
+                <button type="button" class="btn btn-secondary" (click)="modal.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

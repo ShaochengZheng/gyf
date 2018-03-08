@@ -1,0 +1,109 @@
+@import '../../../../../styles/variables';
+
+.p-t-40{
+    padding-top: 40px;
+}
+.p-b-8{
+    padding-bottom: 8px;
+}
+table {
+    margin-bottom: .2rem;
+}
+table thead{
+    background-color: #e6f1f7;
+}
+table thead th {
+    border: 1px solid #e0e0e0;
+}
+.basicInfoStyle{
+    margin-bottom: .5rem;
+}
+.redFont{
+    color: #d9534f;
+}
+.newBtn{
+    padding: 5px 5px 5px 0;
+    border-radius: 0;
+    background-color: #fff;
+    color: #1ccfc9;
+}
+.modal-title{
+    font-size: 1.5rem;
+    float: left;
+}
+.choose-file{
+    display: inline-block;
+    margin-top: 1px;
+    margin-left: 6px;
+    .btn-secondary{
+        color: #1CCFC9;
+        background-color:rgb(240,240,240);
+        border: none;
+    }
+    .btn-secondary:hover{
+        color: #1CCFC9 !important;
+        background-color:rgb(230,230,230) !important;
+        border: none !important;
+    }
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        display: inline;
+        padding: 0.3rem 0.6rem 0.3rem 1rem;
+    }
+    // .fileUpload input.upload {  
+    //     position: absolute;
+    //     top: 0;
+    //     right: 0;
+    //     margin: 0;
+    //     padding: 0;
+    //     cursor: pointer;
+    //     opacity: 0;
+    //     filter: alpha(opacity=0);
+    // }
+    .upload-btn{
+        width: 100%;
+        line-height: 1.7;
+    }
+    .download{
+        display: inline;
+        padding-left: 6px;
+    }
+
+}
+
+.file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+.downloadPosition{
+    position: relative;
+    top: -10px;
+}
+
+
+    

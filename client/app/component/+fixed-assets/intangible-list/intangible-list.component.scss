@@ -1,0 +1,43 @@
+@import "../../../../styles/variables";
+.title {
+    font-size: 25px;
+}
+
+.header {
+    padding: 10px 20px 10px 20px;
+    background-color: white;
+    // height: 150px;  /* background-color: $text-color-dark;*/
+    margin: 5px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    display: block;
+    transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    /* Firefox 4 */
+    -webkit-transition: all 1s ease;
+    /* Safari 和 Chrome */
+}
+
+.back-list {
+    // background-color: white;
+    margin: 5px;
+    margin-left: 10px;
+}
+
+.m-b-10 {
+    margin-bottom: 10px;
+}
+
+.change-state {
+    height: 0px;
+    display: none;
+    transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    /* Firefox 4 */
+    -webkit-transition: all 1s ease;
+    /* Safari 和 Chrome */
+}
+
+.search-i {
+    margin-left: 15px;
+}

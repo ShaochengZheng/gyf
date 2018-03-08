@@ -1,0 +1,143 @@
+<div id="createCompany">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+
+    <div class="m-l-30">
+        <a href="http://www.guanplus.com/" target="_blank"><img class="header-logo" src="assets/images/logo.png"></a>
+    </div>
+    <div class="bg-content m-l-30 p-b-10 m-r-64 m-b-10 p-t-10">
+        <h3 class="text-center">创建账套
+        </h3>
+    </div>
+    <div class="outer-container">
+        <div class="inner-container ">
+            <div class="table-header">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-xs-center width-203 ">账套名称</th>
+                            <th class="text-xs-center width-203">法定代表人</th>
+                            <th class="text-xs-center width-203">注册资本(单位：万元)</th>
+                            <th class="text-xs-center width-309" colspan="3">住所</th>
+                            <th class="text-xs-center width-203">成立日期</th>
+                            <th class="text-xs-center width-203">税号</th>
+                            <th class="text-xs-center width-309">行业</th>
+                            <th class="text-xs-center width-203">账套性质</th>
+                            <th class="text-xs-center width-203">启用账套日期</th>
+                            <th class="text-xs-center width-50">操作</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="table-body">
+                <table>
+                    <tbody>
+                        <tr *ngFor="let item of createCompany; let i=index;">
+                            <td class="text-xs-center">
+                                <div class="width-200" [ngClass]="{'has-danger': item.needName}">
+                                    <input name="companyName" [(ngModel)]="item.name" type="text" class="form-control text-xs-center table-width" placeholder="请填写账套名称">
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-200" [ngClass]="{'has-danger': item.needLegalPersonName}">
+                                    <input name="legalPersonName" [(ngModel)]="item.legalPersonName" type="text" class="form-control text-xs-center table-width"
+                                        placeholder="请填写法人">
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-200" [ngClass]="{'has-danger': item.needRegisteredCapital}">
+                                    <input name="registeredCapital" [(ngModel)]="item.registeredCapital" (blur)="handleCapital(i,item.registeredCapital)" type="number"
+                                        class="form-control text-xs-center table-width" placeholder="请填写注册资本">
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-100">
+                                    <ng-select [items]="provinceList" name="province" (selected)="provinceSelect($event,i)" [(ngModel)]="item.address.province"
+                                        [ngClass]="{'has-danger': item.needProvince}" placeholder="省">
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-100">
+                                    <ng-select [items]="cityList" name="city" (selected)="citySelect($event)" placeholder="市" [(ngModel)]="item.address.city"
+                                        [ngClass]="{'has-danger': item.needCity}">
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-100">
+                                    <ng-select [items]="districtList" name="district" placeholder="区" [(ngModel)]="item.address.area" [ngClass]="{'has-danger': item.needArea}">
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-200">
+                                    <p-calendar id="setupDate" [(ngModel)]="item.beginDate" [ngClass]="{'has-danger': item.needBeginDate}" placeholder="成立时间"
+                                        inputStyleClass="form-control dp-width-160 vertical-bsline" showAnim="slideDown" [showIcon]="true"></p-calendar>
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-200" [ngClass]="{'has-danger': item.needTaxNumber}">
+                                    <input name="taxNumber" [(ngModel)]="item.taxNumber" type="text" class="form-control text-xs-center table-width" placeholder="请填写税号">
+                                </div>
+                            </td>
+
+                            <td class="text-xs-center">
+                                <div class="width-309">
+                                    <ng-select [ngClass]="{'has-danger': item.needIndustry}" [allowClear]="false" [items]="industryList" name="industry" [(ngModel)]="item.industry"
+                                        (selected)="selected($event,i);" placeholder="请选择行业类型">
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-200">
+                                    <ng-select [ngClass]="{'has-danger': item.needCompanyProperty}" [allowClear]="true" [items]="companyPropertites" name="property"
+                                        [(ngModel)]="item.companyProperty" (selected)="selected($event,'property',i);" placeholder="请选择账套性质">
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td class="text-xs-center">
+                                <div class="width-200">
+                                    <datepicker name="dt" [(ngModel)]="item.openingDate" datepickerMode="month" minMode="month" (selectionDone)="selected($event,i)"
+                                        class="dp-width-monthpicker"></datepicker>
+                                </div>
+                            </td>
+                            <td data-title="操作" class="text-xs-center" (click)="delete(item,i)">
+                                <button id="deleteButton" class="btn btn-secondary btn-circle text-danger">
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix m-t-460"></div>
+    <div class="row m-b-10">
+        <div class="col-xs-12 p-r-90">
+            <a class="newBtn pull-right" (click)="newItem()">新增行</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <span class="pull-right p-r-65">
+                <button class="btn btn-primary btn-150 " [disabled]="isClick"  (click)="setup()">创建</button>
+                <button class="btn btn-secondary btn-150" (click)="back()">取消</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="text-xs-center footer">
+        <div class="row">
+            <div class="col-md-12" *ngIf="isShow">
+                <small>建议您使用浏览器Chrome,Firefox,搜狗（极速模式),360（极速模式)进行浏览,以获得更好的用户体验</small>
+            </div>
+            <small class="p-r-65">
+                {{config.author.copyright}}
+            </small>
+            <small><span>{{config.author.icp}}</span></small>
+        </div>
+    </div>
+</div>

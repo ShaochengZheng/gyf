@@ -1,0 +1,384 @@
+<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+
+
+<div class="row" *ngIf="amountModel">
+    <div class="col-xl-6 col-xs-12 ">
+        <div class="box-body">
+            <div class="col-xs-6  theLeftMargin0 rightMargin">
+                <div class="col-xs-7 theLeftMargin0 textCenterRight">
+                    <div data-title="银行账面期末余额" class="col-xs-12 theLeftMargin0 paddingUpAndDown">{{amountModel[1].name}}</div>
+                    <!--<div data-title="银行对账单期末余额" class="col-xs-12  theLeftMargin0 paddingUpAndDown">{{amountModel[0].name}}</div>-->
+                </div>
+                <div class="col-xs-5 textCenterRightlite">
+                    <div data-title="银行账面期末余额" class="col-xs-12 paddingUpAndDown">{{amountModel[1].totalAmount | currency:'CNY':true:'1.2-2'}}</div>
+                    <!--<div data-title="银行对账单期末余额" class="col-xs-12 paddingUpAndDown">{{amountModel[0].totalAmount | currency:'CNY':true:'1.2-2'}}</div>-->
+                </div>
+            </div>
+            <div data-title="现金账面期末余额" class="col-xs-6 writingInTheMiddle ">
+                <div class="col-xs-7 theLeftMargin0 textCenterRight">
+                    <div data-title="现金账面期末余额" class="col-xs-12 theLeftMargin0 paddingUpAndDown">{{amountModel[2].name}}</div>
+                </div>
+                <div class="col-xs-5 textCenterRightlite">
+                    <div data-title="季现金账面期末余额" class="col-xs-12 paddingUpAndDown ">{{amountModel[2].totalAmount | currency:'CNY':true:'1.2-2'}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-xs-12 ">
+        <div class="box-body">
+            <div class="col-xs-6  rightMargin">
+                <div class="col-xs-7 textCenterRight">
+                    <div data-title="季度收入合计" class="col-xs-12 paddingUpAndDown">{{amountModel[5].name}}</div>
+                    <div data-title="度附加税合计" class="col-xs-12 theLeftMargin0 paddingUpAndDown">{{amountModel[7].name}}</div>
+
+                    <!--<div  data-title="库存现金余额" class="col-xs-12 paddingUpAndDown">{{amountModel[4].name}}</div>-->
+                </div>
+                <div class="col-xs-5  textCenterRightlite">
+                    <div data-title="季度收入合计" class="col-xs-12 paddingUpAndDown">{{amountModel[5].totalAmount | currency:'CNY':true:'1.2-2'}}</div>
+                    <div data-title="季度附加税合计" class="col-xs-12 paddingUpAndDown ">{{amountModel[7].totalAmount | currency:'CNY':true:'1.2-2'}}</div>
+
+                    <!--<div  data-title="库存现金余额" class="col-xs-12 paddingUpAndDown">{{amountModel[4].totalAmount | currency:'CNY':true:'1.2-2'}}</div>-->
+                </div>
+            </div>
+            <div class="col-xs-6 ">
+                <div class="col-xs-7 textCenterRight">
+                    <div data-title="个税" class="col-xs-12 paddingUpAndDown">{{amountModel[3].name}}</div>
+                    <div data-title="季度附加税合计" class="col-xs-12 paddingUpAndDown">{{amountModel[6].name}}</div>
+                </div>
+                <div class="col-xs-5 textCenterRightlite ">
+                    <div data-title="个税" class="col-xs-12 paddingUpAndDown">{{amountModel[3].totalAmount | currency:'CNY':true:'1.2-2'}}</div>
+                    <div data-title="季度附加税合计" class="col-xs-12 paddingUpAndDown textCenterRight">{{amountModel[6].totalAmount | currency:'CNY':true:'1.2-2'}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <div class="title col-lg-3 col-xs-12">
+        <span>科目余额表</span> <span>期间:{{year}}-{{month}}</span>
+    </div>
+
+    <div class="toChooseTime col-lg-9 col-xs-12">
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-filter" (click)="isSearch=!isSearch">筛选 <i [class.rotate]="!isSearch" [class.norotate]="isSearch"   class="fa  fa-lg fa-angle-down angle-right"></i> </button>
+        </div>
+        <div class="btn-group pull-right" style="margin-right: 15px;">
+
+            <button type="button" style="border-radius: 1.5em;" class="btn btn-primary  dropdown-toggle" [disabled]="whetherFirst && accountStatus==='InProgress'"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                操作
+            </button>
+            <div class="dropdown-menu">
+                <button [hidden]="carryForward==='再次结转'" data-title="结转" class="dropdown-item" href="#" [disabled]="accountStatus==='InProgress'|| accountStatus==='Done'"
+                    (click)="toCarryForward()">{{carryForward}}</button>
+                <button [hidden]="carryForward==='结转'" data-title="再次结转" class="dropdown-item" href="#" [disabled]="accountStatus==='InProgress'|| accountStatus==='Done'"
+                    (click)="againCarryForward()">{{carryForward}}</button>
+                <button data-title="过账" class="dropdown-item" href="#" [disabled]="accountStatus==='InProgress' " (click)="showpostingModal()">过账</button>
+                <button class="dropdown-item" href="#" [disabled]="whetherFirst" (click)="postingRollback()">反过账</button>
+                <button class="dropdown-item" href="#" [disabled]="accountStatus==='InProgress'" (click)="showPostingCancelProvisionModal()">驳回审核</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="search content-body row" [hidden]="isSearch">
+        <div *ngIf="defaultYear" class="col-lg-3 col-xs-6" style="display: inline-block;min-width: 210px;">
+            <ng-select [items]="yearsList" placeholder="请选择年份 " (selected)="setTheYear($event) " [(ngModel)]="defaultYear">
+            </ng-select>
+        </div>
+        <div *ngIf="defaultMonth" class="col-lg-3 col-xs-6" style="display: inline-block;min-width: 210px;">
+            <ng-select [items]="monthsToList" placeholder="请选择月份 " (selected)="setTheMonth($event) " [(ngModel)]="defaultMonth">
+            </ng-select>
+        </div>
+        <div class="col-xs-12 col-lg-6 ">
+            <label> <input type="radio" name="interval" value="Month" #Month
+                           (click)="periodType = Month.value;accountGet()" [checked]="periodType==='Month'"> 本期发生</label>
+            <label> <input type="radio" name="interval" value="Quarter" #Quarter
+                           (click)="periodType = Quarter.value;accountGet()" [checked]="periodType==='Quarter'"> 本季度发生</label>
+            <label> <input type="radio" name="interval" value="Year" #Year
+                           (click)="periodType = Year.value;accountGet()" [checked]="periodType==='Year'"> 本年累计</label>
+            <!--<span (click)="empty()">清空筛选条件</span>-->
+
+        </div>
+    </div>
+
+
+    <div class="accounting-home-page">
+        <table class="table table-bordered table-sm ">
+            <thead class="thead-head writingInTheMiddle">
+                <tr>
+                    <th rowspan="2" align="center" valign="middle">科目编码</th>
+                    <th rowspan="2" align="center" valign="middle">科目名称</th>
+                    <!--<th rowspan="2" align="center" valign="middle">方向</th>-->
+                    <th [hidden]="periodType !== 'Year'" colspan="2" align="center" valign="middle">年初余额</th>
+                    <th [hidden]="periodType ==='Year'" colspan="2" align="center" valign="middle">期初余额</th>
+                    <th [hidden]="periodType !=='Year'" colspan="2" align="center" valign="middle">本年累计发生额</th>
+                    <th [hidden]="periodType ==='Year'" colspan="2" align="center" valign="middle">本期发生额</th>
+                    <th colspan="2" align="center" valign="middle">期末余额</th>
+                </tr>
+                <tr>
+                    <th class="min95">借</th>
+                    <th class="min95">贷</th>
+                    <th class="min95">借</th>
+                    <th class="min95">贷</th>
+                    <th class="min95">借</th>
+                    <th class="min95">贷</th>
+                </tr>
+            </thead>
+            <!--资产总额-->
+            <tbody [hidden]="isTableShow">
+                <tr *ngFor="let assetItem of accountBalanceSheets?.assetItem" [hidden]="assetItem?.whetherTo0">
+                    <td data-title="科目编码">{{assetItem.code}}</td>
+                    <td style="text-align: left;" data-title="科目名称">{{assetItem.name}}</td>
+                    <!--<td data-title="方向">{{assetItem.balanceDirection.name}}</td>-->
+                    <td data-title="期初借方金额 " class="text-right">{{assetItem.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期初贷方金额" class="text-right">{{assetItem.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积借" class="text-right">{{assetItem.debit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积贷" class="text-right">{{assetItem.credit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末借方金额" class="text-right">{{assetItem.periodEndDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末贷方金额" class="text-right">{{assetItem.periodEndCredit | currency:'CNY':true:'1.2-2'}}</td>
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isAssetItemZero">
+                    <!--<td colspan="7">资产总额</td>
+                <td colspan="2" class="text-right">{{accountBalanceSheets?.theTotalAssetsOf | currency:'CNY':true:'1.2-2'}}</td>-->
+                    <th colspan="2"  class="text-right">资产类合计</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAssetsOf?.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAssetsOf?.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAssetsOf?.debit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAssetsOf?.credit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAssetsOf?.periodEndDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAssetsOf?.periodEndCredit | currency:'CNY':true:'1.2-2'}}</th>
+                </tr>
+            </tbody>
+            <!--  成本合计-->
+            <tbody [hidden]="isTableShow">
+                <tr *ngFor="let cost of accountBalanceSheets?.cost" [hidden]="cost?.whetherTo0">
+                    <td data-title="科目编码">{{cost.code}}</td>
+                    <td style="text-align: left;" data-title="科目名称">{{cost.name}}</td>
+                    <!--<td data-title="方向">{{cost.balanceDirection.name}}</td>-->
+                    <td data-title="期初贷方金额 " class="text-right">{{cost.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期初借方金额" class="text-right">{{cost.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积借" class="text-right">{{cost.debit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积贷" class="text-right">{{cost.credit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末借方金额" class="text-right">{{cost.periodEndDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末贷方金额" class="text-right">{{cost.periodEndCredit | currency:'CNY':true:'1.2-2'}}</td>
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isCostZero">
+                    <!--<td colspan="7"> 成本合计</td>
+                <td colspan="2" class="text-right">{{accountBalanceSheets?.theCostOfACombined | currency:'CNY':true:'1.2-2'}}</td>-->
+                    <th colspan="2"  class="text-right">成本类合计</th>
+                    <th class="text-right">{{accountBalanceSheets?.theCostOfACombined?.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theCostOfACombined?.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theCostOfACombined?.debit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theCostOfACombined?.credit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theCostOfACombined?.periodEndDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theCostOfACombined?.periodEndCredit | currency:'CNY':true:'1.2-2'}}</th>
+
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isCostZero && accountBalanceSheets?.isAssetItemZero">
+                    <th colspan="2" class="text-right">资产总额</th>
+                    <th class="text-right">{{(accountBalanceSheets?.theTotalAssetsOf?.periodInitialDebit-accountBalanceSheets?.theTotalAssetsOf?.periodInitialCredit)+(accountBalanceSheets?.theCostOfACombined?.periodInitialDebit-accountBalanceSheets?.theCostOfACombined?.periodInitialCredit)
+                        | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right"></th>
+                    <th class="text-right"></th>
+                    <th class="text-right"></th>
+                    <th class="text-right">{{(accountBalanceSheets?.theTotalAssetsOf?.periodEndDebit-accountBalanceSheets?.theTotalAssetsOf?.periodEndCredit)+(accountBalanceSheets?.theCostOfACombined?.periodEndDebit-accountBalanceSheets?.theCostOfACombined?.periodEndCredit)|
+                        currency:'CNY':true:'1.2-2'}}
+                    </th>
+                    <th class="text-right"></th>
+                </tr>
+            </tbody>
+            <!--负债总额-->
+            <tbody [hidden]="isTableShow">
+                <tr *ngFor="let liabilities of accountBalanceSheets?.liabilities" [hidden]="liabilities?.whetherTo0">
+                    <td data-title="科目编码">{{liabilities.code}}</td>
+                    <td style="text-align: left;" data-title="科目名称">{{liabilities.name}}</td>
+                    <!--<td data-title="方向">{{liabilities.balanceDirection.name}}</td>-->
+                    <td data-title="期初贷方金额 " class="text-right">{{liabilities.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期初借方金额" class="text-right">{{liabilities.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积借" class="text-right">{{liabilities.debit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积贷" class="text-right">{{liabilities.credit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末借方金额" class="text-right">{{liabilities.periodEndDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末贷方金额" class="text-right">{{liabilities.periodEndCredit | currency:'CNY':true:'1.2-2'}}</td>
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isLiabilitiesZero">
+                    <!--<td colspan="7">负债总额</td>-->
+                    <!--<td colspan="2" class="text-right">{{accountBalanceSheets?.theTotalAmountOfLiabilities | currency:'CNY':true:'1.2-2'}}</td>-->
+                    <th colspan="2"class="text-right" >负债类合计</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAmountOfLiabilities?.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAmountOfLiabilities?.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAmountOfLiabilities?.debit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAmountOfLiabilities?.credit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAmountOfLiabilities?.periodEndDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAmountOfLiabilities?.periodEndCredit | currency:'CNY':true:'1.2-2'}}</th>
+                </tr>
+                <tr>
+                    <th colspan="2" class="text-right">负债总额</th>
+                    <th class="text-right"></th>
+                    <th class="text-right"> {{accountBalanceSheets?.theTotalAmountOfLiabilities?.periodInitialCredit-accountBalanceSheets?.theTotalAmountOfLiabilities?.periodInitialDebit
+                        | currency:'CNY':true:'1.2-2'}} </th>
+                    <th class="text-right"></th>
+                    <th class="text-right"></th>
+                    <th class="text-right"></th>
+                    <th class="text-right">{{accountBalanceSheets?.theTotalAmountOfLiabilities?.periodEndCredit-accountBalanceSheets?.theTotalAmountOfLiabilities?.periodEndDebit
+                        | currency:'CNY':true:'1.2-2'}}</th>
+                </tr>
+
+            </tbody>
+            <!--权益总额-->
+            <tbody [hidden]="isTableShow">
+                <tr *ngFor="let ownersEquity of accountBalanceSheets?.ownersEquity" [hidden]="ownersEquity?.whetherTo0">
+                    <td data-title="科目编码">{{ownersEquity.code}}</td>
+                    <td style="text-align: left;" data-title="科目名称">{{ownersEquity.name}}</td>
+                    <!--<td data-title="方向">{{ownersEquity.balanceDirection.name}}</td>-->
+                    <td data-title="期初贷方金额 " class="text-right">{{ownersEquity.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期初借方金额" class="text-right">{{ownersEquity.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积借" class="text-right">{{ownersEquity.debit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积贷" class="text-right">{{ownersEquity.credit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末借方金额" class="text-right">{{ownersEquity.periodEndDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末贷方金额" class="text-right">{{ownersEquity.periodEndCredit | currency:'CNY':true:'1.2-2'}}</td>
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isOwnersEquityZero">
+                    <!--<td colspan="7">权益总额</td>
+                <td colspan="2" class="text-right">{{accountBalanceSheets?.totalEquity | currency:'CNY':true:'1.2-2'}}</td>-->
+                    <th colspan="2" class="text-right">权益类合计</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalEquity?.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalEquity?.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalEquity?.debit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalEquity?.credit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalEquity?.periodEndDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalEquity?.periodEndCredit | currency:'CNY':true:'1.2-2'}}</th>
+
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isOwnersEquityZero">
+                    <th colspan="2" class="text-right">权益总额</th>
+                    <th class="text-right"></th>
+                    <th class="text-right"> {{accountBalanceSheets?.totalEquity?.periodInitialCredit-accountBalanceSheets?.totalEquity?.periodInitialDebit
+                        | currency:'CNY':true:'1.2-2'}} </th>
+                    <th class="text-right"></th>
+                    <th class="text-right"></th>
+                    <th class="text-right"></th>
+                    <th class="text-right">{{accountBalanceSheets?.totalEquity?.periodEndCredit-accountBalanceSheets?.totalEquity?.periodEndDebit
+                        | currency:'CNY':true:'1.2-2'}}</th>
+                </tr>
+            </tbody>
+            <!-- 收入合计-->
+            <tbody [hidden]="isTableShow">
+                <tr *ngFor="let incomeProject of accountBalanceSheets?.incomeProject" [hidden]="incomeProject?.whetherTo0">
+                    <td data-title="科目编码">{{incomeProject.code}}</td>
+                    <td style="text-align: left;" data-title="科目名称">{{incomeProject.name}}</td>
+                    <!--<td data-title="方向">{{incomeProject.balanceDirection.name}}</td>-->
+                    <td data-title="期初贷方金额 " class="text-right">{{incomeProject.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期初借方金额" class="text-right">{{incomeProject.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积借" class="text-right">{{incomeProject.debit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积贷" class="text-right">{{incomeProject.credit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末借方金额" class="text-right">{{incomeProject.periodEndDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末贷方金额" class="text-right">{{incomeProject.periodEndCredit | currency:'CNY':true:'1.2-2'}}</td>
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isIncomeProjectZero">
+                    <!--<td colspan="7">收入合计</td>
+                <td colspan="2" class="text-right">{{accountBalanceSheets?.withCombined | currency:'CNY':true:'1.2-2'}}</td>-->
+                    <th colspan="2" class="text-right">收入合计</th>
+                    <th class="text-right">{{accountBalanceSheets?.withCombined?.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.withCombined?.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.withCombined?.debit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.withCombined?.credit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.withCombined?.periodEndDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.withCombined?.periodEndCredit | currency:'CNY':true:'1.2-2'}}</th>
+                </tr>
+            </tbody>
+
+
+            <!--费用合计-->
+            <tbody [hidden]="isTableShow">
+                <tr *ngFor="let costOfTheProject of accountBalanceSheets?.costOfTheProject" [hidden]="costOfTheProject?.whetherTo0">
+                    <td data-title="科目编码">{{costOfTheProject.code}}</td>
+                    <td style="text-align: left;" data-title="科目名称">{{costOfTheProject.name}}</td>
+                    <!--<td data-title="方向">{{costOfTheProject.balanceDirection.name}}</td>-->
+                    <td data-title="期初贷方金额 " class="text-right">{{costOfTheProject.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期初借方金额" class="text-right">{{costOfTheProject.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积借" class="text-right">{{costOfTheProject.debit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积贷" class="text-right">{{costOfTheProject.credit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末借方金额" class="text-right">{{costOfTheProject.periodEndDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末贷方金额" class="text-right">{{costOfTheProject.periodEndCredit | currency:'CNY':true:'1.2-2'}}</td>
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isCostOfTheProjectZero">
+                    <!--<td colspan="7"> 费用合计</td>
+                <td colspan="2" class="text-right">{{accountBalanceSheets?.totalCost | currency:'CNY':true:'1.2-2' }}</td>-->
+                    <th colspan="2" class="text-right">费用合计</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalCost?.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalCost?.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalCost?.debit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalCost?.credit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalCost?.periodEndDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalCost?.periodEndCredit | currency:'CNY':true:'1.2-2'}}</th>
+                </tr>
+            </tbody>
+            <!--损益合计-->
+            <tbody [hidden]="isTableShow">
+                <tr *ngFor="let profitAndLossDisplay of accountBalanceSheets?.profitAndLossDisplay" [hidden]="profitAndLossDisplay?.whetherTo0">
+                    <td data-title="科目编码">{{profitAndLossDisplay.code}}</td>
+                    <td style="text-align: left;" data-title="科目名称">{{profitAndLossDisplay.name}}</td>
+                    <!--<td data-title="方向">{{costOfTheProject.balanceDirection.name}}</td>-->
+                    <td data-title="期初贷方金额 " class="text-right">{{profitAndLossDisplay.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期初借方金额" class="text-right">{{profitAndLossDisplay.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积借" class="text-right">{{profitAndLossDisplay.debit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="本期累积贷" class="text-right">{{profitAndLossDisplay.credit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末借方金额" class="text-right">{{profitAndLossDisplay.periodEndDebit | currency:'CNY':true:'1.2-2'}}</td>
+                    <td data-title="期末贷方金额" class="text-right">{{profitAndLossDisplay.periodEndCredit| currency:'CNY':true:'1.2-2'}}</td>
+                </tr>
+                <tr [hidden]="accountBalanceSheets?.isCostOfTheProjectZero">
+
+                    <th colspan="2" class="text-right">损益合计</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalProfitAndLoss?.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalProfitAndLoss?.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalProfitAndLoss?.debit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalProfitAndLoss?.credit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalProfitAndLoss?.periodEndDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.totalProfitAndLoss?.periodEndCredit | currency:'CNY':true:'1.2-2'}}</th>
+                </tr>
+                <tr>
+                    <th colspan="2" class="text-right">净利润</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th class="text-right">{{accountBalanceSheets?.profits | currency:'CNY':true:'1.2-2' }}</th>
+                    <th></th>
+                    <th></th>
+
+                </tr>
+                <tr>
+
+                    <th colspan="2" class="text-right">总计</th>
+                    <th class="text-right">{{accountBalanceSheets?.priceTotal?.periodInitialDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.priceTotal?.periodInitialCredit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.priceTotal?.debit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.priceTotal?.credit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.priceTotal?.periodEndDebit | currency:'CNY':true:'1.2-2'}}</th>
+                    <th class="text-right">{{accountBalanceSheets?.priceTotal?.periodEndCredit | currency:'CNY':true:'1.2-2'}}</th>
+                </tr>
+            </tbody>
+            <tbody [hidden]="!isTableShow">
+                <tr>
+                    <td style="padding: 0" colspan="9">
+                        <div class="noData">没有数据</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--结转-->
+<carry-forward-modal #carryForwardModal> </carry-forward-modal>
+<!--再次结转-->
+<again-carry-forward-modal #againCarryForwardModal (againCarryForward)="journalEntryOrder()" (carryForwards)="toCarryForward()"></again-carry-forward-modal>
+<!--过账-->
+<posting-modal #postingModal (success)="toPosting()"></posting-modal>
+<!--驳回审核-->
+<posting-cancel-provision-modal #PostingCancelProvisionModal (success)="postingCancelProvision()"></posting-cancel-provision-modal>
+<!--修改库存现金余额-->
+<modify-stock-cash-balance-modal #modifyStockCashBalanceModal (success)="ngOnInit()"></modify-stock-cash-balance-modal>

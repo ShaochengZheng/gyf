@@ -1,0 +1,134 @@
+<div class="content-header">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-book fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">发票管理</li>
+                <li>
+                    <button style="margin-left: 15px" class="pull-right btn btn-primary">导入</button>
+                    <button style="margin-left: 15px" class="pull-right btn btn-primary">搜索</button>
+                    <div class="pull-right">
+                        <datepicker datepickerMode="month" minMode="month" (selectionDone)="selected($event,i)" class=" dp-width-monthpicker"></datepicker>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="col-lg-12 inputInvoice">
+            <section class="widget">
+                <header>
+                    <div class="row row-xs-center">
+                        <div class="col-xs-6">
+                            <span><i class="fa fa-book fa-2x"></i></span>
+                            <span class="title month-glance">收票</span>
+                        </div>
+                        <div class="col-xs-6">
+                            <button class="btn btn-primary pull-right" [routerLink]="['/app/invoice/tab']">新增收票</button>
+                        </div>
+                    </div>
+                </header>
+                <div class="widget-body">
+                    <div class="row verticalCenter">
+                        <div class="col-xl-4 text-center">
+                            <div>
+                                <label class="count">{{inputInvoiceList.length}}</label>
+                                <span>张</span>
+                            </div>
+                            <div>
+                                <button class="btn details" [routerLink]="['/app/invoice/input-invoice']">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 text-center" *ngIf="inputInvoiceList.length === 0">
+                            <div>
+                                <p>暂无收票记录</p>
+                            </div>
+                            <div>
+                                <p>请点击左上角新增</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-8">
+                            <div class="col-xs-12 amount">
+                                <label>本月收票金额：</label>
+                                <span>{{inputTotal | currency:'CNY':true:'1.2-2'}}</span>
+                            </div>
+                            <div class="col-xs-12 bar">
+                                <label>其中固定资产总额占：</label>
+                                <progressbar class="progress-striped" [value]="inputRate" type="warning">{{inputRate}}%</progressbar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-12 outputInvoice">
+            <section class="widget" style="margin-bottom:0px">
+                <header>
+                    <div class="row row-xs-center">
+                        <div class="col-xs-6">
+                            <span><i class="fa fa-book fa-2x"></i></span>
+                            <span class="title month-glance">开票</span>
+                        </div>
+                        <div class="col-xs-6">
+                            <button class="btn btn-primary pull-right" [routerLink]="['/app/invoice/tab/new-output-invoice']">新增收票</button>
+                        </div>
+                    </div>
+                </header>
+                <div class="widget-body">
+                    <div class="row verticalCenter">
+                        <div class="col-xl-4 text-center">
+                            <div>
+                                <label class="count">{{outputInvoiceList.length}}</label>
+                                <span>张</span>
+                            </div>
+                            <div>
+                                <button class="btn details" [routerLink]="['/app/invoice/output-invoice']">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 text-center" *ngIf="outputInvoiceList.length === 0">
+                            <div>
+                                <p>暂无开票记录</p>
+                            </div>
+                            <div>
+                                <p>请点击左上角新增</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-8">
+                            <div class="col-xs-12 amount">
+                                <label>本月开票金额（含税）：</label>
+                                <span>{{outputTotal | currency:'CNY':true:'1.2-2'}}</span>
+                            </div>
+                            <div class="col-xs-12 bar">
+                                <label>其中税额占：</label>
+                                <progressbar class="progress-striped" [value]="outputRate" type="info">{{outputRate}}%</progressbar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="col-lg-6 rate">
+        <section class="widget">
+            <header>
+                <div class="row row-xs-center">
+                    <div class="col-xs-6">
+                        <span><i class="fa fa-pie-chart fa-2x"></i></span>
+                        <span class="title month-glance">应缴增值税额</span>
+                        <span class="title month-glance">(2017-04)</span>
+                    </div>
+                </div>
+            </header>
+            <div class="widget-body verticalCenter">
+
+                <img class="amount-none " src="assets/images/amount-none.png">
+
+            </div>
+        </section>
+    </div>
+</div>

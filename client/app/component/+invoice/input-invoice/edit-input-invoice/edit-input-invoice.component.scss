@@ -1,0 +1,127 @@
+@import "../../../../../styles/variables";
+.new-invoice {
+    padding-bottom: 30px;
+    .content-header{
+        margin-top: 0px !important;
+        .content-body{
+             margin-top: 0px !important;
+             padding-bottom: 20px;
+        }
+    }
+    .new-invoice-title {
+        margin-top: 30px;
+        border-bottom: 2px solid $Formbordercolor;
+    }
+    .new-invoice-top {
+        margin-top: 20px;
+        height: 40px;
+        line-height: 40px;
+    }
+    .new-invoice-content {
+        margin-top: 30px;
+    }
+}
+
+.table {
+    .thead-head {
+        background-color: $Auxiliarycolor;
+        th {
+            vertical-align: middle;
+            text-align: center;
+            border: 1px solid $Formheaderbordercolor;
+        }
+    }
+    .tip{
+        font-size: 12px;
+        color: $navy;
+        padding-right: 10px;
+        padding-top: 10px;
+        cursor: pointer;
+    }
+}
+
+thead {
+    tr {
+        th {
+            border: 1px solid $Formbordercolor;
+        }
+    }
+}
+
+table {
+    margin-top: 60px !important;
+    box-shadow: $basic-shadow;
+}
+
+ng-select {
+    border: none !important;
+}
+
+.newCoating {
+    position: relative;
+    opacity: .15;
+}
+
+// 测试edge
+.newCoating::before {
+    content: '';
+    position: absolute;
+    z-index: 9;
+    width: 97%;
+    height: 3.27em;
+    opacity: .2;
+}
+
+.newCoating:hover {
+    opacity: .5;
+    background: #fff;
+    cursor: pointer;
+}
+
+.coating {
+    display: block;
+}
+
+.operate {
+    text-align: center;
+}
+
+
+/*  垂直居中*/
+
+.verticalCenter {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.totalAmount {
+    font-size: 20px;
+    color: black;
+}
+
+.outputAmount {
+    font-size: 18px;
+    color: black;
+}
+
+.outputAmountError {
+    font-size: 18px;
+    color: #f44336;
+}
+
+label{
+    padding-left: 0px;
+}
+.number{
+  color: $text-color-light;
+  span{
+    float: right;
+  }
+}

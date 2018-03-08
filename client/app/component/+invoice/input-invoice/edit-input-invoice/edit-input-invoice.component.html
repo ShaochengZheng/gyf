@@ -1,0 +1,179 @@
+<div class="new-invoice">
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="content-header">
+        <ul class="content-body ">
+            <!--单号-->
+            <div class="row number">
+                <div class="col-xs-12">
+                    <span>单号：{{invoice.number}}</span>
+                </div>
+            </div>
+            <!--<div class="new-invoice-title">
+                <h4 class="text-center">编辑收票</h4>
+                <p class="text-left">快捷键提示:1.一条记录输入完成后按Tab（换行键）可直接新增凭证记录,按Enter（回车键）可直接保存</p>
+            </div>-->
+            <div class="new-invoice-top">
+                <div class="col-md-12 ">
+                    <label class="col-md-3"> 记账日期:
+                        <p-calendar  id='datePiker' [ngClass]="{'has-danger': !invoice.recordDate }" [minDate]="minDate" [maxDate]="maxDate" placeholder="日期" showAnim="slideDown" [showIcon]="true" 
+                        [disabled]="invoice.lock === true || invoice.sourceId !== null" [(ngModel)]="invoice.recordDate" ></p-calendar>
+                    </label>
+                    <label class="col-md-3" lockTax> 发票类型:
+                        <ng-select [disabled]="invoice.lock === true || invoice.sourceId !== null"  [isSubject]='false' [(ngModel)]="defaultinvoiceType" [ngClass]="{'has-danger':needInvoiceType}"
+                         [items]="invoiceTypeList"  (selected)="selected($event,'invoiceType','')"  placeholder="发票类型"></ng-select>                       
+                    </label>
+                    <label class="col-md-3" [class.pull-right]="!isDisplayBusinessTaxWithCategory"> 对方信息:
+                        <ng-select  [isSubject]='false' [ngClass]="{'has-danger':needContact}" [items]="contactsList" (selected)="selected($event,'contact','')" 
+                        [(ngModel)]="defaultContact" [disabled]="invoice.lock === true || invoice.sourceId !== null" placeholder="请选择对方信息"></ng-select>
+                    </label>
+                    <label class="col-md-3" *ngIf="isGeneralTaxpayer && isDisplayBusinessTaxWithCategory">发票号码:
+                        <div [ngClass]="{'has-danger':needInvoiceNumber}">
+                            <input maxlength="8" [disabled]="invoice.lock === true || invoice.sourceId !== null" (blur)="check()" type="text" class="form-control" [(ngModel)]="invoice.invoiceNumber"
+                            placeholder="发票号">                                                   
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <table class="table new-invoice-content table-hover table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th rowspan="2" width="100px;">类别</th>
+                        <th rowspan="2" width="70px;">部门性质</th>
+                        <th lockTax rowspan="2" width="50px;">税率</th>
+                        <th *ngIf="isDisplayBusinessTaxWithCategory" rowspan="2" width="120px;">进项税类别</th>
+                        <th rowspan="2" width="70px;">价税合计金额
+                            <span *ngIf="!displayTax && isGeneralTaxpayer" class="pull-right tip" (click)="displayDetail()">详情</span>
+                            <span *ngIf="displayTax && isGeneralTaxpayer" class="pull-right tip" (click)="displayDetail()">收起</span>
+                        </th>
+                        <th *ngIf="displayTax" rowspan="2" width="50px;">税额</th>
+                        <th *ngIf="displayTax" rowspan="2" width="50px;">单价</th>
+                        <th rowspan="2" width="70px;">备注</th>
+                        <th rowspan="2" width="50px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of invoice.invoiceItemModels; let i=index">
+                        <td data-title="类别" *ngIf="!isDisplayBusinessTaxWithCategory">
+                            <ng-select [disabled]="invoice.lock === true || invoice.sourceId !== null" [ngClass]="{'has-danger':item.needBusinessCategory }"
+                                [isSubject]='false' [items]="businessCategoryStatusList" (selected)="selected($event,'businessCategory',i)"
+                                [(ngModel)]="item.businessCategory" placeholder="类别" [hasChildren]="true"></ng-select>
+                        </td>
+                        <td data-title="类别" *ngIf="isDisplayBusinessTaxWithCategory">
+                            <ng-select [disabled]="invoice.lock === true || invoice.sourceId !== null" [ngClass]="{'has-danger':item.needBusinessCategory }"
+                                [isSubject]='false' [items]="professionalBusiness" (selected)="selected($event,'businessCategory',i)"
+                                [(ngModel)]="item.businessCategory" placeholder="类别" [hasChildren]="true"></ng-select>
+                        </td>
+                        <td data-title="部门性质">
+                            <ng-select [disabled]="invoice.lock === true || invoice.sourceId !== null" [isSubject]='false' [ngClass]="{'has-danger':item.needDepartmentType }"
+                                [items]="departmentTypeList" (selected)="selected($event,'department',i)" [(ngModel)]="item.departmentType"
+                                placeholder="部门性质"></ng-select>
+                        </td>
+                        <td lockTax data-title="税率" [ngClass]="{'has-danger':item.needtaxRate }">
+                            <ng-select [disabled]="invoice.lock === true || invoice.sourceId !== null" [isSubject]='false' [items]="taxRateList" [(ngModel)]="item.taxRatePercent"
+                                (selected)="selected($event,'taxRate',i)" placeholder="税率" [hasChildren]="false"></ng-select>
+                        </td>
+                        <td data-title="进项税类别" *ngIf="isDisplayBusinessTaxWithCategory">
+                            <ng-select [disabled]="invoice.lock === true || invoice.sourceId !== null" [ngClass]="{'has-danger':item.needInputTaxCategory }"
+                                [isSubject]='false' [items]="item.taxCategory" (selected)="selected($event,'taxCategory',i)"
+                                [(ngModel)]="item.inputTaxCategory" placeholder="请先选择税率" [hasChildren]="false"></ng-select>
+                        </td>
+                        <td data-title="价税合计金额" [ngClass]="{'has-danger':item.needAmount}">
+                            <bp-input type="text" class="text-right" (blur)="calculate(i)" [isEditable]="!invoice.lock && invoice.sourceId === null"
+                                [(ngModel)]="item.amount"></bp-input>
+                        </td>
+                        <td *ngIf="displayTax" data-title="税额">
+                            <bp-input type="text" class="text-right" [isEditable]='false' [(ngModel)]="item.taxAmount"></bp-input>
+
+                        </td>
+                        <td *ngIf="displayTax" data-title="单价">
+                            <bp-input type="text" class="text-right" [isEditable]='false' [(ngModel)]="item.amountWithoutTax"></bp-input>
+
+                        </td>
+                        <td data-title="备注">
+                            <input [disabled]="invoice.lock === true || invoice.sourceId !== null" type="text" [(ngModel)]="item.description" class="form-control"
+                                (keydown)="tab($event,i)" placeholder="备注">
+                        </td>
+                        <td data-title="操作" class="operate">
+                            <button class="btn btn-secondary btn-circle btn-circle-sm text-danger" tabindex="-1" placement="top" tooltip="删除" (click)="deleteItem(item,i)"
+                                [disabled]="invoice.invoiceItemModels.length<=1 || invoice.lock === true || invoice.sourceId !== null"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <template [ngIf]="true">
+                        <tr id="newItem" tabindex="-1" class="newCoating" (click)="newItem()">
+                            <td data-title="类别" class="coating">
+                                <input id="summary" type="text" class="form-control" placeholder="类别">
+                            </td>
+                            <td data-title="部门性质">
+                                <ng-select [isSubject]='false' [allowClear]="true" placeholder="部门性质"></ng-select>
+                            </td>
+                            <td lockTax data-title="税率">
+                                <ng-select [isSubject]='false' [allowClear]="true" placeholder="税率"></ng-select>
+                            </td>
+                            <td *ngIf="isDisplayBusinessTaxWithCategory" data-title="进项税类别">
+                                <ng-select [isSubject]='false' [allowClear]="true" placeholder="进项税类别"></ng-select>
+                            </td>
+                            <td data-title="价税合计金额">
+                                <input type="text" class="form-control text-right" placeholder="价税合计金额">
+                            </td>
+                            <td *ngIf="displayTax" data-title="税额">
+                                <input type="text" class="form-control text-right" placeholder="税额">
+                            </td>
+                            <td *ngIf="displayTax" data-title="单价">
+                                <input type="text" class="form-control text-right" placeholder="单价">
+                            </td>
+                            <td data-title="备注">
+                                <input type="text" class="form-control text-right" placeholder="备注">
+                            </td>
+                            <td data-title="操作" class="operate">
+                                <button class="btn btn-secondary btn-circle btn-circle-sm text-danger" tabindex="-1" placement="top" tooltip="删除">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <!--<div class="row new-voucher-top">
+
+                <div class="col-md-12">
+                    <label class="col-md-1">附单据数量</label>
+                    <input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                         class="form-control col-md-1">
+                </div>
+
+            </div>-->
+            <!--总计-->
+            <div class="row">
+                <div class="col-sm-6">
+                    <a (click)="newItem()">新增明细</a>
+                </div>
+                <div class="col-sm-6">
+                    <span class="pull-right">总计： <span class="color-green h2">{{ totalAmount | currency:'CNY':true:'1.2-2'}}</span></span>
+                </div>
+            </div>
+            <!--标签-->
+            <tag [addTagList]="addTagList"></tag>
+            <!--上传票据-->
+            <upload-attachments [url]="upurl" [dataList]="dataList" (success)="upDataList($event)" (results)="addAlert($event)" (preview)="preview($event)"
+                [type]="type"></upload-attachments>
+            <!--预览票据-->
+            <gpw-picture-preview-modal (update)="dataList=$event" type='account_transaction' #picturePreviewModal></gpw-picture-preview-modal>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="pull-right">
+                        <button class="btn btn-primary" *ngIf="!invoice.lock && invoice.sourceId === null"  (click)="submit('')">保存</button>
+                        <button class="btn" (click)="openConfirmModal()">取消</button>
+                    </span>
+                </div>
+            </div>
+        </ul>
+    </div>
+</div>
+<gpw-contact-details-modal #contactDetailsModal (result)="result($event)" (success)="newItemAdded($event, 'contact')"></gpw-contact-details-modal>
+<confirm-widget #confirmWidget (confirmEvent)="quit($event)"></confirm-widget>

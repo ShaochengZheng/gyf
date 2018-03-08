@@ -1,0 +1,13 @@
+<external-nav></external-nav>
+<div class="container widget-container">
+    <main id="content" role="main">
+        <div *ngIf="confirmURL" class="text-xs-center">
+            <p>欢迎来到<管有方></p>
+            <button type="button" class="btn btn-success" [routerLink]="['/app']">点击激活并登入</button>
+        </div>
+        <div *ngIf="!confirmURL" class="text-xs-center">
+            <p>链接无效,请联系邀请人</p>
+            <button type="button" class="btn btn-success" [routerLink]="['/login']">点击进入登入页面</button>
+        </div>
+    </main>
+</div>

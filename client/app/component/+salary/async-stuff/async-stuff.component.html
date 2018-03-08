@@ -1,0 +1,39 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+      <div class="modal-header">
+
+        <h4 class="modal-title">选择同步员工</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row ">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm table-hover fontStyle">
+              <thead class="thead-head">
+                <tr>
+                  <th class="text-left">姓名</th>
+                  <th class="text-left">身份证／证件号</th>
+                  <th><input type="checkbox" [checked]="triggered" (click)="triggerItem()"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of stuffList; let i=index;">
+                  <td class="text-left">{{item.name}}</td>
+                  <td class="text-left">{{item.idNo}}</td>
+                  <td><input type="checkbox"  [checked]="item.selected" (click)="triggerItem(i)"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="button">
+          <button class="btn btn-primary" (click)="import()">导入</button>
+          <button class="btn btn-secondary" (click)="close()">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div *ngIf="display" >
+    <div class="main">
+        <div (click)="close()">
+            <i style="position:absolute;border:none;top:-15px;right:-15px;color:red" class="fa fa-times-circle fa-2x"></i>
+        </div>
+        <textarea [(ngModel)]="result" class="result"></textarea>
+        <div *ngFor="let item of data" class="row">
+            <div class="col" *ngFor="let a of item"  [ngClass]="showClass($index,a)" (click)="showResult(a)">{{ a }}</div>
+        </div>
+    </div>
+</div>

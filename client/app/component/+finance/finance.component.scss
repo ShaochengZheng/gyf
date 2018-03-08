@@ -1,0 +1,13 @@
+@import '../../../styles/variables';
+.m-r-5 {
+    margin-right: 5px;
+}
+
+.m-l-5 {
+    margin-left: 5px;
+}
+
+.error-border {
+    border: 3px solid $error-color;
+    margin-top: -3px;
+}

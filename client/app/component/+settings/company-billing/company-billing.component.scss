@@ -1,0 +1,177 @@
+@import "../../../../styles/variables";
+.widget {
+    box-shadow: none;
+    form {
+        padding: 1.8rem 0.3rem;
+        border-bottom: 1px solid #dfdfdf;
+        .form-group {
+            height: 30px;
+            width: 100%;
+            clear: both;
+            margin-bottom: 1.2rem;
+        }
+        input,
+        ng-select {
+            width: 100%;
+            position: relative;
+            top: -0.5rem;
+        }
+    }
+    .edit {
+        padding-left: 20px;
+    }
+}
+
+.p-w{
+    width: initial;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.btn {
+    min-width: 100px;
+}
+
+.order-record {
+    .remark {
+        font-size: 14px;
+    }
+    .tip {
+        color: red;
+    }
+    ol {
+        padding: 0;
+    }
+    .value {
+        color: $navy;
+        display: inline-block;
+    }
+    .order-list-item {
+        margin: 15px 0;
+    }
+    .invoice-check {
+        position: absolute;
+        left: -15px;
+        bottom: 50px;
+        width: 20px;
+        height: 20px;
+    }
+    .item-box {
+        border: solid 1px #dadada;
+        padding: 20px 0;
+        .item-line:nth-of-type(1) {
+            padding-bottom: 20px;
+        }
+        .btn-buy-again {
+            border: solid 1px #ff801a;
+            color: #ff801a;
+        }
+        .btn-buy-again:hover {
+            border: solid 1px #ff801a;
+        }
+    }
+}
+
+.invoice-title {
+    label {
+        position: relative;
+        top: 10px;
+    }
+    .invoice-header {
+        min-width: 65px;
+    }
+}
+
+.panel-heading {
+    //   color:#656980;
+    background-color: #f2f8fb;
+    padding: 10px;
+}
+
+.m-mid {
+    margin: 30px;
+}
+
+.m-t-sl {
+    margin-top: 20px;
+}
+
+.m-r-sl {
+    margin-right: 15px;
+}
+
+.m-l {
+    margin-left: 12px;
+}
+
+.m-b {
+    margin-bottom: 10px;
+}
+
+ol {
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+}
+
+.border-t-l-r {
+    border-top: 1px solid #dadada;
+    border-right: 1px solid #dadada;
+    border-left: 1px solid #dadada;
+}
+
+.btn-color-yellow {
+    background-color: #FFC700;
+    color: #656980
+}
+
+.add-weight {
+    font-weight: bolder;
+    color: #656980;
+}
+
+.checkbox-b {
+    width: 20px;
+    height: 20px;
+    background-color: #FFC700;
+}
+
+.light-color {
+    color: #b4b5ba;
+}
+
+.dark-color {
+    color: #24252a;
+}
+
+.lighter-color {
+    color: #717489;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.lighter-checkbox {
+    background-color: opacity;
+}
+
+.remark-title {
+    white-space: nowrap;
+}
+
+.z-index {
+    z-index: 99;
+}
+
+.fa-p {
+    span {
+        i {
+            margin-left: -60px;
+            color: red;
+        }
+    }
+}

@@ -1,0 +1,323 @@
+<div class="new-voucher">
+    <!--提示框-->
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <!--提示框-->
+    <div class="content-header">
+        <ul class="content-body">
+            <div class="new-voucher-title">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-md-4 print">
+                            <a (click)="redirect(voucherList.entityType,voucherList.entityId)" *ngIf="voucherList.entityNumber !== null" style="font-size:14px">业务单号: {{voucherList.entityNumber}}</a>
+                            <!--<div><i (click)="printDiv()" class="fa fa-print fa-2x" tooltip="打印"></i></div>-->
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <h4>编辑凭证</h4>
+                        </div>
+                        <div class="col-xs-4 text-right">
+                            <button class="btn btn-last " (click)="nextVoucher(currentIndex-1)" [disabled]="currentIndex <= 1">上一张</button>
+                            <button class="btn btn-next " (click)="nextVoucher(currentIndex+1)" [disabled]="currentIndex >= pageLength">下一张</button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <p class="text-center">当前会计期间: {{accountPeriod.currentYear}}年{{accountPeriod.currentMonth}}月</p>
+                    </div>
+                </div>
+
+                <!-- <span style="float:right;padding-right:25px;" (click)="display()"><i class="fa fa-calculator fa-2x" tooltip="计算器"></i></span> -->
+
+            </div>
+            <div class="new-voucher-top">
+                <div class="col-md-12 ">
+                    <div class="col-md-4 col-xs-12">
+                        <label>编号:</label>
+                        <label class="m-l-10">记-{{voucherList.journalEntryNumber}}</label>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <label>制单人:</label>
+                        <label class="m-l-10">{{authorizationService?.Session?.user?.name}}</label>
+                    </div>
+                    <div class="col-md-4 col-xs-12" [ngClass]="{'has-danger': !voucherList.accountedOn || invaildDate }">
+                        <label class="pull-left">记账日期:</label>
+                        <p-calendar class="col-md-9" [minDate]="minDate" [maxDate]="maxDate" [disabled]="voucherList.sourceType ==='AutomaticGeneration' || currentStatus !=='InProgress' || voucherList.lock === true" id='datePiker' placeholder="制单时间" showAnim="slideDown" [showIcon]="true"
+                            [(ngModel)]="voucherList.accountedOn" [showDelIcon]="false"></p-calendar>
+                    </div>
+                </div>
+            </div>
+            <table id="voucher" class="table new-voucher-content table-hover table-bordered table-sm">
+                <thead class="thead-head">
+                    <tr>
+                        <th rowspan="2" width="150px;">摘要</th>
+                        <th rowspan="2" width="200px;">科目名称</th>
+                        <th rowspan="2" width="200px;">对方信息</th>
+                        <th colspan="1" width="250px;">借方金额</th>
+                        <th colspan="1" width="250px;">贷方金额</th>
+                        <th rowspan="2" width="70px;">操作</th>
+                    </tr>
+                    <tr class="amount">
+                        <th>
+                            <div class="voucherMoney">
+                                <li class="firstCol">亿</li>
+                                <li>千</li>
+                                <li class="lineBlue">百</li>
+                                <li>十</li>
+                                <li>万</li>
+                                <li class="lineBlue">千</li>
+                                <li>百</li>
+                                <li>十</li>
+                                <li class="lineRed">元</li>
+                                <li>角</li>
+                                <li>分</li>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="voucherMoney">
+                                <li class="firstCol">亿</li>
+                                <li>千</li>
+                                <li class="lineBlue">百</li>
+                                <li>十</li>
+                                <li>万</li>
+                                <li class="lineBlue">千</li>
+                                <li>百</li>
+                                <li>十</li>
+                                <li class="lineRed">元</li>
+                                <li>角</li>
+                                <li>分</li>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <calculator #calculator class="cal"></calculator>
+                <tbody *ngIf="displayTbody">
+                    <tr *ngFor="let item of voucherList.journalEntryLineItemModels; let i=index">
+                        <td data-title="摘要" [ngClass]="{'has-danger':item.needSummary}">
+                            <div [tooltip]="item.summary">
+                                <input (blur)="copySummary(i)" [disabled]="voucherList.sourceType ==='AutomaticGeneration'|| currentStatus !=='InProgress' || voucherList.lock === true" type="text" class="form-control" [(ngModel)]="item.summary" placeholder="摘要">
+                            </div>
+                        </td>
+                        <td data-title="科目名称">
+                            <div [tooltip]="item.subject?.name">
+                                <ng-select [disabled]="voucherList.sourceType ==='AutomaticGeneration'|| currentStatus !=='InProgress' || voucherList.lock === true" [(ngModel)]="item.subject" [ngClass]="{'has-danger':item.needAccountCode}" [allowClear]="true" [isSubject]='true' [items]="subjectsList"
+                                    (selected)="selected($event,'account',i)" placeholder="请选择会计科目"></ng-select>
+                            </div>
+                        </td>
+                        <td data-title="对方信息">
+                            <div [tooltip]="item.contact?.name">
+                                <ng-select [disabled]="voucherList.sourceType ==='AutomaticGeneration'|| currentStatus !=='InProgress' || voucherList.lock === true" (selected)="selected($event,'contact',i)" [isSubject]='false' [allowClear]="true" [items]="contactsList" placeholder="请选择对方信息"
+                                    [(ngModel)]="item.contact"></ng-select>
+                            </div>
+                        </td>
+                        <td data-title="借方金额" *ngIf="!item.debitstatus">
+                            <input id="debitAmount" [(ngModel)]="item.debitAmount" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && 
+                            event.keyCode<48 || event.keyCode>57) event.returnValue=false" onfocus="this.select()" (keydown)="tab($event,'debit',i)" (blur)="changeStatus('debit',i)" type="text" class="form-control text-right">
+                        </td>
+                        <td tabindex="0" (keyup)="changeType('debit',i)" data-title="借方金额" class="inputMonety" *ngIf="item.debitstatus">
+                            <div (click)="changeType('debit',i)">
+                                <li class="firstCol">{{item.debitAmountList[0]}}</li>
+                                <li>{{item.debitAmountList[1]}}</li>
+                                <li class="lineBlue">{{item.debitAmountList[2]}}</li>
+                                <li>{{item.debitAmountList[3]}}</li>
+                                <li>{{item.debitAmountList[4]}}</li>
+                                <li class="lineBlue">{{item.debitAmountList[5]}}</li>
+                                <li>{{item.debitAmountList[6]}}</li>
+                                <li>{{item.debitAmountList[7]}}</li>
+                                <li class="lineRed">{{item.debitAmountList[8]}}</li>
+                                <li>{{item.debitAmountList[9]}}</li>
+                                <li>{{item.debitAmountList[10]}}</li>
+                            </div>
+                        </td>
+                        <td data-title="贷方金额" *ngIf="!item.creditstatus">
+                            <input id="creditAmount" [(ngModel)]="item.creditAmount" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && 
+                            event.keyCode<48 || event.keyCode>57) event.returnValue=false" onfocus="this.select()" (keydown)="tab($event,'credit',i)" (blur)="changeStatus('credit',i)" type="text" class="form-control text-right">
+                        </td>
+                        <td tabindex="0" (keyup)="changeType('credit',i)" data-title="贷方金额" class="inputMonety" *ngIf="item.creditstatus">
+                            <div (click)="changeType('credit',i)">
+                                <li class="firstCol">{{item.creditAmountList[0]}}</li>
+                                <li>{{item.creditAmountList[1]}}</li>
+                                <li class="lineBlue">{{item.creditAmountList[2]}}</li>
+                                <li>{{item.creditAmountList[3]}}</li>
+                                <li>{{item.creditAmountList[4]}}</li>
+                                <li class="lineBlue">{{item.creditAmountList[5]}}</li>
+                                <li>{{item.creditAmountList[6]}}</li>
+                                <li>{{item.creditAmountList[7]}}</li>
+                                <li class="lineRed">{{item.creditAmountList[8]}}</li>
+                                <li>{{item.creditAmountList[9]}}</li>
+                                <li>{{item.creditAmountList[10]}}</li>
+                            </div>
+                        </td>
+                        <td data-title="操作" class="operate">
+                            <button [disabled]="voucherList.sourceType ==='AutomaticGeneration'|| currentStatus !=='InProgress' || voucherList.lock === true" class="btn btn-secondary btn-circle btn-circle-sm text-danger" (click)="deleteItem(item,i)" tabindex="-1" placement="top"
+                                tooltip="删除">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        </td>
+                    </tr>
+                    <template [ngIf]="true">
+                        <tr id="newItem" tabindex="-1" (click)="newItem()" class="newCoating">
+                            <td data-title="摘要" class="coating">
+                                <input tabindex="-1" type="text" class="form-control" placeholder="摘要">
+                            </td>
+                            <td data-title="科目名称">
+                                <input tabindex="-1" type="text" class="form-control" placeholder="请选择会计科目">
+                            </td>
+                            <td data-title="对方信息">
+                                <input tabindex="-1" type="text" class="form-control" placeholder="请选择对方信息">
+                            </td>
+                            <td data-title="借方金额" class="inputMonety">
+                                <div tabindex="-1" *ngIf="true" class="voucherMoney">
+                                    <li class="firstCol"></li>
+                                    <li></li>
+                                    <li class="lineBlue"></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li class="lineBlue"></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li class="lineRed"></li>
+                                    <li></li>
+                                    <li></li>
+                                </div>
+                            </td>
+                            <td data-title="贷方金额" class="inputMonety">
+                                <div tabindex="-1" *ngIf="true" class="voucherMoney">
+                                    <li class="firstCol"></li>
+                                    <li></li>
+                                    <li class="lineBlue"></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li class="lineBlue"></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li class="lineRed"></li>
+                                    <li></li>
+                                    <li></li>
+                                </div>
+                            </td>
+                            <td data-title="操作" class="operate">
+                                <button class="btn btn-secondary btn-circle btn-circle-sm text-danger" tabindex="-1" placement="top" tooltip="删除">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            </td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td colspan="1" class="text-center">合计</td>
+                        <td colspan="2" class="outputAmount text-left" [class.outputAmountError]="outputCharactersStatus">{{outputCharacters}}</td>
+                        <td class="totalAmount text-right">{{debitTotal | currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="totalAmount text-right">{{creditTotal | currency:'CNY':true:'1.2-2'}}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="row new-voucher-top">
+                <div class="col-md-12">
+                    <label class="col-md-1">附单据数量</label>
+                    <input [disabled]="voucherList.sourceType ==='AutomaticGeneration' || this.currentStatus !=='InProgress' || voucherList.lock === true" type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" [(ngModel)]="voucherList.attachmentCount" class="form-control col-md-1">
+                </div>
+            </div>
+
+            <!--上传票据-->
+            <upload-attachments [url]="upurl" [dataList]="dataList" (success)="upDataList($event)" (results)="addAlert($event)" (preview)="preview($event)" [type]="type"></upload-attachments>
+            <!--预览票据-->
+            <gpw-picture-preview-modal (update)="dataList=$event" type='account_transaction' #picturePreviewModal></gpw-picture-preview-modal>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="pull-right">
+                        <button *ngIf=" voucherList.sourceType !=='AutomaticGeneration' && currentStatus ==='InProgress' && voucherList.lock === false" class="btn btn-primary btn-again" (click)="submit('')">保存</button>
+                        <button class="btn" (click)="openConfirmModal()">取消</button>
+                    </span>
+                </div>
+            </div>
+        </ul>
+    </div>
+</div>
+<div id="printDiv" style="display:none;">
+    <ul style="padding-left:0px">
+        <div style="display:flex">
+            <div style="flex:1.5">
+                <h1 style="text-align:right;margin-bottom: 0px;margin-top: 0px;">记账凭证</h1>
+            </div>
+            <div style="text-align:right;flex:1;">业务单号: {{voucherList.entityNumber}}</div>
+        </div>
+        <div style="margin-bottom:15px;display: flex;">
+            <div style="flex:1;text-align:left">
+                <span>核算单位：{{authorizationService.Session.currentAccount.name}}</span>
+            </div>
+            <div style="flex:1;text-align:center">
+                <div>日期:{{voucherList.accountedOn}}</div>
+            </div>
+            <div style="flex:1;text-align:right">
+                <div>记-{{voucherList.journalEntryNumber}}号</div>
+            </div>
+        </div>
+        <div style="display:flex">
+            <div style="flex:12">
+                <table style="width:100%;" border="1" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;height:44px;">摘要</th>
+                            <th style="text-align:center;">会计科目</th>
+                            <th style="text-align:center;">借方金额</th>
+                            <th style="text-align:center;">贷方金额</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of voucherList.journalEntryLineItemModels; let i=index">
+                            <td data-title="摘要" style="text-align:left;height:44px;">
+                                {{item.summary}}
+                            </td>
+                            <td data-title="会计科目" style="text-align:left;">
+                                {{item.subjectName}}
+                            </td>
+                            <td data-title="借方金额" style="text-align:right;">
+                                {{item.debitAmount| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td data-title="贷方金额" style="text-align:right;">
+                                {{item.creditAmount| currency:'CNY':true:'1.2-2'}}
+                            </td>
+                        </tr>
+                        <tr style="text-align:left;">
+                            <td colspan="2" style="text-align:left;height:44px;">合计:{{outputCharacters}}</td>
+                            <td style="text-align:right;">{{debitTotal | currency:'CNY':true:'1.2-2'}}</td>
+                            <td style="text-align:right;">{{creditTotal | currency:'CNY':true:'1.2-2'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin:5px;">
+                <table height="100%">
+                    <tr style="text-align:center;">
+                        <th style="vertical-align:middle;word-wrap:break-word;max-width:20px !important;"> 附单据︵{{voucherList.attachmentCount}}︶张</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div style="padding-top:15px;margin-top:15px;display: flex;width:100%">
+            <div style="flex:1">
+                <span>财务主管:</span>
+            </div>
+            <div style="flex:1">
+                <span>审核:</span>
+            </div>
+            <div style="flex:1">
+                <span>制单人:{{authorizationService.Session.user?.name}}</span>
+            </div>
+            <div style="flex:1">
+                <span>出纳:</span>
+            </div>
+            <div style="flex:1">
+                <span>经办:</span>
+            </div>
+        </div>
+        <div style="width:100%;border-bottom:1px solid #000000;padding-top:20px;"></div>
+    </ul>
+</div>
+<gpw-contact-details-modal #contactDetailsModal (result)="result($event)" (success)="newItemAdded($event, 'contact')"></gpw-contact-details-modal>
+<confirm-widget #confirmWidget (confirmEvent)="quit($event)"></confirm-widget>
+<confirm-widget #nextSaveModel [title]="'是否保存'" [confirmText]="'是'" [otherText]="'否'" [default]="false" [message]="'是否保存已修改的内容'"></confirm-widget>

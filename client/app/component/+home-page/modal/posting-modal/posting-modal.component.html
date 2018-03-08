@@ -1,0 +1,38 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body ">
+                <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <p class="text-left">
+                    请在报税完成后进行过账
+                </p>
+                <p class="text-left">
+                    过账后：
+                </p>
+                <p class="text-left">
+                    1.当月数据被锁定，无法编辑
+                </p>
+                <p class="text-left">
+                    2.开始进行下个月的工作
+                </p>
+                <p class="text-left">
+                    3.如果数据有误需要更改，您依旧可以在此处反过账
+                </p>
+                <div *ngIf="bankAccountdate">
+                    <div class="Accountdate" *ngFor="let item of bankAccountdate">
+                        <div>账户名：{{item.accountName}}</div>
+                        <div>当前余额：{{item.currentBalance | currency:'CNY':true:'1.2-2'}}</div>
+                        <div>当前已经对账余额：{{item.currentBankStatementBalance | currency:'CNY':true:'1.2-2' }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="operation">
+                <button class="btn btn-default btn-primary" (click)="save()">过账</button>
+                <button class="btn btn-default btn-primary" (click)="modal.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

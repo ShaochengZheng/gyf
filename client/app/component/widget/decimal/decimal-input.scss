@@ -1,0 +1,27 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+/* firefox*/
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+.min-input-width{
+    min-width: 80px;
+}
+// input {
+   
+//     min-width: 80px;
+// }
+
+.no-border {
+    border: 0px;
+    background: #fff;
+    background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0 !important;
+    /*实现FF背景透明，文字不透明*/
+    opacity: 0.8;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.8;
+}

@@ -1,0 +1,66 @@
+@import "../../../../styles/variables";
+
+.account-balance {
+  margin: 0;
+  .table {
+    .thead-head {
+      background-color: $Auxiliarycolor;
+      tr{
+        th{
+          vertical-align:middle;
+          text-align: center;
+          border: 1px solid $Formheaderbordercolor;
+        }
+      }
+    }
+    tbody {
+      tr{
+        th td{
+          border: 1px solid $Formbordercolor;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+.min95{
+  min-width: 95px;
+}
+.account-balance-month {
+    display: inline-block;
+    width: 155px;
+    margin-top: -3px;
+}
+.tdHasChildren{
+  background-color: $Formbordercolor;
+}
+.content-body {
+  padding: 0;
+
+}
+  .search{
+
+    /* padding: 15px ;*/
+    div{
+      margin: 15px 0;
+    }
+
+  div{  
+    button{
+      margin-left: 15px;
+    }
+    label{
+      margin-top: 10px;
+    }
+    span{
+      color: $navy;
+      cursor: pointer;
+      float: right;
+      margin-top: 10px;
+    }
+  }
+}
+
+
+
+

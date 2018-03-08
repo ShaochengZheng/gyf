@@ -1,0 +1,278 @@
+<div class="widget clearfix">
+    <!--<alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type">{{ alert?.msg }}</alert>-->
+    <div class="alert-fixed" *ngFor="let alert of alerts">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="">
+        <span class="title">账套信息</span>
+        <span class="edit" *ngIf="isManager">
+            <a roles expire [routerLink]="" (click)="editCompany()" placement="top">
+                <i class="fa fa-pencil" aria-hidden="true">编辑</i>
+            </a>
+        </span>
+    </div>
+    <form role="form" id="form">
+        <div class="form-group form-inline">
+            <label id="name" for="name" class="col-xs-12 col-md-2 light-color">公司名称</label>
+            <div class="col-xs-12 col-md-4" [ngClass]="{'has-danger':!beforeApi && !company.name}">
+                <input *ngIf="iseditcompany" type="text" class="form-control" name="name" [(ngModel)]="company.name">
+                <span id="companyName" class="text-ellipsis" *ngIf="!iseditcompany">{{company.name}}</span>
+            </div>
+            <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && !company.name">
+                <span>请填写公司名称</span>
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label id="legalPersonName" for="legalPersonName" class="col-xs-12 col-md-2 light-color">法定代表人</label>
+            <div class="col-xs-12 col-md-4" [ngClass]="{'has-danger':!beforeApi && !company.legalPersonName}">
+                <input *ngIf="iseditcompany" type="text" name="legalPersonName" class="form-control" [(ngModel)]="company.legalPersonName">
+                <span id="legalPerson" class="text-ellipsis" *ngIf="!iseditcompany">{{company.legalPersonName}}</span>
+            </div>
+            <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && !company.legalPersonName">
+                <span>请填写法定代表人</span>
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label id="registeredCapital" for="registeredCapital" class="col-xs-12 col-md-2 light-color">注册资本(万元)</label>
+            <!--[ngClass]="{'has-danger':  !beforeApi && (!company.registeredCapital ||company.registeredCapital <= 0)}"-->
+            <div class="col-xs-12 col-md-4" >
+                <input *ngIf="iseditcompany" type="number" class="form-control" name="registeredCapital" [(ngModel)]="company.registeredCapital">
+                <span id="captial" class="text-ellipsis" *ngIf="!iseditcompany">{{company.registeredCapital | number:'1.4-4'}}</span>
+            </div>
+            <!--<div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && (!company.registeredCapital ||company.registeredCapital <= 0)">
+                <span>请填写注册资本</span>
+            </div>-->
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="province" class="col-xs-12 col-sm-12 col-md-2 light-color">地址</label>
+            <span id="companyWholeAddress" class="m-l" *ngIf="!iseditcompany">{{companyaddress}}</span>
+            <div *ngIf="iseditcompany">
+                <div class="col-xs-12 col-sm-4 col-md-2">
+                    <ng-select [isSubject]='false' [ngModelOptions]="{standalone: true}" [items]="provinceList" name="province" (selected)="provinceSelect($event)" [(ngModel)]="company.address.province"
+                        placeholder="省">
+                    </ng-select>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-2">
+                    <ng-select [isSubject]='false' [items]="cityList" name="city" (selected)="citySelect($event)" [(ngModel)]="company.address.city" placeholder="市">
+                    </ng-select>
+                </div>
+                <div class="cl-xs-12 col-sm-4 col-md-2">
+                    <ng-select [isSubject]='false' [items]="districtList" name="district" [(ngModel)]="company.address.area" placeholder="区">
+                    </ng-select>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <input type="text" class="form-control" placeholder="详细地址" name="address" [(ngModel)]="company.address.street">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label id="beginDate" for="beginDate" class="col-xs-12 col-md-2 light-color">成立日期</label>
+            <div class="col-xs-12 col-md-4 p-w" [ngClass]="{'has-danger':!beforeApi && !company.beginDate}">
+                <p-calendar *ngIf="iseditcompany" placeholder="成立日期" showAnim="slideDown" defaultDate="company.beginDate"
+                 [(ngModel)]="company.beginDate" name="beginDate" [showIcon]="true" >
+                </p-calendar>
+                 <span id="startDate" class="text-ellipsis" *ngIf="!iseditcompany">{{company.beginDate|date: 'yyyy/MM/dd'}}</span>
+            </div>
+            <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && !company.beginDate">
+                <span>请填写成立日期</span>
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label id="taxNumber" for="taxNumber" class="col-xs-12 col-md-2 light-color">纳税人识别号</label>
+            <div class="col-xs-12 col-md-4" [ngClass]="{'has-danger':!beforeApi && !company.taxNumber}">
+                <input *ngIf="iseditcompany" type="text" class="form-control" name="taxNumber" [(ngModel)]="company.taxNumber">
+                <span id="taxNum" class="text-ellipsis" *ngIf="!iseditcompany">{{company.taxNumber}}</span>
+            </div>
+            <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && !company.taxNumber">
+                <span>请填写纳税人识别号</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="industry" for="industry" class="col-xs-12 col-md-2 light-color">行业</label>
+            <div class="col-xs-12 col-md-4" [ngClass]="{'has-danger':!beforeApi && !company.industry}">
+                <ng-select  [isSubject]='false' *ngIf="iseditcompany" [items]="industryList" name="industry" [(ngModel)]="company.industry"
+                    [autocomplete]="true" placeholder='请选择行业'>
+                </ng-select>
+                <span id="industry" *ngIf="!iseditcompany && company.industry[0]">{{company.industry[0]?.text}}</span>
+            </div>
+            <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && !company.industry[0]">
+                <span>请选择行业</span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label id="industryNature" for="industryNature" class="col-xs-12 col-md-2 light-color">性质</label>
+            <div class="col-xs-12 col-md-4" >
+                <span id="type" >{{currentType}}</span>
+            </div>
+            <!--<div class="col-xs-12 col-md-4" [ngClass]="{'has-danger':!beforeApi && !company.companyProperty}">
+                <ng-select *ngIf="iseditcompany" [allowClear]="true" [items]="companyTypes" name="companyType" [(ngModel)]="company.companyProperty"
+                    [autocomplete]="true" placeholder="请选择性质">
+                </ng-select>
+                <span id="companyTypeText" *ngIf="!iseditcompany && company.companyProperty">{{company.companyProperty}}</span>
+                
+            </div>
+            <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && !company.companyProperty">
+                <span>请选择性质</span>
+            </div>-->
+        </div>
+
+        <div class="form-group form-inline ">
+            <label id="openingDate" for="openingDate" class="col-xs-12 col-md-2 light-color">启用账套日期</label>
+            <div class="col-xs-12 col-md-4 z-index" [ngClass]="{'has-danger':!beforeApi && !company.openingDate}">
+               <!--<datepicker  *ngIf="iseditcompany && openingDateEdit"  name="openingDate" [(ngModel)]="company.openingDate" datepickerMode="month" minMode="month" (selectionDone)="selectedMonth($event,'start')"
+                    class="dp-width-monthpicker"></datepicker>
+                <span id="opening"  *ngIf="!iseditcompany||!openingDateEdit" class="text-ellipsis">{{company.openingDate|date: 'yyyy/MM/dd'}}</span>-->
+                <span id="opening" class="text-ellipsis">{{company.openingDate|date: 'yyyy/MM/dd'}}</span>
+            </div>
+            <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && !company.openingDate">
+                <span>请填写启用账套日期</span>
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label id="serviceDeadline" for="serviceDeadline" class="col-xs-12 col-md-2 light-color">服务截止日期</label>
+            <div class="col-xs-12 col-md-4 p-w" >
+                <!--<datepicker *ngIf="iseditcompany" name="dt" [(ngModel)]="startDate" datepickerMode="month" minMode="month" (selectionDone)="selectedMonth($event,'end')"
+                    class="dp-width-monthpicker"></datepicker>-->
+                <p-calendar *ngIf="iseditcompany" name="serviceDeadline" placeholder="服务截止日期" showAnim="slideDown" [showIcon]="true" [(ngModel)]="company.serviceDeadline" >
+                </p-calendar>
+                <span id="endDate" class="text-ellipsis" *ngIf="!iseditcompany">{{company.serviceDeadline|date: 'yyyy/MM/dd'}}</span>
+            </div>
+            <!--<div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!beforeApi && !company.serviceDeadline">
+                <span>请填写服务截止日期</span>
+            </div>-->
+        </div>
+
+
+        <div *ngIf="iseditcompany" class="  text-xs-center  form-group">
+            <button class="btn btn-primary " type="submit" (click)="updataAccount()">保存</button>
+            <button class="btn btn-secondary " (click)="canceleditCompany()">返回</button>
+        </div>
+        <!--<div class="form-group" *ngIf="!iseditcompany">
+            <label for="expireOn" class="col-xs-12 col-sm-12 col-md-2 light-color">到期日期</label>
+            <span id="endTime" class="m-l">{{company.expireOn| date: 'yyyy/MM/dd'}}</span>
+        </div>-->
+    </form>
+</div>
+
+<confirm-widget #confirmWidget (confirmEvent)="resault($event)" message="您已经录入的期初信息晚于此月份，继续更改将清空所有的期初信息，是否继续?"></confirm-widget>
+<!--去掉、-->
+<!--<div class="clearfix order-record" id="box" *ngIf="false">
+    <div class="col-xs-12">
+        <div class="inline-block">
+            <span class="title ">购买记录</span>
+            <span class="light-color">（注册时间：{{company.createdOn|date: 'yyyy/MM/dd'}}）</span>
+        </div>
+        <div class="pull-right">
+            <button id="purchaseRecordBuyNow" roles [routerLink]="['/app/purchase/purchase-info']" class="btn btn-color-yellow">立即购买</button>
+            <button class="btn btn-primary" [disabled]="!isshowOrderList" (click)="editInvoice()">开发票</button>
+        </div>
+    </div>
+    <div>-->
+        <!--<div class="col-xs-2  m-t-sl">
+            <a id="myCoupon" roles class="value pull-left" (click)="couponsList.show()">我的优惠券</a>
+        </div>-->
+        <!--<div *ngIf="isshowOrderList" class="col-xs-12  m-t-sl ">
+            <div *ngIf="isinvoice" class="remark tip lighter-color col-xs-2">
+                <span>请选择要开票的订单</span>
+            </div>
+            <div class="pull-right remark lighter-color">
+                备注: 1.仅支持<span class="add-weight">本年</span>订单开发票 2.所开发票为<span class="add-weight">电子发票</span> 3.发票类型是
+                <span class="add-weight">增值税普通发票</span>
+            </div>
+        </div>
+
+
+        <div *ngIf="!isshowOrderList" class="text-xs-center">
+            <span class="add-weight"> 您还没有购买记录</span>
+        </div>
+        <ol *ngIf="isshowOrderList">
+            <li *ngFor="let item of orderList">
+                <div class="col-xs-12 order-list-item">
+                    <div *ngIf="isinvoice&&!item.invoice&&item.orderStatus=='paid'" class="dark-checkbox  invoice-check ">
+                        <input class="checkbox-b" type="checkbox" [(ngModel)]="item.selected" (change)="triggerSelection(item)" />
+                    </div>
+                    <div *ngIf="isinvoice&&(item.invoice||item.orderStatus!='paid')" class="invoice-check">
+                        <input class="checkbox-b" type="checkbox" disabled />
+                    </div>
+                    <div class="panel-heading col-xl-12 border-t-l-r lighter-color">
+                        <span class="col-xl-3">购买日期：{{item.createdOn| date: 'yyyy/MM/dd'}}</span>
+                        <span class="col-xl-3">有效期：{{item.frequency}}个月</span>
+                        <span class="col-xl-6 text-xs-right">订单号：{{item.orderNo}}</span>
+                    </div>
+                    <div class="item-box col-xl-12">
+                        <div class="col-xl-12 item-line">
+                            <span class="col-xl-4 dark-color">{{item.packageName}}</span>
+                            <div class="col-xl-4 text-xs-center ">
+                                <span class=" lighter-color">单价：</span>
+                                <span class="dark-color">{{item.monthlyPrice|currency:'CNY':true:'1.2-2'}}/月</span>
+                            </div>
+                            <div class="col-xl-4 text-xs-right">
+                                <span class="lighter-color">实付：</span>
+                                <span class="value">{{item.nettAmount| currency:'CNY':true:'1.2-2'}}</span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 item-line">
+                            <div class="col-xl-8">
+                                <span class="dark-color"> 开票状态：</span>
+                                <span *ngIf="!item.invoice||item.orderStatus=='unpaid'" class="lighter-color">
+                                    未开发票
+                                </span>
+                                <span *ngIf="item.invoice&&item.invoice.invoiceStatus=='INVOICING'&&item.orderStatus=='paid'" class="lighter-color">
+                                    已申请开发票 (购买3~5个工作日后可在在此下载电子发票)
+                                </span>
+                                <span *ngIf="item.invoice&&item.invoice.invoiceStatus=='INVOICED'&&item.orderStatus=='paid'" class="lighter-color">
+                                    已开发票（电子发票）发票号：{{item.invoice.referenceNo}}
+                                    <a href="{{item.invoice.url}}" target="_blank">下载</a>
+                                </span>
+                            </div>
+                            <div class="text-xs-right">
+                                <a roles class="btn btn-secondary btn-buy-again" [routerLink]="['/app/purchase/purchase-info',{orderId:item.id}]">再次购买</a>
+                                <span *ngIf="item.orderStatus=='unpaid'" class="m-r-sl">未支付成功</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ol>
+        <div class="col-xl-12 ">
+            <span *ngIf="isinvoice" class="lighter-color">已选择{{dataList.length}}条购买记录，开票金额<span class="value">{{invoice.amount| currency:'CNY':true:'1.2-2'}}</span></span>
+        </div>
+        <div class="col-xs-12">
+            <pagination class="pagination-sm pull-right inline-block" (pageChanged)="pageChanged($event)" [totalItems]="recordCount"
+                [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;"
+                nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+        </div>
+    </div>
+    <div *ngIf="isinvoice" class="col-xs-12">
+        <div class="">
+            <span class="title">请确认发票抬头信息</span>
+        </div>
+        <div class="m-t-sl col-xs-12 invoice-title">
+            <div class="col-xs-1">
+                <label for="title" class="lighter-color  invoice-header">发票抬头</label>
+            </div>
+            <div class="col-xs-4" [ngClass]="{'has-danger': (!invoice.title && clearHint)}">
+                <input type="text" class="form-control" name="title" [(ngModel)]="invoice.title">
+            </div>
+            <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="clearHint && !invoice.title">
+                <span>请填写发票抬头信息</span>
+            </div>
+            <div class="col-xs-12 m-t-sl ">
+                <div class="col-xs-5 text-center ">
+                    <button class="btn btn-primary" type="submit" [disabled]="!invoice.amount &&!dataList.length " (click)="createInvoice()">确认开票</button>
+                    <a class="btn btn-secondary " (click)="cancelInvoice()">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->

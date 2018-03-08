@@ -1,0 +1,120 @@
+<div class="contacts-detail">
+    <!--<p>往来明细表=================================！！！</p>-->
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-12 col-sm-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null ">
+                        <i class="fa  fa-area-chart fa-2x"></i>
+                    </li>
+                    <li class="breadcrumb-null page-title">
+                        <a>
+                            <span>报表</span>
+                        </a>
+                        <span>/</span>
+                        <span>往来明细表</span>
+                    </li>
+                    <li>
+                        <!--<button style="margin-right: 15px" class="pull-right btn btn-primary">导出</button>-->
+                    </li>
+                    <!--<li>
+                        <button style="margin-right: 15px" class="pull-right btn btn-primary" (click)="toggleSifting()">筛选</button>
+                    </li>-->
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+        </div>
+    </div>
+    <div class="content-body search" *ngIf="true">
+        <div class="row">
+            <div class="col-lg-12 searchArea">
+                <div class="col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                        <input class="form-control" type="text" (blur)="search()" placeholder="关键字" [(ngModel)]="searchModel.keyword" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 monthSearchStyle">
+                <template ngFor let-item [ngForOf]="monthList" let-index="index">
+                    <button class="monthPic" [ngClass]="{'clickStyle': index === isChecked, 'noDataStyle': !item.isExist}"
+                         [disabled]="!item.isExist" (click)="monthSearch(item, index)">
+                        <span [ngClass]="{'fontCenter': index < 9, 'doubleFont': index >= 9}">{{item.month}}</span>
+                    </button>
+                    <div [ngClass]="{'monthLine': index < 11, 'noDataStyle': !item.isExist}"></div>
+                </template>
+                <!--<div class="monthPic" [ngClass]="{'noDataStyle': true}">
+                    <span class="doubleFont">12月</span>
+                </div>
+                <div class="monthLine" [ngClass]="{'noDataStyle': true}"></div>-->
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a id="Outcome" class="nav-link" [ngClass]="{'active': type === '0'}" (click)="tabSelected('0')">应收账款</a>
+        </li>
+        <li class="nav-item">
+            <a id="Outcome" class="nav-link" [ngClass]="{'active': type === '1'}" (click)="tabSelected('1')">应付账款</a>
+        </li>
+        <li class="nav-item">
+            <a id="Income" class="nav-link" [ngClass]="{'active': type === '2'}" (click)="tabSelected('2')">其他应收款</a>
+        </li>
+        <li class="nav-item">
+            <a id="Income" class="nav-link" [ngClass]="{'active': type === '3'}" (click)="tabSelected('3')">其他应付款</a>
+        </li>
+    </ul>
+    <div class="tab-content border-tab">
+        <div class="content-body list">
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead-head">
+                            <tr>
+                                <th>对方信息</th>
+                                <th class="text-center">期初</th>
+                                <th class="text-center">本月增加</th>
+                                <th class="text-center">本月减少</th>
+                                <th class="text-center">期末余额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--<template></template>-->
+                            <tr *ngFor="let item of dataList">
+                                <td class="text-xs-left">{{item.name}}
+                                    <a [routerLink]=" ['/app/reports/contacts-detail/view-detail',
+                                        {id: item.contactId, year: this.searchModel.year, month: this.searchModel.month, companyName: item.name}]">
+                                        <span>查看详情</span>
+                                    </a>
+                                </td>
+                                <td class="text-xs-right">{{item.openingBalance | currency:'CNY':true:'1.2-2'}}</td>
+                                <td class="text-xs-right">{{item.increase | currency:'CNY':true:'1.2-2'}}</td>
+                                <td class="text-xs-right">{{item.decrease | currency:'CNY':true:'1.2-2'}}</td>
+                                <td class="text-xs-right">{{item.balance | currency:'CNY':true:'1.2-2'}}</td>
+                            </tr>
+                            <tr *ngIf="searchNodata">
+                                <td colspan="5">
+                                    <div class="noData">
+                                        没有数据
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <pagination class="pagination-sm pull-right inline-block" (pageChanged)="pageChanged($event)" [totalItems]="recordCount" [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+                        firstText="&laquo;" lastText="&raquo;">
+                    </pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

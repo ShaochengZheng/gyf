@@ -1,0 +1,157 @@
+<div class="content-header">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-exchange  fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">收支</li>
+                <li>
+                    <button class="pull-right btn btn-filter" (click)="showSearch()">筛选<i [class.rotate]="!isSearch" [class.norotate]="isSearch"   class="fa   fa-angle-down fa-lg angle-right "></i></button>
+
+                    <!--<download class="pull-right" url="/api/v1/account_transaction_line_item/export">导出
+					</download>-->
+
+                    <div style="margin-right: 15px" class="btn-group pull-right dropdown" *ngIf="noCashList.length>0">
+                        <button lockIn class="btn btn-primary " [routerLink]="['/app/reconcile/import',{id: noCashList[0].id,where: 'list'}]">选择账户导入</button>
+                        <button lockIn class="btn btn-primary dropdown-toggle" data-toggle="dropdown"></button>
+                        <div class="dropdown-menu row" aria-labelledby="dropdownMenuLink">
+                            <button lockIn class="col-xs-12 text-truncate dropdown-item link-style" *ngFor="let item of noCashList;" [routerLink]="['/app/reconcile/import',{id: item.id, where: 'list'}]">
+								{{item.text}}
+							</button>
+                        </div>
+                    </div>
+                    <button lockIn style="margin-right: 15px" class="pull-right btn btn-primary" [routerLink]=" ['/app/transaction/detail/Income']">记一笔</button>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="search row" [hidden]="isSearch">
+            <p-calendar class="col-lg-3 col-xs-12 mb-10" [(ngModel)]="startDate" (onSelect)="searchBlur()" placeholder="开始日期" showAnim="slideDown" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"></p-calendar>
+            <p-calendar class="col-lg-3 col-xs-12 mb-10" [(ngModel)]="endDate" (onSelect)="searchBlur()" placeholder="结束日期" showAnim="slideDown" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"></p-calendar>
+            <ng-select *ngIf="accountList" (selected)="setUpTheAccount($event)" class="col-lg-3 col-xs-12" [isSubject]='false' [items]="accountList" [allowClear]="true" placeholder="请选择账户">
+            </ng-select>
+            <div class="col-lg-3 col-xs-12 radios mb-10">
+                <label> <input type="radio" name="interval" value="" #all (click)="accountTransactionType = all.value;searchBlur()"  [checked]="accountTransactionType===''">全部</label>
+                <label> <input type="radio" name="interval" value="1" #small (click)="accountTransactionType = small.value;searchBlur()" [checked]="accountTransactionType==='1'" >收入</label>
+                <label> <input  type="radio" name="interval" value="2" #normal (click)="accountTransactionType = normal.value;searchBlur()"  [checked]="accountTransactionType==='2'">支出</label>
+            </div>
+            <div class="col-lg-6 col-xs-12 input-group mb-10">
+                <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                <input style="display:none">
+                <input class="form-control" type="text" (blur)="searchBlur()" placeholder="关键字搜索" [(ngModel)]="keyword" [ngModelOptions]="{standalone: true}" autocomplete="off">
+            </div>
+            <div class="col-xs-12 input-group mb-10">
+                <div style="white-space: nowrap;" class="col-xs-12 col-lg-1">
+                    标签搜索:
+                </div>
+                <!--<div (click)="tagPush(item)" class="tag" *ngFor="let item of recommendTagList">{{item.value}}</div>-->
+                <div class="col-xs-12 col-lg-11">
+                    <div *ngFor="let item of tagList; let i=index">
+                        <div class="search-addTagSize" [ngClass]="{'search-clickStyle': !item.checked}" *ngIf="tagList">
+                            <div class="search-addTagStyle" (click)="search_tagSearch(item, i)">
+                                <span class="search-addTagInfo fontStyle fontColor">{{item.value}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-sm-1 search-displayTag" *ngIf="displayTags && tagLists && tagLists.length > 10" (click)="search_tagToggle(true)">
+                        更多<i class="fa fa-angle-down faPadding" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-lg-1 col-sm-1 search-displayTag" *ngIf="!displayTags" (click)="search_tagToggle(false)">
+                        收起<i class="fa fa-angle-up faPadding" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 empty" (click)='clearnSearchForm()'>
+                <span>清空筛选条件</span>
+            </div>
+        </div>
+    </div>
+    <div class="content-body">
+
+        <table class="table table-striped table-bordered table-hover table-sm">
+            <thead class="thead-head">
+                <tr>
+                    <th width="100px;">日期</th>
+                    <th width="150px;">类别</th>
+                    <th width="150px;">对方信息</th>
+                    <th width="150px;">收入</th>
+                    <th width="150px;">支出</th>
+                    <th width="100px;">交易账户</th>
+                    <th width="100px;">单号</th>
+                    <th width="150px;">操作</th>
+                </tr>
+
+            </thead>
+            <tbody [hidden]="isData">
+
+                <tr *ngFor="let item of accountTransLineItemModel">
+                    <td>{{item.accountTransactionModel.accountTransDate|date:'y-MM-dd'}}</td>
+                    <td class="text-left">{{item.businessCategory.name}}</td>
+                    <td class="text-left">{{item.accountTransactionModel?.contact?.name}}</td>
+                    <td [hidden]="item.accountTransactionModel.entityType.value==='Income'" class="text-right">-</td>
+                    <td [hidden]="item.accountTransactionModel.entityType.value==='Income'" class="text-right">{{item.amount | currency:'CNY':true:'1.2-2'}}</td>
+                    <td [hidden]="item.accountTransactionModel.entityType.value==='Outcome'" class="text-right">{{item.amount | currency:'CNY':true:'1.2-2'}}</td>
+                    <td [hidden]="item.accountTransactionModel.entityType.value==='Outcome'" class="text-right">-</td>
+                    <td class="text-left">{{item.accountTransactionModel.bankAccount.name}}</td>
+                    <td><a class="hrefs" (click)="toEdit(item.accountTransactionModel.entityType.value,item.accountTransactionModel.id,item.accountTransactionModel.sourceId)">{{item.accountTransactionModel.number}}</a> </td>
+                    <td>
+
+                        <button expire *ngIf="item.accountTransactionModel.accountAttachmentModels.length>0" class="btn btn-secondary btn-circle-sm" (click)="toEdit(item.accountTransactionModel.entityType.value,item.accountTransactionModel.id,item.accountTransactionModel.sourceId)"
+                            placement="top" tooltip="附件">
+							                                    <i  class="fa fa-paperclip"></i>
+
+                        </button>
+                        <button expire class="btn btn-secondary btn-circle-sm" (click)="toEdit(item.accountTransactionModel.entityType.value,item.accountTransactionModel.id,item.accountTransactionModel.sourceId)" placement="top" tooltip="编辑">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button expire [disabled]="item.accountTransactionModel.lock" class="btn btn-secondary btn-circle-sm" (click)="showConfirmWidget(item.accountTransactionModel.id,item.id)" placement="top" tooltip="删除">
+                            <i class="fa fa-trash"></i>
+                            </button>
+                    </td>
+                </tr>
+                <tr *ngIf="balanceOfTotalAmount && balanceOfTotalAmount.length>0">
+                    <th colspan="2"></th>
+                    <th class="text-right">合计：</th>
+                    <th class="text-right">{{balanceOfTotalAmount[0].name | currency:'CNY':true:'1.2-2'}} </th>
+                    <th class="text-right">{{balanceOfTotalAmount[1].name | currency:'CNY':true:'1.2-2'}}</th>
+                    <th colspan="3"></th>
+                </tr>
+
+
+            </tbody>
+            <tbody [hidden]="!isData">
+                <tr>
+                    <td colspan="9">
+                        <div class="noData">没有数据</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--<div class="row" *ngIf="balanceOfTotalAmount && balanceOfTotalAmount.length>0">-->
+    <!--<div class="col-xs-12">-->
+    <!--<span class="pull-left m-boldface">-->
+    <!--收入合计：{{balanceOfTotalAmount[0].name | currency:'CNY':true:'1.2-2'}} -->
+    <!--</span>-->
+    <!--</div>-->
+    <!--<div class="col-xs-12">-->
+    <!--<span class="pull-left m-boldface">-->
+    <!--支出合计：{{balanceOfTotalAmount[1].name | currency:'CNY':true:'1.2-2'}}-->
+    <!--</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="row">
+        <div class="col-xs-12">
+            <pagination class="pagination-sm pull-right inline-block" (pageChanged)="pageChanged($event)" [totalItems]="recordCount" [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+                firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+        </div>
+    </div>
+</div>
+
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)"></confirm-widget>

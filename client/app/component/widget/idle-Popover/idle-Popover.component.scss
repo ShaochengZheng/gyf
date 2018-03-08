@@ -1,0 +1,59 @@
+@import "../../../../styles/variables";
+
+.idle-Popover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3000;
+    background-color: rgba(0 ,0,0, 0.9);
+    width: 100vw;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+    .idle-content{
+        width: 480px;
+        height: 360px;
+        background-color: white;
+        // margin-top: 10vh;
+
+            .error{
+        color: $error-color;
+    }
+    padding: 100px;
+    p{
+        margin: 10px auto;
+    }
+    color: $text-color-dark;
+    .onSubmit{
+        margin: 30px auto 10px auto;
+        padding: 5px 33px;
+    }
+    .expired-button{
+    
+        display: -webkit-box;
+    
+        display: -ms-flexbox;
+    
+        display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
+        button{
+      
+                    -webkit-box-flex: 1;
+      
+                        -ms-flex: 1;
+      
+                            flex: 1;
+            margin: 50px;
+        }
+    }
+
+    }
+}

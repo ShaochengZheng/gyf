@@ -1,0 +1,215 @@
+<div class="content-header">
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-balance-scale fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">财务/科目余额表</li>
+                <li>
+                    <button style="margin-left: 15px" class="pull-right btn btn-filter" (click)="isSearch=!isSearch">筛选  <i [class.rotate]="!isSearch" [class.norotate]="isSearch"   class="fa  fa-chevron-down"></i></button>
+
+                    <download class="pull-right" [url]="exportAddress" [isdisabled]="isTableShow">导出
+                    </download>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="search row content-body" [hidden]="isSearch">
+        <div class="col-lg-1 col-xs-12" style="white-space:nowrap; ">
+            <label>
+                会计期间
+                </label>
+        </div>
+        <div *ngIf="defaultYear" class="col-lg-3 col-xs-6" style="min-width: 210px;">
+            <ng-select [items]="yearsList" placeholder="请选择年份 " (selected)="setTheYear($event) " [(ngModel)]="defaultYear">
+            </ng-select>
+        </div>
+        <div *ngIf="defaultMonth" class="col-lg-3 col-xs-6" style="min-width: 210px;">
+            <ng-select [items]="monthsToList" placeholder="请选择月份 " (selected)="setTheMonth($event) " [(ngModel)]="defaultMonth">
+            </ng-select>
+        </div>
+        <div class="col-xs-12 col-lg-5">
+            <label> <input type="radio" name="interval" value="Month" #Month (click)="periodType = Month.value;accountGet()" [checked]="periodType==='Month'"> 本期发生</label>
+            <label> <input type="radio" name="interval" value="Quarter" #Quarter (click)="periodType = Quarter.value;accountGet()"  [checked]="periodType==='Quarter'"> 本季度发生</label>
+            <label> <input type="radio" name="interval" value="Year" #Year (click)="periodType = Year.value;accountGet()"  [checked]="periodType==='Year'"> 本年累计</label>
+            <!--<span (click)="empty()">清空筛选条件</span>-->
+        </div>
+
+
+    </div>
+
+    <div class="content-body ">
+
+        <div class="account-balance">
+            <table class="table table-bordered table-sm ">
+                <thead class="thead-head">
+                    <tr>
+                        <th rowspan="2" align="center" valign="middle">类型</th>
+                        <th rowspan="2">级次</th>
+                        <th rowspan="2">科目编码</th>
+                        <th rowspan="2">科目名称</th>
+                        <th [hidden]="periodType!== 'Year'" colspan="2" align="center" valign="middle">年初余额</th>
+                        <th [hidden]="periodType ==='Year'" colspan="2" align="center" valign="middle">期初余额</th>
+                        <th [hidden]="periodType!=='Year'" colspan="2" align="center" valign="middle">本年累计发生额</th>
+                        <th [hidden]="periodType ==='Year'" colspan="2" align="center" valign="middle">本期发生额</th>
+                        <th colspan="2" align="center" valign="middle">期末余额</th>
+                    </tr>
+                    <tr>
+                        <th class="min95">借</th>
+                        <th class="min95">贷</th>
+                        <th class="min95">借</th>
+                        <th class="min95">贷</th>
+                        <th class="min95">借</th>
+                        <th class="min95">贷</th>
+                    </tr>
+                </thead>
+
+                <tbody [hidden]="isTableShow">
+                    <!-- 资产 -->
+                    <tr *ngFor="let item of accountModels" [hidden]="item.isExpansion ||item.whetherTo0 ||item.accountType.value !== total[1].value"
+                        [class.tdHasChildren]="(!item.hasChildren)&&(item.level!=='1') ">
+                        <td>{{item.accountType.name}}</td>
+                        <td>{{item.level}}</td>
+                        <td style="cursor: pointer;" [ngStyle]="{'text-indent.px':((item.level - 1) * 10)}" (click)="isChildShow(item)">{{item.code}}
+                            <span [hidden]="!item.hasChildren" [class.rotate]="item.directionOfArrow" [class.norotate]="!item.directionOfArrow" class="fa fa-caret-down"></span>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td class="text-right">{{item.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.debit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.credit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndCredit| currency:'CNY':true:'1.2-2'}}</td>
+                    </tr>
+                    <tr *ngIf="total" [hidden]="total[1].whetherTo0">
+                        <th colspan="4"  class="text-right">{{total[1].name}}</th>
+                        <th class="text-right">{{total[1].money.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[1].money.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[1].money.debit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[1].money.credit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[1].money.periodEndDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[1].money.periodEndCredit| currency:'CNY':true:'1.2-2'}}</th>
+                    </tr>
+                    <!-- 负债 -->
+                    <tr *ngFor="let item of accountModels" [hidden]="item.isExpansion ||item.whetherTo0 ||item.accountType.value !== total[2].value"
+                        [class.tdHasChildren]="(!item.hasChildren)&&(item.level!=='1') ">
+                        <td>{{item.accountType.name}}</td>
+                        <td>{{item.level}}</td>
+                        <td style="cursor: pointer;" [ngStyle]="{'text-indent.px':((item.level - 1) * 10)}" (click)="isChildShow(item)">{{item.code}}
+                            <span [hidden]="!item.hasChildren" [class.rotate]="item.directionOfArrow" [class.norotate]="!item.directionOfArrow" class="fa fa-caret-down"></span>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td class="text-right">{{item.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.debit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.credit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndCredit| currency:'CNY':true:'1.2-2'}}</td>
+                    </tr>
+                    <tr *ngIf="total" [hidden]="total[2].whetherTo0">
+                        <th colspan="4"  class="text-right">{{total[2].name}}</th>
+                        <th class="text-right">{{total[2].money.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[2].money.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[2].money.debit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[2].money.credit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[2].money.periodEndDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[2].money.periodEndCredit| currency:'CNY':true:'1.2-2'}}</th>
+                    </tr>
+                    <!-- 所有者权益 -->
+                    <tr *ngFor="let item of accountModels" [hidden]="item.isExpansion ||item.whetherTo0 ||item.accountType.value !== total[3].value"
+                        [class.tdHasChildren]="(!item.hasChildren)&&(item.level!=='1') ">
+                        <td>{{item.accountType.name}}</td>
+                        <td>{{item.level}}</td>
+                        <td style="cursor: pointer;" [ngStyle]="{'text-indent.px':((item.level - 1) * 10)}" (click)="isChildShow(item)">{{item.code}}
+                            <span [hidden]="!item.hasChildren" [class.rotate]="item.directionOfArrow" [class.norotate]="!item.directionOfArrow" class="fa fa-caret-down"></span>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td class="text-right">{{item.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.debit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.credit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndCredit| currency:'CNY':true:'1.2-2'}}</td>
+                    </tr>
+                    <tr *ngIf="total" [hidden]="total[3].whetherTo0">
+                        <th colspan="4"  class="text-right">{{total[3].name}}</th>
+                        <th class="text-right">{{total[3].money.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[3].money.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[3].money.debit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[3].money.credit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[3].money.periodEndDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[3].money.periodEndCredit| currency:'CNY':true:'1.2-2'}}</th>
+                    </tr>
+                    <!-- 成本 -->
+                    <tr *ngFor="let item of accountModels" [hidden]="item.isExpansion ||item.whetherTo0 ||item.accountType.value !== total[4].value"
+                        [class.tdHasChildren]="(!item.hasChildren)&&(item.level!=='1') ">
+                        <td>{{item.accountType.name}}</td>
+                        <td>{{item.level}}</td>
+                        <td style="cursor: pointer;" [ngStyle]="{'text-indent.px':((item.level - 1) * 10)}" (click)="isChildShow(item)">{{item.code}}
+                            <span [hidden]="!item.hasChildren" [class.rotate]="item.directionOfArrow" [class.norotate]="!item.directionOfArrow" class="fa fa-caret-down"></span>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td class="text-right">{{item.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.debit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.credit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndCredit| currency:'CNY':true:'1.2-2'}}</td>
+                    </tr>
+                    <tr *ngIf="total" [hidden]="total[4].whetherTo0">
+                        <th colspan="4"  class="text-right">{{total[4].name}}</th>
+                        <th class="text-right">{{total[4].money.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[4].money.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[4].money.debit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[4].money.credit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[4].money.periodEndDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[4].money.periodEndCredit| currency:'CNY':true:'1.2-2'}}</th>
+                    </tr>
+                    <!-- 损益 -->
+                    <tr *ngFor="let item of accountModels" [hidden]="item.isExpansion ||item.whetherTo0 ||item.accountType.value !== total[5].value"
+                        [class.tdHasChildren]="(!item.hasChildren)&&(item.level!=='1') ">
+                        <td>{{item.accountType.name}}</td>
+                        <td>{{item.level}}</td>
+                        <td style="cursor: pointer;" [ngStyle]="{'text-indent.px':((item.level - 1) * 10)}" (click)="isChildShow(item)">{{item.code}}
+                            <span [hidden]="!item.hasChildren" [class.rotate]="item.directionOfArrow" [class.norotate]="!item.directionOfArrow" class="fa fa-caret-down"></span>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td class="text-right">{{item.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.debit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.credit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndDebit| currency:'CNY':true:'1.2-2'}}</td>
+                        <td class="text-right">{{item.periodEndCredit| currency:'CNY':true:'1.2-2'}}</td>
+                    </tr>
+                    <tr *ngIf="total" [hidden]="total[5].whetherTo0">
+                        <th colspan="4"  class="text-right">{{total[5].name}}</th>
+                        <th class="text-right">{{total[5].money.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[5].money.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[5].money.debit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[5].money.credit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[5].money.periodEndDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[5].money.periodEndCredit| currency:'CNY':true:'1.2-2'}}</th>
+                    </tr>
+                    <tr *ngIf="total" [hidden]="total[0].whetherTo0">
+                        <th colspan="4"  class="text-right">{{total[0].name}}</th>
+                        <th class="text-right">{{total[0].money.periodInitialDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[0].money.periodInitialCredit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[0].money.debit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[0].money.credit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[0].money.periodEndDebit| currency:'CNY':true:'1.2-2'}}</th>
+                        <th class="text-right">{{total[0].money.periodEndCredit| currency:'CNY':true:'1.2-2'}}</th>
+                    </tr>
+                </tbody>
+                <tbody [hidden]="!isTableShow">
+                    <tr>
+                        <td colspan="11">
+                            <div class="noData">没有数据</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

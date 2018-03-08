@@ -1,0 +1,227 @@
+<div class="widget-container1">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row m-b-10 process">
+        <div style="flex:2" class="process-part">
+            1.创建账套<br> 管理员创建账套并分配会计和助理(可以为同一人）
+        </div>
+        <div style="width:40px; text-align:center;">
+            <i class="fa fa-long-arrow-right fa-2x"></i>
+        </div>
+        <div style="flex:2" class="process-part">
+            2.期初启用<br> 会计进入账套完善并启用期初账
+        </div>
+        <div style="width:40px; text-align:center;">
+            <i class="fa fa-long-arrow-right fa-2x"></i>
+        </div>
+        <div style="flex:2" class="process-part">
+            3.助理录入<br> 助理进入账套录入数据并提交审核
+        </div>
+        <div style="width:40px; text-align:center;">
+            <i class="fa fa-long-arrow-right fa-2x"></i>
+        </div>
+        <div style="flex:2" class="process-part">
+            4.会计结转<br> 会计进行结转、过账、报税等相关工作
+        </div>
+    </div>
+    <div class="row p-b-10">
+        <div class="col-xs-4 col-md-4 hint-align ">
+            <span>当前条件账套数量：</span><span>{{accountBookNum+'套'}}</span>
+        </div>
+        <div class="col-xs-8 col-md-8  text-right p-r-30">
+            <button style="margin-right: 15px" *ngIf="token.role === 'Manager' " class="btn btn-primary" [routerLink]="['/create-ways',{showback: true}]">创建账套</button>
+            <button style="margin-right: 15px" [disabled]="companyLists?.length<=0" class="btn btn-primary" (click)="export()">导出</button>
+            <button class="btn btn-filter" (click)="showSearch()">筛选<i  class="fa fa-chevron-down"></i></button>
+            <!--<button class="btn btn-primary m-l-20 m-t-5 m-b-5" *ngIf="accountBookNum > 0" [routerLink]="['/app/transaction-details', {type: 'Outcome'}]">导出</button>-->
+        </div>
+
+    </div>
+    <div [hidden]="isSearch" class="m-b-30">
+        <div class="row company-list-header">
+            <div class="col-md-6 col-lg-4">
+                <div style="display: inline-block;width: 158px;">
+                    <ng-select [items]="yearsList" placeholder="请选择年份" [allowClear]="true" (selected)="setTheYear($event) " (removed)="removeYear()" [(ngModel)]="defaultYear">
+                    </ng-select>
+                </div>
+                <div style="display: inline-block;width: 158px;">
+                    <ng-select [items]="monthsToList" placeholder="请选择月份" [allowClear]="true" (selected)="setTheMonth($event) " (removed)="removeMonth()" [(ngModel)]="defaultMonth">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 unassign-input" *ngIf="token.role === 'Manager'">
+                <input type="checkbox" id="subscribeNews" name="subscribe" value="2" #unassign [checked]="checkAssign" (click)="changeCheck()">
+                <label for="subscribeNews">仅查看未分配</label>
+            </div>
+            <div class="col-lg-5 col-md-12 radios mb-10">
+                <label> <input type="radio" name="interval" value="BeginningInit" #all (click)="searchModel.status = all.value;search()" [checked] = "searchModel.status === all.value">期初阶段账套</label>
+                <label> <input type="radio" name="interval" value="InProgress" #small (click)="searchModel.status = small.value;search()" [checked] = "searchModel.status === small.value">进行中账套</label>
+                <label> <input type="radio" name="interval" value="CarryForward" #normal (click)="searchModel.status = normal.value;search()" [checked] = "searchModel.status === normal.value">待结转账套</label>
+                <label> <input type="radio" name="interval" value="Posting" #large (click)="searchModel.status = large.value;search()" [checked] = "searchModel.status === large.value">待过账账套</label>
+            </div>
+
+        </div>
+        <div class="row company-list-search">
+            <div class="col-xs-6 col-lg-6">
+                <div class="form-group m-b-0">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-search"></i>
+                    </span>
+                        <input class="form-control" type="text" (blur)="search()" placeholder="账套名称/客户联系人／会计／助理" [(ngModel)]="searchModel.keyword">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2 empty offset-xs-4 text-right">
+                <a (click)='reSearch()'>清空筛选条件</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row companyList-content">
+        <div id="company-div" class="col-xs-12 p-l-0 p-r-0">
+            <table id="company-table" class="table  table-bordered table-striped table-sm table-hover table-scroll">
+                <thead class="thead-head">
+                    <tr>
+                        <th class="text-center" width="250px">账套名称</th>
+                        <th class="text-center" width="100px">账套类型</th>
+                        <th class="text-center" width="100px">客户联系人</th>
+                        <th class="text-center" width="100px">会计</th>
+                        <th class="text-center" width="100px">助理</th>
+                        <!-- <th class="text-right" width="120px">暂估开票金额</th>
+                        <th class="text-right" width="120px">暂估收票金额</th> -->
+                        <th class="text-center" width="100px">会计期间</th>
+                        <th class="text-center" width="100px">状态</th>
+                        <th class="text-center" *ngIf="token.role!== 'Assistant'" width="101px">操作</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="accountBookNum === 0">
+                    <tr>
+                        <td colspan="9">
+                            <div class="noData">没有账套</div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr *ngFor="let item of companyLists; let i=index">
+                        <td data-title="账套名称" class="text-center" (click)="enterCompany(i)" width="250px">
+                            <div class="text-center">
+                                <a class="account-color">{{item.name}}</a>
+                            </div>
+                        </td>
+                        <td data-title="账套类别" class="text-center" width="100px">
+                            <div class="text-center">
+                                <span>{{item.companyProperty | companyProperty}}</span>
+                            </div>
+                        </td>
+
+                        <td *ngIf="token.role === 'Assistant'" data-title="客户联系人" class="text-center lid" width="100px">
+                            <div *ngIf=" item.customer" class="underLine input-ellipsis-4" [tooltip]="item.customer.phoneNumber" placement="bottom">
+                                {{item.customer.name}}
+                            </div>
+                            <div *ngIf=" !item.customer" class="underLine">
+
+                            </div>
+                        </td>
+                        <td *ngIf="token.role !== 'Assistant'" data-title="客户联系人" class="text-center lid" (click)="assignCustomer(item)" width="100px">
+                            <div *ngIf=" item.customer" class=" underLine input-ellipsis-4" [tooltip]="item.customer.phoneNumber" placement="bottom" [ngClass]="{'unassign':!item.customer }">
+                                {{item.customer.name}}
+                            </div>
+                            <div *ngIf=" !item.customer" class=" underLine" [ngClass]="{'unassign':!item.customer }">
+                                填写
+                            </div>
+
+                        </td>
+
+                        <td *ngIf="token.role === 'Manager' " data-title="会计" class="text-center lid" (click)="assignAccount(item,i)" width="100px">
+                            <div *ngIf=" item.account" class=" input-ellipsis-4 underLine" [tooltip]="item.account.phoneNumber" placement="bottom" [ngClass]="{'unassign':!item.account}">
+                                {{item.account.name}}
+                            </div>
+                            <div *ngIf="!item.account" class="  underLine" [ngClass]="{'unassign':!item.account}">
+                                分配
+                            </div>
+
+                        </td>
+                        <td *ngIf="token.role !== 'Manager' " data-title="会计" class="text-center lid" width="100px">
+                            <div *ngIf=" item.account " class="input-ellipsis-4 underLine" [tooltip]="item.account.phoneNumber" placement="bottom">
+                                {{item.account.name}}
+                            </div>
+
+                            <div *ngIf=" !item.account" class=" underLine">
+
+                            </div>
+                        </td>
+
+                        <td *ngIf="token.role === 'Manager' " data-title="助理" class="text-center lid" (click)="assignAssist(item,i)" width="100px">
+                            <div *ngIf=" item.assistant" class="input-ellipsis-4 underLine" [tooltip]="item.assistant.phoneNumber" placement="bottom" [ngClass]="{'unassign':!item.assistant}">
+                                {{item.assistant.name}}
+                            </div>
+                            <div *ngIf=" !item.assistant" class=" underLine" [ngClass]="{'unassign':!item.assistant}">
+                                分配
+                            </div>
+                        </td>
+                        <td *ngIf="token.role !== 'Manager' " data-title="助理" class="text-center lid" width="100px">
+                            <div *ngIf=" item.assistant" class="input-ellipsis-4 underLine" [tooltip]="item.assistant.phoneNumber" placement="bottom">
+                                {{item.assistant.name}}
+                            </div>
+                            <div *ngIf=" !item.assistant" class=" underLine">
+
+                            </div>
+                        </td>
+
+                        <!-- <td data-title="暂估开票金额" class="text-center" width="120px">
+                            <div *ngIf="item.showSave" class="text-right">
+                                <input name="IssueInvoiceAmount" [(ngModel)]="item.issueInvoiceAmount" type="number" class="form-control text-xs-center">
+                            </div>
+                            <div *ngIf="!item.showSave" class="text-right">{{item.issueInvoiceAmount | currency:'CNY':true:'1.2-2'}}</div>
+                        </td>
+                        <td data-title="暂估收票金额" class="text-center" width="120px">
+                            <div *ngIf="item.showSave" class="text-right">
+                                <input name="ReceiveInvoiceAmount" [(ngModel)]="item.receiveInvoiceAmount" type="number" class="form-control text-xs-center">
+                            </div>
+                            <div *ngIf="!item.showSave" class="text-right">{{item.receiveInvoiceAmount | currency:'CNY':true:'1.2-2'}}</div>
+                        </td>
+ -->
+
+
+                        <td data-title="会计期间" class="text-center" width="100px">
+                            <div class="">{{item.currentDate }}</div>
+                        </td>
+                        <td data-title="状态" class="text-center" width="100px">
+                            <div class="">{{item.status}}</div>
+                        </td>
+
+                        <td *ngIf="token.role!== 'Assistant'" data-title="操作" class="text-center" width="90px">
+                            <button *ngIf="item.showSave" class="btn btn-secondary btn-circle-sm" (click)="changeSave('save',i)" data-toggle="tooltip" data-placement="bottom" title="保存">
+                                    <i class="fa fa-floppy-o"></i>
+                            </button>
+                            <button *ngIf="item.showSave" class="btn btn-secondary btn-circle-sm " (click)="changeSave('cancel',i)" data-toggle="tooltip" data-placement="bottom" title="取消">
+                                    <i class="fa fa-times"></i>
+                            </button>
+                            <!--<button *ngIf="item.showEdit" class="btn btn-secondary btn-circle-sm" (click)="changeEdit(i)" data-toggle="tooltip" data-placement="bottom" title="编辑">-->
+                                    <!--<i class="fa fa-pencil"></i>-->
+                            <!--</button>-->
+                            <span *ngIf="item.showCarry" class="post-text"><a> </a></span>
+                            <span *ngIf="item.showPost" class="post-text" (click)="post(item)"><a> 过账</a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--<div *ngIf="showPosting" class="posting text-center">
+    <button class="btn btn-primary confirm-btn" (click)="reSearch()">我确认以上{{postCount}}家公司过账完成</button>
+</div>-->
+
+<div class="content-footer"></div>
+<gpw-invite-user-new-modal #inviteUserNewModal (result)="result($event)" (success)="newItemAdded($event, 'account')"></gpw-invite-user-new-modal>
+<gpw-invite-customer-modal #inviteCustomerModal (result)="resultCustomer($event)" (success)="newCustomerAdded($event)"></gpw-invite-customer-modal>
+<confirm-widget #stopConfirm (confirmEvent)="stopUser($event)"></confirm-widget>
+<confirm-widget #reSendConfirm (confirmEvent)="reSend($event)"></confirm-widget>

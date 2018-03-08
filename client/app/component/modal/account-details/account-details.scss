@@ -1,0 +1,21 @@
+.datepicker{
+    margin: -2px 0 16px 0;
+}
+.modal-body form{
+    margin-top: 20px;
+}
+
+@media screen and (max-width:415px){
+    label{
+        width:200px;
+    }
+}
+
+@media screen and (min-width:767px) and (max-width:769px){
+    .modal-lg{
+        width:700px;
+    }
+}
+input::-webkit-inner-spin-button{
+-webkit-appearance: none;
+}

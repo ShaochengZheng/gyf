@@ -1,0 +1,58 @@
+@import "../../../../styles/variables";
+@import '../external';
+@import '../media-external';
+//.login-background{
+//  background:url(../../../assets/images/login.jpg);
+//filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+//-moz-background-size:100% 100%;
+//    background-size:100% 100%;
+//}
+.captcha {
+  padding-top: 0px;
+  height: 34px;
+  width: 100px;
+  cursor: pointer;
+}
+
+input,
+input:focus,
+input:hover {
+  box-shadow: none;
+}
+
+.color-green {
+  color: $navy;
+}
+
+.font-s {
+  font-size: 14px;
+  color: $dark-slate-gray;
+  .introduce-title {
+    margin: 6px 0;
+  }
+  .expect {
+    margin-top: 50px!important;
+  }
+  .introduce-content {
+    // font-size: 12px;
+    margin-top: 10px;
+  }
+  li {
+    list-style: none;
+    text-align: center;
+    img {
+      width: 105px;
+      height: 105px;
+    }
+  }
+}
+
+.login-form {
+  margin: 50px auto auto auto!important;
+}
+
+@media screen and (max-width:767px) {
+  .message {
+    display: none !important;
+  }
+}

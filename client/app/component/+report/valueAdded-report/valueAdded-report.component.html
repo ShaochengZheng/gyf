@@ -1,0 +1,475 @@
+<div class="value-addes">
+    <!--<p>增值税！！！！！</p>-->
+    <div class="content-header m-t-r">
+        <div class="row row-xs-center">
+            <div class="col-xs-12 col-sm-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null ">
+                        <i class="fa  fa-area-chart fa-2x"></i>
+                    </li>
+                    <li class="breadcrumb-null page-title">
+                        <a>
+                            <span>报表</span>
+                        </a>
+                        <span>/</span>
+                        <span>增值税模拟申报表</span>
+                    </li>
+                    <!--<li>
+                        <button style="margin-right: 15px" class="pull-right btn btn-primary">导出</button>
+                    </li>-->
+                </ol>
+            </div>
+            <div class="col-md-3 col-xs-1"></div>
+        </div>
+    </div>
+    <!--<div class="content-body search">
+        <div class="row">
+            <div class="col-lg-4 radios">
+                <div>
+                    <input type="radio" name="choose" value="0" (click)="statusSelect('Month')" checked><label> 月度报表</label>
+                </div>
+                <div>
+                    <input type="radio" name="choose" value="1" (click)="statusSelect('Quarter')"> <label> 季度报表</label>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <div class="content-body list">
+        <div class="row">
+            <div class="col-lg-12 titleMargin">
+                <h3 class="text-center">增值税模拟申报表</h3>
+                <p class="text-center">（小规模纳税人适用）</p>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row">
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4">纳税人识别号：{{vatModel.taxNumber}}</p>
+            </div>
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4">纳税人名称（公章）：{{vatModel.taxPlayer}}</p>
+            </div>
+            <div class="col-lg-4 alignCenter">
+                <p class="p-l-4">税款所属期：{{vatModel.startTime| date:'yyyy-MM-dd'}}至{{vatModel.endTime| date:'yyyy-MM-dd'}}</p>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="row m-t-20">
+            <!--<div class="col-lg-12">
+                <p class="text-right">税率：3%</p>
+            </div>-->
+            <div class="col-lg-12">
+                <p class="text-right">单位：元(列至角分)</p>
+            </div>
+        </div>
+        <div class="row m-t-10">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th rowspan="2" class=""></th>
+                            <th rowspan="2" class="">项目</th>
+                            <th rowspan="2" class="">栏次</th>
+                            <th colspan="2" class="">本期数</th>
+                            <th colspan="2" class="">本年累计</th>
+                        </tr>
+                        <tr>
+                            <th>应税货物及劳务</th>
+                            <th>应税服务</th>
+                            <th>应税货物及劳务</th>
+                            <th>应税服务</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="11" class="verticalCenter">
+                                <div class="verticalText">一、计税依据</div>
+                            </td>
+                            <td>
+                                <div>（一）应征增值税不含税销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[0].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[0].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[0].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[0].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[0].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>税务机关代开的增值税专用发票不含税销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[1].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[1].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[1].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[1].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[1].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>税控器开具的普通发票不含税销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[2].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[2].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[2].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[2].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[2].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>（二）销售使用过的应税固定资产不含税销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[3].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[3].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[3].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[3].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[3].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>其中：税控器开具的普通发票不含税销售额 </div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[4].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[4].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[4].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[4].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[4].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>（三）免税销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[5].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[5].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[5].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[5].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[5].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>其中：小微企业免税销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[6].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[6].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[6].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[6].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[6].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>未达起征点销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[7].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[7].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[7].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[7].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[7].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>其他免税销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[8].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[8].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[8].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[8].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[8].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>（四）出口免税销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[9].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[9].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[9].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[9].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[9].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>其中：税控器开具的普通发票销售额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[10].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[10].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[10].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[10].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[10].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="8" class="verticalCenter">
+                                <div class="verticalText">二、税款计算</div>
+                            </td>
+                            <td>
+                                <div>本期应纳税额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[11].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[11].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[11].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[11].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[11].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>本期应纳税额减征额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[12].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[12].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[12].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[12].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[12].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>本期免税额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[13].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[13].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[13].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[13].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[13].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>其中：小微企业免税额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[14].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[14].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[14].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[14].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[14].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>未达起征点免税额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[15].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[15].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[15].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[15].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[15].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>应纳税额合计</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[16].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[16].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[16].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[16].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[16].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>本期预缴税额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[17].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[17].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[17].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[17].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[17].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>本期应补（退）税额</div>
+                            </td>
+                            <td>
+                                <div>{{vatModel.vatItemModels[18].rowNum }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[18].dutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[18].dutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[18].yearToDayDutiableArtical| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                            <td class="text-right">
+                                <div>{{vatModel.vatItemModels[18].yearToDayDutiableService| currency:'CNY':true:'1.2-2' }}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

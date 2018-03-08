@@ -1,0 +1,79 @@
+<!--<alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type">{{ alert?.msg }}</alert>-->
+<!--<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div class="table-responsive">
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr>
+                <th>类别</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>收入</td>
+                <td></td>
+            </tr>
+            <tr *ngFor="let item of incomeCategoryList" class="income-list">
+                <td *ngIf="item.level=='1'" (click)="toggle(item)" class="fa" [ngClass]="{'fa-minus-square-o': item.show == true&&item.number>0, 'fa-plus-square-o': item.show == false&&item.number>0,'hover-style':item.number>0}"> {{item.name}}</td>
+                <td roles *ngIf="item.level=='1'" class="text-xs-right add-children"><a expire (click)="showInput(item,0);">添加子类别</a></td>
+                <td *ngIf="item.level=='2'&&item.show&&item.order===-1" class="subItem fa"> {{item.name}}</td>
+                <td *ngIf="item.level=='2'&&item.show&&item.order===-1 &&item.isInit" class="  text-xs-right"> </td>
+                <td roles *ngIf="item.level=='2'&&item.show&&item.order===-1&&!item.isInit" class="text-xs-right">
+                    <button expire class="btn btn-secondary btn-circle-sm" (click)="item.order=1;tempName=item.name;" placement="top" tooltip="编辑">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    <button expire class="btn btn-secondary btn-circle-sm" (click)="openDeleteModal(item)" placement="top" tooltip="删除">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+
+                <td *ngIf="item.level=='2'&&item.show && item.order>0" class="subItem fa">
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" [(ngModel)]="item.name" maxlength="10">
+                        </div>
+                        <div roles class="col-sm-6 pull-right opt-btn">
+                            <button expire type="submit" class="btn btn-primary save" [disabled]="!item.name" (click)="save(item,0)">保存</button>
+                            <button expire type="button" class="btn btn-secondary cancel" (click)="quit(item,0,'modify'); item.name = tempName">取消</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+
+                <td>支出</td>
+                <td></td>
+            </tr>
+            <tr *ngFor="let item of outcomeCategoryList" class="income-list">
+                <td *ngIf="item.level=='1'" (click)="toggle(item)" class="fa" [ngClass]="{'fa-minus-square-o': item.show == true&&item.number>0, 'fa-plus-square-o': item.show == false&&item.number>0,'hover-style':item.number>0}"> {{item.name}}</td>
+                <td roles *ngIf="item.level=='1'" class="text-xs-right add-children"><a expire (click)="showInput(item,1);">添加子类别</a></td>
+                <td *ngIf="item.level=='2'&&item.show&&item.order===-1" class="subItem fa">{{item.name}}</td>
+                <td *ngIf="item.level=='2'&&item.show&&item.order===-1&&item.isInit" class="text-xs-right"></td>
+                <td roles *ngIf="item.level=='2'&&item.show&&item.order===-1&&!item.isInit" class="text-xs-right">
+                    <button expire class="btn btn-secondary btn-circle-sm" (click)="item.order=1;tempName=item.name;" placement="top" tooltip="编辑">
+                            <i class="fa fa-pencil"></i>
+                    </button>
+                    <button expire class="btn btn-secondary btn-circle-sm" (click)="openDeleteModal(item)" placement="top" tooltip="删除">
+                            <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+
+
+                <td *ngIf="item.level=='2'&&item.show && item.order>0" class="subItem fa">
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" [(ngModel)]="item.name" maxlength="10">
+                        </div>
+                        <div roles class="col-sm-6 pull-right">
+                            <button expire type="submit" class="btn btn-primary" [disabled]="!item.name" (click)="save(item,1)">保存</button>
+                            <button expire type="button" class="btn btn-secondary" (click)="quit(item,1,'modify')">取消</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)" message="确定删除这个类别吗？"></confirm-widget>-->

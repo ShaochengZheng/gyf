@@ -1,0 +1,35 @@
+hr {
+    border: 1px solid #eceeef;
+    margin:20px 15px 40px;
+    display:block;
+    clear: both;
+}
+.alert{
+    margin:0 15px 16px 15px;
+}
+.import-guide{
+    padding-bottom: 30px;
+    margin:0 auto;
+    width: 100%;
+    a {
+        color:#1CCFC9; 
+    }
+    a:hover{
+        color: #138c88;
+        text-decoration: underline;
+    }
+}
+
+.remark{
+    margin-bottom: 40px;
+    p{
+        color: #9b9b9b;
+        text-align: center;
+    }
+}
+
+p{
+    margin-top: 1rem;
+    font-size:14px;
+}
+

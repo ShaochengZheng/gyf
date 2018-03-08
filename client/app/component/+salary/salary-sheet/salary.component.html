@@ -1,0 +1,19 @@
+<div class="content-header">
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-null"><i class="fa fa-jpy fa-2x"></i></li>
+                <li class="breadcrumb-null page-title">工资／{{navTitle}}</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a [routerLink]="['/app/salary/salary-sheet/salary']" (click)="change('S')" routerLinkActive="active" class="nav-link">工资表</a>
+    </li>
+    <li class="nav-item">
+        <a [routerLink]="['/app/salary/salary-sheet/labour']" (click)="change('L')" routerLinkActive="active" class="nav-link">劳务表</a>
+    </li>
+</ul>
+<router-outlet></router-outlet>

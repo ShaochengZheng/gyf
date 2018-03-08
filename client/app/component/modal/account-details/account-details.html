@@ -1,0 +1,532 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  (onShown)="onShown()">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button id="closeButton" type="button" class="close" (click)="close()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">账户</h4>
+      </div>
+      <div class="modal-body clearfix">
+        <!--<alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type">{{ alert?.msg }}</alert>-->
+        <div class="alert-fixed"  *ngFor="let alert of alerts">
+          <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+        </div>
+        <!--[hidden]="!showTab"-->
+        <div [hidden]="!showTab">
+          <tabset >
+            <tab heading='添加银行账户' (select)="initSet('Bank',1)" [ngClass]="{active: isAccount === 1? true: false}">
+              <form [formGroup]="accountForm" (keypress)="keyPressHandler($event)">
+                <div class="col-sm-6">
+                  <div class="form-group row">
+                    <label for="input-accountName" class="col-sm-6 form-control-label">账户名称</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!accountName.valid && (submitAttempt||accountName.touched)&& clearHint)}">
+                      <input  id="input-accountName" type="text" class="form-control" #accountName="ngForm" [formControl]="accountForm.controls['accountName']"
+                        (ngModelChange)="inputAccountName($event)" maxlength="30">
+                      <div id="accountNameDanger" *ngIf="isBlank || clearHint && accountName.control.hasError('required')&&(submitAttempt||accountName.control.touched)"
+                        class="text-danger validation-message">
+                        请填写账户名称</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-bankName" class="col-sm-6 form-control-label">开户银行名称</label>
+                    <div class="col-xs-9">
+                      <input id="input-bankName" type="text" class="form-control" 
+                        [(ngModel)]="account.bankName" maxlength="30" [ngModelOptions]="{standalone: true}">
+                      <!--<div *ngIf="clearHint && bankName.control.hasError('required')&&(submitAttempt||bankName.control.touched)" class="text-danger validation-message">
+                        请填写开户银行</div>-->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-subbranch" class="col-sm-6 form-control-label">支行</label>
+                    <div class="col-xs-9" >
+                      <input id="input-subbranch" [(ngModel)]="account.subbranch"
+                        type="text" class="form-control" maxlength="30" [ngModelOptions]="{standalone: true}" >
+                      <!--<div *ngIf="clearHint && subbranch.control.hasError('required')&&(submitAttempt||subbranch.control.touched)" class="text-danger validation-message">
+                        请填写支行 </div>-->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-accountNumber" class="col-sm-6 form-control-label">账号</label>
+                    <div class="col-xs-9">
+                      <input id="input-accountNumber" [(ngModel)]="account.accountNumber" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="30">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div *ngIf="false" class="form-group row">
+                    <label for="input-bankStatementBalance" class="col-sm-6 form-control-label">银行对账单初始余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!bankStatementBalance.valid && (submitAttempt||bankStatementBalance.touched))&&clearHint}">
+                      <input id="input-bankStatementBalance"  #bankStatementBalance="ngForm" [formControl]="accountForm.controls['bankStatementBalance']" [(ngModel)]="account.bankStatementBalance"
+                        type="number" class="not-negetive-number" class="form-control">
+                      <div *ngIf="clearHint && bankStatementBalance.control.hasError('required')&&(submitAttempt||bankStatementBalance.control.touched)" class="text-danger validation-message">
+                        请填写银行对账单初始余额(数值格式)</div>
+                      <div *ngIf="clearHint && bankStatementBalance.control.hasError('invalidAmount')&&(submitAttempt||bankStatementBalance.control.touched)" class="text-danger validation-message">
+                        银行对账单初始余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginBalance" class="col-sm-6 form-control-label">期初余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginBalance.valid && (submitAttempt||beginBalance.touched))&&clearHint}">
+                      <input id="input-beginBalance" disabled #beginBalance="ngForm" [formControl]="accountForm.controls['beginBalance']" [(ngModel)]="account.beginBalance"
+                        type="number" class="not-negetive-number" class="form-control">
+                      <div *ngIf="clearHint && beginBalance.control.hasError('required')&&(submitAttempt||beginBalance.control.touched)" class="text-danger validation-message">
+                        请填写期初余额(数值格式)</div>
+                      <div *ngIf="clearHint && beginBalance.control.hasError('invalidAmount')&&(submitAttempt||beginBalance.control.touched)" class="text-danger validation-message">
+                        期初余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginDate" class="col-sm-6 form-control-label">期初余额日期</label>
+                    <div class="col-xs-9 " [ngClass]="{'has-danger':(!beginDate.valid && (submitAttempt||beginDate.touched))&&clearHint}">
+                      
+                      <p-calendar [disabled]="true" id="input-beginDate" #beginDate="ngForm" [formControl]="accountForm.controls['beginDate']" [(ngModel)]="account.beginDate"
+                        maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true" [showDelIcon]="false"></p-calendar>
+                      <div *ngIf="clearHint && beginDate.control.hasError('required')&&(submitAttempt||beginDate.control.touched)" class="text-danger validation-message">
+                        请选择余额日期
+                      </div>
+                      <div *ngIf="!beginDate.control.hasError('required') && beginDate.control.hasError('invalidDateFormat')" class="text-danger validation-message ">
+                        日期格式有误,应类似于2016-02-12
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-description" class="col-sm-6 form-control-label">备注</label>
+                    <div class="col-xs-9">
+                      <input id="input-description" [(ngModel)]="account.description" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="50">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </tab>
+            <!--<tab heading='添加现金' (select)="initSet('Cash',2)" [ngClass]="{active: isAccount === 2? true: false}">
+              <div class="col-sm-6">
+                <form [formGroup]="accountForm2" (keypress)="keyPressHandler($event)">
+                  <div class="form-group row">
+                    <label for="input-accountName2" class="col-sm-6 form-control-label">账户名称</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!accountName2.valid && (submitAttempt||accountName2.touched))&&clearHint}">
+                      <input #bankInput2 id="input-accountName2" type="text" class="form-control" #accountName2="ngForm" [formControl]="accountForm2.controls['accountName2']"
+                        [(ngModel)]="account.accountName" maxlength="30">
+                      <div *ngIf="clearHint && accountName2.control.hasError('required')&&(submitAttempt||accountName2.control.touched)" class="text-danger validation-message">
+                        请填写账户名称</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginBalance2" class="col-sm-6 form-control-label">期初余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginBalance2.valid && (submitAttempt||beginBalance2.touched))&&clearHint}">
+                      <input id="input-beginBalance2" #beginBalance2="ngForm" [formControl]="accountForm2.controls['beginBalance2']" [(ngModel)]="account.beginBalance"
+                        type="number" class="form-control">
+                      <div *ngIf="clearHint && beginBalance2.control.hasError('required')&&(submitAttempt||beginBalance2.control.touched)" class="text-danger validation-message">
+                        请填写期初余额(数值格式)</div>
+                      <div *ngIf="clearHint && beginBalance2.control.hasError('invalidAmount')&&(submitAttempt||beginBalance2.control.touched)"
+                        class="text-danger validation-message">
+                        期初余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginDate2" class="col-sm-6 form-control-label">期初余额日期</label>
+                    <div class="col-xs-9 " [ngClass]="{'has-danger':(!beginDate2.valid && (submitAttempt||beginDate2.touched))&&clearHint}">
+                      <p-calendar id="input-beginDate2" #beginDate2="ngForm" [formControl]="accountForm2.controls['beginDate2']" [(ngModel)]="account.beginDate"
+                        maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true"></p-calendar>
+
+                    </div>
+                    <div *ngIf="clearHint && beginDate2.control.hasError('required')&&(submitAttempt||beginDate2.control.touched)" class="text-danger validation-message">
+                      请选择余额日期</div>
+                    <div *ngIf="!beginDate2.control.hasError('required') && beginDate2.control.hasError('invalidDateFormat')" class="text-danger validation-message ">
+                      日期格式有误,应类似于2016-02-12
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-description2" class="col-sm-6 form-control-label">备注</label>
+                    <div class="col-xs-9">
+                      <input id="input-description2" [(ngModel)]="account.description" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="50">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+              </div>
+            </tab>-->
+            <tab heading='添加微信' (select)="initSet('WeChat',3)" [ngClass]="{active: isAccount === 3? true: false}">
+              <div class="col-sm-6">
+                <form [formGroup]="accountForm3" (keypress)="keyPressHandler($event)">
+                  <div class="form-group row">
+                    <label for="input-accountName3" class="col-sm-6 form-control-label">账户名称</label>
+                    <!--<div class="col-xs-9" [ngClass]="{'has-danger':(!accountName3.valid && (submitAttempt||accountName3.touched))&&clearHint}">
+                      <input id="input-accountName3" type="text" class="form-control" #accountName3="ngForm" [formControl]="accountForm3.controls['accountName3']"
+                        (ngModelChange)="inputAccountName($event)" placeholder="微信" maxlength="30">
+                      <div *ngIf="isBlank ||clearHint && accountName3.control.hasError('required') &&(submitAttempt||accountName3.control.touched)" class="text-danger validation-message">
+                        请填写账户名称</div>
+                    </div>-->
+                    <div class="col-xs-9" >
+                      <input id="input-accountNumber3" type="text" placeholder="微信" class="form-control" [(ngModel)]="account.accountName" [ngModelOptions]="{standalone: true}"
+                        maxlength="30">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-accountNumber3" class="col-sm-6 form-control-label">微信账号</label>
+                    <div class="col-xs-9">
+                      <input id="input-accountNumber3" type="text" class="form-control" [(ngModel)]="account.accountNumber" [ngModelOptions]="{standalone: true}"
+                        maxlength="30">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginBalance3" class="col-sm-6 form-control-label">期初余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginBalance3.valid && (submitAttempt||beginBalance3.touched))&&clearHint}">
+                      <input id="input-beginBalance3" disabled #beginBalance3="ngForm" [formControl]="accountForm3.controls['beginBalance3']" [(ngModel)]="account.beginBalance"
+                        type="number" class="form-control">
+                      <div *ngIf="clearHint && beginBalance3.control.hasError('required')&&(submitAttempt||beginBalance3.control.touched)" class="text-danger validation-message">
+                        请填写期初余额(数值格式)</div>
+                      <div *ngIf="clearHint && beginBalance3.control.hasError('invalidAmount')&&(submitAttempt||beginBalance3.control.touched)"
+                        class="text-danger validation-message">
+                        期初余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginDate3" class="col-sm-6 form-control-label">期初余额日期</label>
+                    <div class="col-xs-9 " [ngClass]="{'has-danger':(!beginDate3.valid && (submitAttempt||beginDate3.touched))&&clearHint}">
+                      <p-calendar [disabled]="true" id="input-beginDate3" #beginDate3="ngForm" [formControl]="accountForm3.controls['beginDate3']" [(ngModel)]="account.beginDate"
+                        maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true" [showDelIcon]="false"></p-calendar>
+                      <div *ngIf="clearHint && beginDate3.control.hasError('required')&&(submitAttempt||beginDate3.control.touched)" class="text-danger validation-message">
+                        请选择余额日期</div>
+                      <div *ngIf="!beginDate3.control.hasError('required') && beginDate3.control.hasError('invalidDateFormat')" class="text-danger validation-message ">
+                        日期格式有误,应类似于2016-02-12
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-description3" class="col-sm-6 form-control-label">备注</label>
+                    <div class="col-xs-9">
+                      <input id="input-description3" [(ngModel)]="account.description" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="50">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+              </div>
+            </tab>
+            <tab heading='添加支付宝' (select)="initSet('Alipay',4)" [ngClass]="{active: isAccount === 4? true: false}">
+              <div class="col-sm-6">
+                <form [formGroup]="accountForm4" (keypress)="keyPressHandler($event)">
+                  <div class="form-group row">
+                    <label for="input-accountName4" class="col-sm-6 form-control-label">账户名称</label>
+                    <!--<div class="col-xs-9" [ngClass]="{'has-danger':(!accountName4.valid && (submitAttempt||accountName4.touched))&&clearHint}">
+                      <input id="input-accountName4" type="text" class="form-control" #accountName4="ngForm" [formControl]="accountForm4.controls['accountName4']"
+                        (ngModelChange)="inputAccountName($event)" placeholder="支付宝" maxlength="30">
+                      <div *ngIf="isBlank ||clearHint && accountName4.control.hasError('required') &&(submitAttempt||accountName4.control.touched)" class="text-danger validation-message">
+                        请填写账户名称</div>
+                    </div>-->
+                    <div class="col-xs-9" >
+                      <input id="input-accountNumber3" type="text" placeholder="支付宝" class="form-control" [(ngModel)]="account.accountName" [ngModelOptions]="{standalone: true}"
+                        maxlength="30">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-accountNumber4" class="col-sm-6 form-control-label">支付宝账号</label>
+                    <div class="col-xs-9">
+                      <input id="input-accountNumber4" type="text" class="form-control" [(ngModel)]="account.accountNumber" [ngModelOptions]="{standalone: true}"
+                        maxlength="30">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginBalance4" class="col-sm-6 form-control-label">期初余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginBalance4.valid && (submitAttempt||beginBalance4.touched))&&clearHint}">
+                      <input id="input-beginBalance4" disabled #beginBalance4="ngForm" [formControl]="accountForm4.controls['beginBalance4']" [(ngModel)]="account.beginBalance"
+                        type="number" class="form-control">
+                      <div *ngIf="clearHint && beginBalance4.control.hasError('required')&&(submitAttempt||beginBalance4.control.touched)" class="text-danger validation-message">
+                        请填写期初余额(数值格式)</div>
+                      <div *ngIf="clearHint && beginBalance4.control.hasError('invalidAmount')&&(submitAttempt||beginBalance4.control.touched)"
+                        class="text-danger validation-message">
+                        期初余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginDate4" class="col-sm-6 form-control-label">期初余额日期</label>
+                    <div class="col-xs-9 " [ngClass]="{'has-danger':(!beginDate4.valid && (submitAttempt||beginDate4.touched))&&clearHint}">
+                      <p-calendar [disabled]="true" id="input-beginDate4" #beginDate4="ngForm" [formControl]="accountForm4.controls['beginDate4']" [(ngModel)]="account.beginDate"
+                        maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true" [showDelIcon]="false"></p-calendar>
+                      <div *ngIf="clearHint && beginDate4.control.hasError('required')&&(submitAttempt||beginDate4.control.touched)" class="text-danger validation-message">
+                        请选择余额日期</div>
+                      <div *ngIf="!beginDate4.control.hasError('required') && beginDate4.control.hasError('invalidDateFormat')" class="text-danger validation-message ">
+                        日期格式有误,应类似于2016-02-12
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-description4" class="col-sm-6 form-control-label">备注</label>
+                    <div class="col-xs-9">
+                      <input id="input-description4" [(ngModel)]="account.description" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="50">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+              </div>
+            </tab>
+          </tabset>
+        </div>
+        <div *ngIf="!showTab">
+          <div [ngSwitch]="account.bankAccountType.value">
+                    <!--银行卡-->
+            <div *ngSwitchCase="'Bank'">
+              <form [formGroup]="accountForm5" (keypress)="keyPressHandler($event)">
+                <div class="col-sm-6">
+                  <div class="form-group row">
+                    <label for="input-accountName5" class="col-sm-6 form-control-label">账户名称</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!accountName5.valid && (submitAttempt||accountName5.touched))&&clearHint}">
+                      <input id="input-accountName5" type="text" class="form-control" #accountName5="ngForm" [formControl]="accountForm5.controls['accountName5']"
+                        [(ngModel)]="account.accountName" maxlength="30">
+                      <div *ngIf="isBlank ||clearHint && accountName5.control.hasError('required')&&(submitAttempt||accountName5.control.touched)" class="text-danger validation-message">
+                        请填写账户名称</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-bankName5" class="col-sm-6 form-control-label">开户银行名称</label>
+                    <div class="col-xs-9" >
+                      <input id="input-bankName5" type="text" class="form-control" 
+                        [(ngModel)]="account.bankName" maxlength="30" [ngModelOptions]="{standalone: true}" >
+                      <!--<div *ngIf="clearHint && bankName5.control.hasError('required')&&(submitAttempt||bankName5.control.touched)" class="text-danger validation-message">
+                        请填写开户银行</div>-->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-subbranch5" class="col-sm-6 form-control-label">支行</label>
+                    <div class="col-xs-9" >
+                      <input id="input-subbranch5" [(ngModel)]="account.subbranch"
+                        type="text" class="form-control" maxlength="30" [ngModelOptions]="{standalone: true}" >
+                      <!--<div *ngIf="clearHint && subbranch5.control.hasError('required')&&(submitAttempt||subbranch5.control.touched)" class="text-danger validation-message">
+                        请填写支行 </div>-->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-accountNumber5" class="col-sm-6 form-control-label">账号</label>
+                    <div class="col-xs-9">
+                      <input id="input-accountNumber5" [(ngModel)]="account.accountNumber" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="30">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div *ngIf="false"  class="form-group row">
+                    <label for="input-bankStatementBalance5" class="col-sm-6 form-control-label">银行对账单初始余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!bankStatementBalance5.valid && (submitAttempt||bankStatementBalance5.touched))&&clearHint}">
+                      <input id="input-bankStatementBalance5" #bankStatementBalance5="ngForm" [formControl]="accountForm5.controls['bankStatementBalance5']" [(ngModel)]="account.bankStatementBalance"
+                        type="number" class="not-negetive-number" class="form-control">
+                      <div *ngIf="clearHint && bankStatementBalance5.control.hasError('required')&&(submitAttempt||bankStatementBalance5.control.touched)" class="text-danger validation-message">
+                        请填写银行对账单初始余额(数值格式)</div>
+                      <div *ngIf="clearHint && bankStatementBalance5.control.hasError('invalidAmount')&&(submitAttempt||bankStatementBalance5.control.touched)"
+                        class="text-danger validation-message">
+                        银行对账单初始余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginBalance5" class="col-sm-6 form-control-label">期初余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginBalance5.valid && (submitAttempt||beginBalance5.touched))&&clearHint}">
+                      <input [readonly]="!isEdit" id="input-beginBalance5" #beginBalance5="ngForm" [formControl]="accountForm5.controls['beginBalance5']" [(ngModel)]="account.beginBalance"
+                        type="number" class="not-negetive-number" class="form-control">
+                      <div *ngIf="clearHint && beginBalance5.control.hasError('required')&&(submitAttempt||beginBalance5.control.touched)" class="text-danger validation-message">
+                        请填写期初余额(数值格式)</div>
+                      <div *ngIf="clearHint && beginBalance5.control.hasError('invalidAmount')&&(submitAttempt||beginBalance5.control.touched)"
+                        class="text-danger validation-message">
+                        期初余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginDate5" class="col-sm-6 form-control-label">期初余额日期</label>
+                    <div class="col-xs-9 " [ngClass]="{'has-danger':(!beginDate5.valid && (submitAttempt||beginDate5.touched))&&clearHint}">
+                      <p-calendar [disabled]="!isEdit" id="input-beginDate5" #beginDate5="ngForm" [formControl]="accountForm5.controls['beginDate5']" [(ngModel)]="account.beginDate"
+                        maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true"  [showDelIcon]="false"></p-calendar>
+                      <div *ngIf="clearHint && beginDate5.control.hasError('required')&&(submitAttempt||beginDate5.control.touched)" class="text-danger validation-message">
+                        请选择余额日期</div>
+                      <div *ngIf="!beginDate5.control.hasError('required') && beginDate5.control.hasError('invalidDateFormat')" class="text-danger validation-message ">
+                        日期格式有误,应类似于2016-02-12
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-description5" class="col-sm-6 form-control-label">备注</label>
+                    <div class="col-xs-9">
+                      <input id="input-description5" [(ngModel)]="account.description" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="50">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+              <!--微信-->
+            <div *ngSwitchCase="'WeChat'">
+              <div class="col-sm-6">
+                <form [formGroup]="accountForm6" (keypress)="keyPressHandler($event)">
+                  <div class="form-group row">
+                    <label for="input-accountName6" class="col-sm-6 form-control-label">账户名称</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!accountName6.valid && (submitAttempt||accountName6.touched))&&clearHint}">
+                      <input id="input-accountName6" type="text" class="form-control" #accountName6="ngForm" [formControl]="accountForm6.controls['accountName6']"
+                        [(ngModel)]="account.accountName" maxlength="30">
+                      <div *ngIf="isBlank ||clearHint && accountName6.control.hasError('required') &&(submitAttempt||accountName6.control.touched)" class="text-danger validation-message">
+                        请填写账户名称</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-accountNumber6" class="col-sm-6 form-control-label">微信账号</label>
+                    <div class="col-xs-9">
+                      <input id="input-accountNumber6" type="text" class="form-control" [(ngModel)]="account.accountNumber" [ngModelOptions]="{standalone: true}"
+                        maxlength="30">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginBalance6" class="col-sm-6 form-control-label">期初余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginBalance6.valid && (submitAttempt||beginBalance6.touched))&&clearHint}">
+                      <input [readonly]="!isEdit" id="input-beginBalance6" #beginBalance6="ngForm" [formControl]="accountForm6.controls['beginBalance6']" [(ngModel)]="account.beginBalance"
+                        type="number" class="form-control">
+                      <div *ngIf="clearHint && beginBalance6.control.hasError('required')&&(submitAttempt||beginBalance6.control.touched)" class="text-danger validation-message">
+                        请填写期初余额(数值格式)</div>
+                      <div *ngIf="clearHint && beginBalance6.control.hasError('invalidAmount')&&(submitAttempt||beginBalance6.control.touched)"
+                        class="text-danger validation-message">
+                        期初余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginDate6" class="col-sm-6 form-control-label">期初余额日期</label>
+                    <div class="col-xs-9 " [ngClass]="{'has-danger':(!beginDate6.valid && (submitAttempt||beginDate6.touched))&&clearHint}">
+                      <p-calendar [disabled]="!isEdit" id="input-beginDate6" #beginDate6="ngForm" [formControl]="accountForm6.controls['beginDate6']" [(ngModel)]="account.beginDate"
+                        maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true"  [showDelIcon]="false"></p-calendar>
+                      <div *ngIf="isBlank ||clearHint && beginDate6.control.hasError('required')&&(submitAttempt||beginDate6.control.touched)" class="text-danger validation-message">
+                        请选择余额日期</div>
+                      <div *ngIf="!beginDate6.control.hasError('required') && beginDate6.control.hasError('invalidDateFormat')" class="text-danger validation-message ">
+                        日期格式有误,应类似于2016-02-12
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-description6" class="col-sm-6 form-control-label">备注</label>
+                    <div class="col-xs-9">
+                      <input id="input-description6" [(ngModel)]="account.description" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="50">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+              </div>
+            </div>
+            <!--现金-->
+            <div *ngSwitchCase="'Cash'">
+              <div class="col-sm-6">
+                <form [formGroup]="accountForm7" (keypress)="keyPressHandler($event)">
+                  <div class="form-group row">
+                    <label for="input-accountName7" class="col-sm-6 form-control-label">账户名称</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!accountName7.valid && (submitAttempt||accountName7.touched))&&clearHint}">
+                      <input id="input-accountName7" type="text" class="form-control" #accountName7="ngForm" [formControl]="accountForm7.controls['accountName7']"
+                        [(ngModel)]="account.accountName" maxlength="30">
+                      <div *ngIf="clearHint && accountName7.control.hasError('required')&&(submitAttempt||accountName7.control.touched)" class="text-danger validation-message">
+                        请填写账户名称</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginBalance7" class="col-sm-6 form-control-label">期初余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginBalance7.valid && (submitAttempt||beginBalance7.touched))&&clearHint}">
+                      <input [readonly]="!isEdit" id="input-beginBalance7" #beginBalance7="ngForm" [formControl]="accountForm7.controls['beginBalance7']" [(ngModel)]="account.beginBalance"
+                        type="number" class="form-control">
+                      <div *ngIf="clearHint && beginBalance7.control.hasError('required')&&(submitAttempt||beginBalance7.control.touched)" class="text-danger validation-message">
+                        请填写期初余额(数值格式)</div>
+                      <div *ngIf="clearHint && beginBalance7.control.hasError('invalidAmount')&&(submitAttempt||beginBalance7.control.touched)"
+                        class="text-danger validation-message">
+                        期初余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginDate7" class="col-sm-6 form-control-label">期初余额日期</label>
+                    <div class="col-xs-9 " [ngClass]="{'has-danger':(!beginDate7.valid && (submitAttempt||beginDate7.touched))&&clearHint}">
+                      <p-calendar [disabled]="!isEdit" id="input-beginDate7" #beginDate7="ngForm" [formControl]="accountForm7.controls['beginDate7']" [(ngModel)]="account.beginDate"
+                        maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true" [showDelIcon]="false"></p-calendar>
+                    </div>
+                    <div *ngIf="clearHint && beginDate7.control.hasError('required')&&(submitAttempt||beginDate7.control.touched)" class="text-danger validation-message">
+                      请选择余额日期</div>
+                    <div *ngIf="!beginDate7.control.hasError('required') && beginDate7.control.hasError('invalidDateFormat')" class="text-danger validation-message ">
+                      日期格式有误,应类似于2016-02-12
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-description7" class="col-sm-6 form-control-label">备注</label>
+                    <div class="col-xs-9">
+                      <input id="input-description7" [(ngModel)]="account.description" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="50">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+              </div>
+            </div>
+            <!--支付宝-->
+            <div *ngSwitchCase="'Alipay'">
+              <div class="col-sm-6">
+                <form [formGroup]="accountForm8" (keypress)="keyPressHandler($event)">
+                  <div class="form-group row">
+                    <label for="input-accountName8" class="col-sm-6 form-control-label">账户名称</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!accountName8.valid && (submitAttempt||accountName8.touched))&&clearHint}">
+                      <input id="input-accountName8" type="text" class="form-control" #accountName8="ngForm" [formControl]="accountForm8.controls['accountName8']"
+                        [(ngModel)]="account.accountName" maxlength="30">
+                      <div *ngIf="isBlank ||clearHint && accountName8.control.hasError('required') &&(submitAttempt||accountName8.control.touched)" class="text-danger validation-message">
+                        请填写账户名称</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-accountNumber8" class="col-sm-6 form-control-label">支付宝账号</label>
+                    <div class="col-xs-9">
+                      <input id="input-accountNumber8" type="text" class="form-control" [(ngModel)]="account.accountNumber" [ngModelOptions]="{standalone: true}"
+                        maxlength="30">
+                    </div>
+                  </div>
+                  <div class="form-group row" >
+                    <label for="input-beginBalance8" class="col-sm-6 form-control-label">期初余额</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginBalance8.valid && (submitAttempt||beginBalance8.touched))&&clearHint}">
+                      <input [readonly]="!isEdit" id="input-beginBalance8" #beginBalance8="ngForm" [formControl]="accountForm8.controls['beginBalance8']" [(ngModel)]="account.beginBalance"
+                        type="number" class="form-control">
+                      <div *ngIf="clearHint && beginBalance8.control.hasError('required')&&(submitAttempt||beginBalance8.control.touched)" class="text-danger validation-message">
+                        请填写期初余额(数值格式)</div>
+                      <div *ngIf="clearHint && beginBalance8.control.hasError('invalidAmount')&&(submitAttempt||beginBalance8.control.touched)"
+                        class="text-danger validation-message">
+                        期初余额(数值格式)不能为负</div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-beginDate8" class="col-sm-6 form-control-label">期初余额日期</label>
+                    <div class="col-xs-9" [ngClass]="{'has-danger':(!beginDate8.valid && (submitAttempt||beginDate8.touched))&&clearHint}">
+                      <p-calendar [disabled]="!isEdit" id="input-beginDate8" #beginDate8="ngForm" [formControl]="accountForm8.controls['beginDate8']" [(ngModel)]="account.beginDate"
+                        maxlength="10" inputStyleClass="form-control dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true" [showDelIcon]="false"></p-calendar>
+                      <div *ngIf="clearHint && beginDate8.control.hasError('required')&&(submitAttempt||beginDate8.control.touched)" class="text-danger validation-message">
+                        请选择余额日期</div>
+                      <div *ngIf="!beginDate8.control.hasError('required') && beginDate8.control.hasError('invalidDateFormat')" class="text-danger validation-message ">
+                        日期格式有误,应类似于2016-02-12
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="input-description8" class="col-sm-6 form-control-label">备注</label>
+                    <div class="col-xs-9">
+                      <input id="input-description8" [(ngModel)]="account.description" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                        maxlength="50">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button lockIn id="saveButton" type="button" class="btn btn-primary" (click)="save()">保存</button>
+        <button id="cancelButton" type="button" class="btn btn-secondary" (click)="close()">取消</button>
+      </div>
+    </div>
+  </div>
+</div>

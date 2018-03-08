@@ -1,0 +1,150 @@
+@import '../../../../../styles/variables';
+@import '../../../+account/share/account.component.scss';
+@import './../../../+fixed-assets/assets-list/assets-list.component.scss';
+@media screen and (width:320px) {
+    th {
+        font-size: 12px;
+    }
+    td {
+        font-size: 12px;
+    }
+    button {
+        font-size: 12px;
+    }
+    .col-sm-12 {
+        padding-left: 16px;
+    }
+}
+
+@media screen and (max-width:415px) {
+    .table-responsive table,
+    .table-responsive thead,
+    .table-responsive tbody,
+    .table-responsive th,
+    .table-responsive td,
+    .table-responsive tr {
+        display: block;
+    }
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .table-responsive thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    .table-responsive tr {
+        border: 1px solid #ccc;
+    }
+    .table-responsive td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+        //height:45px;
+    }
+    .table-responsive td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+    }
+    /*
+    Label the data
+    */
+    .table-responsive td:before {
+        content: attr(data-title)":";
+    }
+}
+
+.thin {
+    margin-bottom: -15px;
+}
+
+.radio {
+    padding-right: 10px;
+    padding-top: 5px;
+    display: inline-flex;
+}
+
+.abc-radio label {
+    padding-right: 10px;
+    display: inline-block;
+    &::before {
+        top: 5px;
+    }
+    &::after {
+        top: 8px;
+    }
+}
+
+.pull-right {
+    margin-left: 16px;
+}
+
+.content-header1 {
+    margin-bottom: 1em;
+}
+
+.btn-filter {
+    border: 1px solid #1ccfc9;
+    margin-left: 1em !important;
+    background-color: #eceeef;
+    color: #1ccfc9;
+}
+
+.title {
+    font-size: 25px;
+}
+
+.t-m {
+    margin: 0 0 0 0;
+    padding: 10px 20px 10px 20px;
+}
+
+.header {
+    padding: 10px 20px 20px 20px;
+    background-color: #eceeef;
+    // height: 150px;  /* background-color: $text-color-dark;*/
+    margin: 10px -15px 0px -15px;
+    display: block;
+    transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    /* Firefox 4 */
+    -webkit-transition: all 1s ease;
+    /* Safari 和 Chrome */
+}
+
+.m-b-10 {
+    margin-bottom: 10px;
+}
+
+.change-state {
+    height: 0px;
+    display: none;
+    transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    /* Firefox 4 */
+    -webkit-transition: all 1s ease;
+    /* Safari 和 Chrome */
+}
+
+.t-a-r {
+    text-align: right;
+}
+
+.search {
+    border: 1px solid #dfdfdf;
+    background: white;
+}
+
+.b-w {
+    background-color: white;
+}

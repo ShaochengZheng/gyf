@@ -1,0 +1,70 @@
+<div class="content-header">
+    <div class="alert-fixed">
+        <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+    </div>
+    <div class="row row-xs-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li>
+                    <!--<button style="margin-right: 15px" class="pull-right btn btn-primary" （click）="export()">导出</button>-->
+
+                    <button style="margin-right: 15px" class="pull-right btn btn-primary" [routerLink]=" ['/app/finance/carry-forward']">关闭</button>
+                    <button *ngIf="status==='Posting' || status==='CarryForward' " style="margin-right: 15px" class="pull-right btn btn-primary"
+                        (click)="postingCarryForward()">再次结转</button>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="voucher-list">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered  table-striped table-sm">
+                    <thead class="thead-head">
+                        <tr>
+                            <th rowspan="2">日期</th>
+                            <th rowspan="2">编号</th>
+                            <th rowspan="2">摘要</th>
+                            <th rowspan="2" width="200px">科目</th>
+                            <th colspan="2">金额</th>
+                            <th rowspan="2">制单人</th>
+                        </tr>
+                        <tr>
+                            <th>借</th>
+                            <th>贷</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let item of voucherList; let i=index">
+                        <tr>
+                            <td [attr.rowspan]="item.journalEntryLineItemModels.length">{{item.accountedOn | date:'yyyy-MM-dd'}}</td>
+                            <td [attr.rowspan]="item.journalEntryLineItemModels.length">记-{{item.journalEntryNumber}}</td>
+                            <td>{{item.journalEntryLineItemModels[0].summary}}</td>
+                            <td>{{item.journalEntryLineItemModels[0].account?.name}}</td>
+                            <td class="text-right amount">{{item.journalEntryLineItemModels[0].debitCreditType==='C' ? item.journalEntryLineItemModels[0].amount:0
+                                | currency:'CNY':true:'1.2-2'}}</td>
+                            <td class="text-right amount">{{item.journalEntryLineItemModels[0].debitCreditType==='D' ? item.journalEntryLineItemModels[0].amount:0|
+                                currency:'CNY':true:'1.2-2'}}
+                            </td>
+                            <td [attr.rowspan]="item.journalEntryLineItemModels.length">{{item.user.name}}</td>
+                        </tr>
+                        <template [ngIf]="!noData" *ngFor="let itemLine of item.journalEntryLineItemModels; let y = index">
+                            <tr *ngIf="y > 0">
+                                <td>{{itemLine.summary}}</td>
+                                <td>{{itemLine.account?.name}}</td>
+                                <td class="text-right amount">{{itemLine.debitCreditType==='C' ? itemLine.amount:0 | currency:'CNY':true:'1.2-2'}}</td>
+                                <td class="text-right amount">{{itemLine.debitCreditType==='D' ? itemLine.amount:0 | currency:'CNY':true:'1.2-2'}}</td>
+                            </tr>
+                        </template>
+
+                    </tbody>
+                    <tr *ngIf="noData">
+                        <td colspan="8">
+                            <div class="noData">
+                                没有数据
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

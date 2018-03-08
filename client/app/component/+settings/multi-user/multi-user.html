@@ -1,0 +1,78 @@
+<div class="alert-fixed" *ngFor="let alert of alerts">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div *ngIf="isInvite" class="row">
+    <div class="col-xs-12 padding-right-0">
+        <button roles expire type="button" class="btn btn-primary pull-right" (click)="inviteUser()"><i
+                class="fa fa-plus"></i>邀请用户
+        </button>
+    </div>
+</div>
+<!--<div>
+    <label><input class="mui-switch mui-switch-anim" type="checkbox"> 默认未选中</label>
+    <label><input class="mui-switch mui-switch-anim" type="checkbox" checked> 默认选中</label>
+</div>-->
+<div class="row m-t-10">
+    <table class="table table-striped table-hover table-sm table-bordered">
+        <thead class="thead-head">
+            <tr>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>角色</th>
+                <th>启用</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of dataList, let i = index">
+                <td width="25%" data-title="姓名">
+                    <span id="name" class="text-ellipsis">{{item.name}}</span>
+                    <a href=""  roles expire [routerLink]="" class="i-color" (click)="reSendInvite(i)" *ngIf="!item.active">重发邀请</a>
+                </td>
+                <td width="30%" data-title="手机">
+                    <span id="phone" class="text-ellipsis">{{item.phoneNumber}}</span>
+                </td>
+                <td width="25%" data-title="角色">
+                    <span id="role" class="text-ellipsis">{{item.roles[0]?.name}}</span>
+                </td>
+
+                <td width="20%" data-title="启用">
+                    <!--<label *ngIf="item.isEnable === 'Y'" ><input class="mui-switch mui-switch-anim" type="checkbox" (click)="editUser(item)" checked>  </label>
+                        <label *ngIf="item.isEnable === 'N'" ><input class="mui-switch mui-switch-anim" type="checkbox" (click)="openReinviteModal(item)" >  </label>-->
+
+                    <div class="row ">
+                        <!--停用状态-->
+                        <div *ngIf="item.isEnable === 'Y'" class="col-sm-4 col-sm-offset-4 but" (click)="editUser(i)">
+                            <div class="col-sm-6 nol">否 </div>
+                            <div class="col-sm-6 sel">是 </div>
+                            <!--<label ><input class="mui-switch mui-switch-anim" type="checkbox" (click)="editUser(item)" checked>  </label>-->
+                        </div>
+                        <div *ngIf="item.isEnable === 'N'" class="col-sm-4 col-sm-offset-4 but" (click)="openReinviteModal(i)">
+                            <div class="col-sm-6 sel">否 </div>
+                            <div class="col-sm-6 nol">是 </div>
+                            <!--<label ><input class="mui-switch mui-switch-anim" type="checkbox" (click)="openReinviteModal(item)" >  </label>-->
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="noDataList">
+                <td colspan="4">
+                    <div class="noData">您还没有用户信息，您可以点击右上角添加按钮进行自定义设置哦！</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--<div class="row">
+    <div class="col-xs-12">
+        <pagination class="pagination-sm pull-right" (pageChanged)="pageChanged($event)" [totalItems]="recordCount" [itemsPerPage]="pageSize"
+            [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+            lastText="&raquo;"></pagination>
+    </div>
+</div>-->
+
+<gpw-invite-user-new-modal #inviteUserModal (result)="result($event)"></gpw-invite-user-new-modal>
+<!--<gpw-department-details-modal #departmentDetailsModal (result)="result($event)"></gpw-department-details-modal>-->
+<confirm-widget #stopConfirm (confirmEvent)="stopUser($event)"></confirm-widget>
+<confirm-widget #reinviteConfirm (confirmEvent)="reinvite($event)"></confirm-widget>
+<confirm-widget #reSendConfirm (confirmEvent)="reSend($event)"></confirm-widget>

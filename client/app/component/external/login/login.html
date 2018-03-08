@@ -1,0 +1,77 @@
+<!--<div class="login-background">-->
+<div class="container widget-container">
+    <main id="content" role="main">
+        <div class="row widget-header ">
+            <div class="col-lg-8 padding-l-0">
+                <a href="http://www.guanplus.com/" target="_blank"><img class="img-fluid header-logo" src="assets/images/logo.png"></a>
+                <span class="header-title message">财务界的人工智能（报税版）</span>
+            </div>
+            <div class="col-lg-4 widget-header-right">
+                <span class="pull-right"><a [routerLink]="['/register',{name:myForm.value.name}]">注册</a>｜登录</span>
+            </div>
+        </div>
+
+        <div class="row widget-form form-body">
+            <div class="alert-container col-lg-12">
+                <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+            </div>
+            <!--<div class="alert-fixed">
+                <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+            </div>-->
+            <div class="col-lg-12">
+                <form role="form" [formGroup]="myForm" class="form-container login-form">
+                    <fieldset class="form-group" [ngClass]="{'has-danger':(!name.valid && name.touched)}">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                            <input id="usernameInput" [(ngModel)]="transmittedName" type="text" class="form-control input-border" placeholder="手机号" [formControl]="name">
+                        </div>
+                        <div *ngIf="name.touched">
+                            <div *ngIf="name.hasError('required');else phoneError;" class="text-danger validation-message">请填写手机</div>
+                            <ng-template #phoneError>
+                                <!--<div *ngIf="!name.valid" #phoneError class="text-danger validation-message">手机格式不正确</div>-->
+                                <div *ngIf="!name.valid" class="text-danger validation-message">手机格式不正确</div>
+                            </ng-template>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <div class="input-group" [ngClass]="{'has-danger':(!pass.valid && pass.touched)}">
+
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+                            <input id="passwordInput" type="password" class="form-control" placeholder="密码" [formControl]="pass">
+                        </div>
+                        <div *ngIf="pass.touched">
+                            <div *ngIf="pass.hasError('required')" class="text-danger validation-message">请填写密码</div>
+                        </div>
+                        <div *ngIf="submitAttempt && !(pass.touched && pass.hasError('required'))" class="text-danger validation-message">
+                            输入密码错误次数达到3次 <br />请输入验证码！
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <div *ngIf='submitAttempt' class="input-group " [ngClass]="{'has-danger':(!captcha.valid && captcha.touched)}">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                            <input (keyup)="onSubmit();" type="text" id="captcha" name="captcha" class="form-control captcha-input" [formControl]="captcha"
+                                placeholder="验证码">
+                            <label class="input-group-addon"><img class="captcha" (click)="reloadCaptcha()" [src]="captchaSrc"></label>
+                        </div>
+                        <div *ngIf="captcha.touched">
+                            <div *ngIf="captcha.hasError('required')" class="text-danger validation-message">请填写验证码</div>
+                        </div>
+                        <div *ngIf="correctCaptcha" class="text-success validation-message">验证码正确</div>
+                        <div *ngIf="wrongCaptcha" class="text-danger validation-message">验证码错误</div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <!--<small><a class="pull-left" [routerLink]=" ['/retrieve-password',{source:'dingding'}]">钉钉<管有方>用户首次登陆</a></small>-->
+                        <!--<small><a  class="pull-left" [routerLink]=" ['/dingLogin']">钉钉登陆</a></small>-->
+                        <small><a id="retrievePassword" class="pull-right" [routerLink]=" ['/retrieve-password',{name:myForm.value.name}]">忘记密码？</a></small>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <button id="loginButton" class="input-group btn btn-primary btn-lg btn-block" (click)="save()" [disabled]='!correctCaptcha && submitAttempt'>登录</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer-external></footer-external>
+    <browser-alert></browser-alert>
+</div>
+<!--</div>-->

@@ -1,0 +1,63 @@
+
+@import "../../../../../styles/variables";
+
+.padding-content{
+    // padding-bottom:50px;
+    .import-guide{
+        padding-top:50px;
+        padding-bottom: 30px;
+        margin:0 auto;
+        a {
+            color:#1CCFC9; 
+        }
+        a:hover{
+            color: #138c88;
+            text-decoration: underline;
+        }
+    }
+
+    .choose-file{
+        .btn-secondary{
+            color: #1CCFC9;
+            background-color:rgb(240,240,240);
+            border: none;
+        }
+        .btn-secondary:hover{
+            color: #1CCFC9 !important;
+            background-color:rgb(230,230,230) !important;
+            border: none !important;
+        }
+        .fileUpload {
+        position: relative;
+        overflow: hidden;
+        margin: 10px;
+        text-align: center;
+        }
+        .fileUpload input.upload {  position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 40px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+    }
+
+    p{
+        margin-top: 1rem;
+        font-size:14px;
+    }
+    .remark{
+        margin-bottom: 40px;
+        p{
+            color: #9b9b9b;
+        }
+    }
+}
+
+
+
+
+

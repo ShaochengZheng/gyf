@@ -1,0 +1,174 @@
+<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div class="content">
+    <div class="content-header">
+        <div class="row">
+            <div class="col-xs-12 col-lg-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-null"><i class="fa fa-car fa-2x"></i></li>
+                    <li class="breadcrumb-null page-title">固定资产</li>
+                    <li>
+                        <div class="btn-group pull-right">
+                            <button type="button" class="pull-right btn btn-filter" (click)="showScreenBoard()"> 筛选
+                                <i [class.rotate]="!isScreenShow" [class.norotate]="isScreenShow"  class="fa fa-angle-down fa-lg angle-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-primary" [routerLink]=" ['/app/fixed-assets/detail']" routerLinkActive="active" lockIn> 记固定资产</button>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="header" *ngIf="isScreenShow">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-4 select-area">
+                    <p-calendar [(ngModel)]="searchModel.startDate" (onSelect)="searchBlur()" (onBlur)="searchBlur()" placeholder="开始日期" inputStyleClass="dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true"></p-calendar>
+                    <span class="m-l-r-10"> - </span>
+                    <p-calendar [(ngModel)]="searchModel.endDate" (onSelect)="searchBlur()" (onBlur)="searchBlur()" placeholder="结束日期" minDate={{searchModel.startDate}} inputStyleClass="dp-width-255 vertical-bsline" showAnim="slideDown" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="col-lg-4">
+                    <ng-select [allowClear]="truw" class="input-control" [items]="typeList" [(ngModel)]="type" placeholder="分类" [ngModelOptions]="{standalone: true}" (selected)="selectType($event)"></ng-select>
+                </div>
+                <div class="col-lg-4 col-xs-12 fixed-radios">
+                    <div>
+                        <input type="radio" #radioStaus name="status" value="1" (click)="statusSelect('None')" checked><label> 全部</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="status" value="2" (click)="statusSelect('Processing')"> <label> 进行中</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="status" value="3" (click)="statusSelect('Finish')"><label> 已完结</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-10">
+            <div class="col-lg-12">
+                <div class="col-lg-4 col-xs-12 select-area">
+                    <!--<label>价格区间：</label>-->
+                    <!--<input class="form-control amount-width" type="number" placeholder="价格" [(ngModel)]="searchModel.minAmount">-->
+                    <decimal-input [(ngModel)]="searchModel.minAmount" isEditable="true" type="number" decimalStyle="form-control" placeholder="最低额" (blur)="amountSearch()" (keypress)="keyPressHandler($event,'key')"></decimal-input>
+                    <span class="m-l-r-10"> - </span>
+                    <!--<input class="form-control  amount-width" type="number" placeholder="价格" [(ngModel)]="searchModel.maxAmount">-->
+                    <decimal-input [(ngModel)]="searchModel.maxAmount" isEditable="true" type="number" decimalStyle="form-control" placeholder="最高额" (blur)="amountSearch()" (keypress)="keyPressHandler($event,'key')"></decimal-input>
+                </div>
+                <div class="col-lg-4 col-xs-12">
+                    <div class="input-group input-group-no-border">
+                        <span class="input-group-addon">  <i class="fa fa-search"></i> </span>
+                        <input class="form-control" type="text" (blur)="blurkeyWordQUantity(ture)" (keypress)="keyPressHandler($event,'key')" placeholder="按名称搜索" [(ngModel)]="searchModel.keyword" [ngModelOptions]="{standalone: true}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-10" *ngIf="SEARCH_TAGLISTS">
+            <div class="col-lg-12 m-l-15">
+                <span class="slash">标签搜索</span>
+                <div class="col-lg-10">
+                    <div *ngFor="let item of SEARCH_TAGLIST; let i=index">
+                        <div class="search-addTagSize" [ngClass]="{'search-clickStyle': !item.checked}" *ngIf="SEARCH_TAGLIST">
+                            <div class="search-addTagStyle" (click)="search_tagSearch(item, i)">
+                                <span class="search-addTagInfo fontStyle fontColor">{{item.value}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-lg-1 search-displayTag" *ngIf="SEARCH_DISPLAYTAG && SEARCH_TAGLISTS.length > 10" (click)="search_tagToggle(true)">
+                        更多<i class="fa fa-angle-down faPadding" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-lg-1 col-lg-1 search-displayTag" *ngIf="!SEARCH_DISPLAYTAG" (click)="search_tagToggle(false)">
+                        收起<i class="fa fa-angle-up faPadding" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+            </div>
+            <div class="btn-group pull-right col-lg-12 flex-bottom">
+                <!--<button type="button" class="btn btn-n " (click)="clearSearchModel()"> 清空</button>-->
+                <label class="btn-clear m-r-20" (click)="clearSearchModel()"> 清空筛选条件</label>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="content-list">
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm table-condensed">
+                    <thead class="thead-head">
+                        <tr>
+                            <!--<th class="text-xs-center"></th>-->
+                            <th>购买日期</th>
+                            <th>名称</th>
+                            <th>分类</th>
+                            <th>数量</th>
+                            <th class="text-right">总额</th>
+                            <th>状态</th>
+                            <th>单号</th>
+                            <th roles class="text-right operation">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of dataList'>
+                            <!--<td class="text-xs-center" *ngIf="item.isDefault"><i class="fa fa-bookmark" aria-hidden="true" placement="top" tooltip="默认"></i></td>
+              <td class="text-xs-center" *ngIf="!item.isDefault "><i></i></td>-->
+                            <td data-title="购买日期">
+                                <span id="purchasingDate" class="text-ellipsis" title="{{item.purchasingDate|date: 'yyyy-MM-dd'}}">{{item.purchasingDate |date: 'yyyy-MM-dd'}}</span>
+                            </td>
+                            <td data-title="名称">
+                                <span id="name" class="text-ellipsis" title="{{item.name}}">{{item.name}}</span>
+                            </td>
+                            <td data-title="分类">
+                                <span id="assetType" class="text-ellipsis" title="{{item.depreciationCategory?.name}}">{{item.depreciationCategory?.name}}</span>
+                            </td>
+                            <td id="qty" data-title="数量">&nbsp;{{item.qty}}</td>
+                            <td id="originalPrice" data-title="总额" class="text-right">&nbsp;{{item.originalPrice | currency:'CNY':true:'1.2-2'}} &nbsp;</td>
+                            <td id="status" data-title="状态">&nbsp;{{item.status?.name}}</td>
+                            <td id="number" data-title="{{item?.number}}">
+                                <span class="link"> <a   (click)="editItem(item)">{{item.number}}</a> </span>
+                            </td>
+                            <td roles data-title="操作" class="operation text-center">
+                                <button *ngIf="item.accountAttachmentModels.length>0" id="editContact" expire class="btn btn-secondary btn-circle-sm" (click)="previewAttachment(item)" placement="top" tooltip="附件">
+                            <i class="fa fa-paperclip"></i>
+                        </button>
+                                <button id="editContact" expire class="btn btn-secondary btn-circle-sm" (click)="editItem(item)" placement="top" tooltip="编辑">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                                <button id="deleteContact" expire [disabled]='!item.isManual || item.lock ' class="btn btn-secondary btn-circle-sm" (click)="openConfirmModal(item)" placement="top" tooltip="删除" lockIn>
+                            <i class="fa fa-trash"></i>
+                            </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!noData">
+                            <th class="text-right" colspan="3"></th>
+                            <th class="text-right">合计</th>
+                            <th class="text-right">{{mSum | currency:'CNY':true:'1.2-2'}}&nbsp;</th>
+                            <th class="text-right" colspan="3"></th>
+                        </tr>
+                        <tr *ngIf="noData">
+                            <td colspan="8">
+                                <div class="noData">
+                                    没有数据
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" *ngIf="!noData">
+            <div class="col-xs-12 col-lg-12">
+                <pagination class="pagination-sm  pull-right" (pageChanged)="pageChanged($event)" [totalItems]="recordCount" [itemsPerPage]="pageSize" [(ngModel)]="pageIndex" [maxSize]="maxSize" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                    lastText="&raquo;"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<confirm-widget #confirmWidget (confirmEvent)="delete($event)" message="确认删除此条固定资产记录吗？"></confirm-widget>
+<gpw-picture-preview-modal #picturePreviewModal></gpw-picture-preview-modal>
+<!--<div class="row">
+    Contact
+</div>-->

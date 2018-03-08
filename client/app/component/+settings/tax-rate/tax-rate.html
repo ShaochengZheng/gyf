@@ -1,0 +1,91 @@
+<div class="alert-fixed">
+    <alert dismissOnTimeout="5000" *ngIf="alert.msg" [type]="alert.type" dismissible="true">{{ alert?.msg }}</alert>
+</div>
+<div class="contain">
+    <div>
+        <span class="edit">
+            <a lockIn roles expire [routerLink]="" (click)="editCompany()" placement="top">
+                <i class="fa fa-pencil" aria-hidden="true">编辑</i>
+            </a>
+        </span>
+    </div>
+    <div class="row m-t-15">
+        <span class="title">报税频率</span>
+        <a class="col-sm-12 line"></a>
+    </div>
+    <div class="row m-t-15 m-l-15 ">
+        <div class="col-xl-6 col-sm-6 ">
+            <label class="radio-inline" *ngIf="!isGeneralTaxpayer">
+         <input (click)="(selectRateType(1))" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" [checked]="!Monthly" [disabled]="!isEdit"> 季度
+                 </label >
+            <label class="radio-inline" >
+           <input (click)="(selectRateType(2))" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" [checked]="Monthly" [disabled]="!isEdit"> 月度
+             </label>
+        </div>
+    </div>
+
+
+    <div id="taxRatePage" class="row m-t-15">
+        <span class="title">税率设置</span>
+
+        <a class="col-sm-12 line"></a>
+    </div>
+    <!--税率的列表-->
+    <div *ngFor="let item of dataList; let i=index" class="m-b-15 m-t-15">
+        <div *ngIf="i>0" class="row">
+            <div class="form-group form-inline col-md-12 m-l-30">
+                <label id="value" for="value" class="col-xs-2 light-color">{{item.name}}</label>
+
+                <div class="col-xs-2 " [ngClass]="{'has-danger':!item.value}">
+                    <input *ngIf="isEdit" (ngModelChange)="taxRateChange($event, i)" type="number" class="form-control w-45" name="value" [(ngModel)]="item.value">
+                    <span *ngIf="!isEdit" class="">{{item.value | number:'1.2-2'}}</span>
+                    <i class="fa fa-percent" aria-hidden="true"></i>
+                </div>
+                <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="item.value < 0">
+                    <span>请填写税率</span>
+                </div>
+                <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="!item.valide">
+                    <span>请正确填写税率</span>
+                </div>
+                <div class="col-xs-12 col-md-4 text-danger validation-message" *ngIf="item.value < 3 &&item.taxType === 'ValueAddedTax'">
+                    <span>增值税大于3%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row m-t-15">
+        <span class="title">其他</span>
+        <a class="col-sm-12 line"></a>
+    </div>
+    <div class="row other" *ngIf="!Monthly">
+        <div class="row m-t-6 thir">
+            <label class="radio-inline">
+                <input (click)="(selectRateType(3))" type="checkbox" name="inlineRadioOptions1" id="inlineRadio1" value="option1" [checked]="QuarterlyIn" [disabled]="!isEdit"> 季度收入低于{{QuarterlyIncome}}万元，免收教育附加税和地方教育附加税
+                 </label>
+            <!--<input type="number" class="form-control inp" name="value" [(ngModel)]="QuarterlyIncome" [readonly]="!isEdit">            万元，免收教育附加税和地方教育附加税-->
+        </div>
+        <!--<div class="col-xs-4 col-md-4 text-danger validation-message" *ngIf="!QuarterlyIncome&&QuarterlyIn">
+        <span>请填写金额</span>
+    </div>-->
+    </div>
+
+    <div class="row other" *ngIf="Monthly">
+        <div class="row m-t-6 thir">
+            <label class="radio-inline">
+                <input (click)="(selectRateType(4))" type="checkbox" name="inlineRadioOptions2" id="inlineRadio2" value="option2" [checked]="MonthlyIn"  [disabled]="!isEdit"> 月度收入低于{{MonthlyIncome}}万元，免收教育附加税和地方教育附加税
+            </label>
+            <!--<input type="number" class="form-control inp" name="value" [(ngModel)]="MonthlyIncome" [readonly]="!isEdit">万元，免收教育附加税和地方教育附加税-->
+        </div>
+        <!--<div class="col-xs-6 col-md-4 text-danger validation-message" *ngIf="!MonthlyIncome&&MonthlyIn">
+            <span>请填写金额</span>
+        </div>-->
+    </div>
+
+
+    <div *ngIf="isEdit" class="text-xs-center  form-group">
+        <button class="btn btn-primary " type="submit" (click)="saveTaxRate()">保存</button>
+        <button class="btn btn-secondary " (click)="cancel()">返回</button>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+
+// Circle
+.img-circle {
+  border-radius: 50%;
+}
+
+.no-margins {
+    margin: 0 !important;
+}
+.padding-right-0{
+    padding-right: 0;
+}
+
+// .positive-text {
+//   color: $positive-number-color;
+// }
+
+// .negative-text {
+//   color: $negative-number-color;
+// }
+
+.navy-color{
+  color: $navy;
+}
+
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    padding: 6px 0;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 1.428571429;
+}
+
+.btn-circle-sm {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 1.428571429;
+}
+
+.btn-circle-sm > i {
+    top: -3px;
+    position: relative;
+}
